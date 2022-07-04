@@ -9,14 +9,15 @@ pipeline {
     stages {
 
         stage('frontend build') {
-            steps {
+            steps { 
                 sh "pwd"
-                echo "yarn install"
-                sh "npm install -g yarn"
-                sh "yarn install"
-                sh "yarn clean"
-                echo "빌드"
-                sh "yarn build"
+                
+                withNPMWrapper('NpmCredentials') {
+                    yarn "install"
+                    yarn "clean"
+                    yarn "build"
+                
+                }
                 sh "node -v"
             }
         }
