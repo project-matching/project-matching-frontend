@@ -11,13 +11,9 @@ pipeline {
         stage('frontend build') {
             steps { 
                 sh "pwd"
-                
-                withNPMWrapper('NpmCredentials') {
-                    yarn "install"
-                    yarn "clean"
-                    yarn "build"
-                
-                }
+                yarn "install"
+                yarn "clean"
+                yarn "build"
                 sh "node -v"
             }
         }
