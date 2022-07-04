@@ -1,6 +1,6 @@
 pipeline {
     agent any
-
+    tools {nodejs "nodejs-16.15.1"}
     environment {
         DOCKERHUB = credentials('dockerhub')
         TARGET_HOST = credentials('target_front')
@@ -10,9 +10,9 @@ pipeline {
 
         stage('frontend build') {
             steps { 
-                yarn "install"
-                yarn "clean"
-                yarn "build"
+                sh "yarn install"
+                sh "yarn clean"
+                sh "yarn build"
             }
         }
 
