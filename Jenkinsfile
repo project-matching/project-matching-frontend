@@ -12,10 +12,11 @@ pipeline {
             steps {
                 sh "pwd"
                 echo "yarn install"
-                yarn 'install'
-                yarn 'clean'
+                sh "npm install -g yarn"
+                sh "yarn install"
+                sh "yarn clean"
                 echo "빌드"
-                yarn 'build'
+                sh "yarn build"
                 sh "node -v"
             }
         }
