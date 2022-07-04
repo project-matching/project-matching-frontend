@@ -10,11 +10,9 @@ pipeline {
 
         stage('frontend build') {
             steps { 
-                sh "pwd"
                 yarn "install"
                 yarn "clean"
                 yarn "build"
-                sh "node -v"
             }
         }
 
