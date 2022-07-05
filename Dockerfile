@@ -1,6 +1,5 @@
 FROM node:16.15.1
 
-
 WORKDIR /frontend
 
 COPY ["package.json", "yarn.lock", "/frontend/"]
