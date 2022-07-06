@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "engines": {
-    "node": ">=16.15.1",
+    "node": "16.15.1",
     "yarn": ">=1.22.0",
     "npm": "please-use-yarn"
   },
@@ -14,7 +14,7 @@
     "lint": "next lint",
     "prettier": "prettier --write .",
     "prepare": "husky install",
-    "test": "jest --watch"
+    "test": "jest"
   },
   "dependencies": {
     "@emotion/react": "^11.9.3",
