@@ -3,16 +3,16 @@ import { push } from 'connected-react-router';
 import { put, select, takeEvery } from 'redux-saga/effects';
 import { fail, pending, signin, signOut, success } from '../reducers/auth';
 
-// const USER_API_URL = 'https://3.39.48.25:8080';
+// const USER_API_URL = '/api/v1/common';
 
 // class UserService {
 //   public static async signin(reqData: SigninReqType): Promise<string> {
-//     const response = await axios.post(USER_API_URL, reqData);
+//     const response = await axios.post(`${USER_API_URL}/login`, reqData);
 //     return response.data.token;
 //   }
 
 //   public static async signOut(token: string): Promise<void> {
-//     await axios.delete(USER_API_URL, {
+//     await axios.get(`${USER_API_URL}/logout`, {
 //       headers: { Authorization: `Bearer ${token}` },
 //     });
 //   }

@@ -4,7 +4,7 @@ const nextConfig = {
   async rewrites() {
     return [
       {
-        destination: 'http://3.39.48.25:8080/swagger-ui.html/v1/:path*',
+        destination: 'http://3.39.48.25:8080/:path*',
         source: '/api/:path*',
       },
     ];
