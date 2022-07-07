@@ -1,13 +1,7 @@
 import { PayloadAction } from '@reduxjs/toolkit';
 import { push } from 'connected-react-router';
 import { put, select, takeEvery } from 'redux-saga/effects';
-import {
-  fail,
-  pending,
-  signinAction,
-  signOutAction,
-  success,
-} from '../reducers/auth';
+import { fail, pending, signin, signOut, success } from '../reducers/auth';
 
 // const USER_API_URL = 'https://localhost:3000';
 
@@ -73,6 +67,6 @@ function* signOutSaga() {
 }
 
 export function* authSaga() {
-  yield takeEvery(signinAction.type, signinSaga);
-  yield takeEvery(signOutAction.type, signOutSaga);
+  yield takeEvery(signin.type, signinSaga);
+  yield takeEvery(signOut.type, signOutSaga);
 }
