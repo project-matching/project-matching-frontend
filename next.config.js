@@ -4,8 +4,8 @@ const nextConfig = {
   async rewrites() {
     return [
       {
-        destination: process.env.DESTINATION_URL,
-        source: process.env.SOURCE_PATH,
+        destination: 'http://3.39.48.25:8080/swagger-ui.html/v1/:path*',
+        source: '/api/:path*',
       },
     ];
   },

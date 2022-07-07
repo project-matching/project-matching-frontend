@@ -7,16 +7,16 @@ pipeline {
         DOCKER_REPOSITORY_NAME = 'frontend'
     }
     stages {
-
         stage('frontend build') {
             steps { 
+                sh "npm install -g yarn"
                 sh "yarn install"
-                sh "yarn clean"
+                sh "rm -rf .next"
                 sh "yarn build"
             }
         }
 
-        stage('backend dockerizing') {
+        stage('frontend dockerizing') {
             steps {
                 script {
                     TAG = sh(script: 'echo $(docker images | awk -v DOCKER_REPOSITORY_NAME=$DOCKER_REPOSITORY_NAME \'{if ($1 == DOCKER_REPOSITORY_NAME) print $2;}\')', returnStdout: true).trim()
