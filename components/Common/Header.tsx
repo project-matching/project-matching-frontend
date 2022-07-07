@@ -1,6 +1,9 @@
 import { Wrapper } from '@/styles/global';
 import styled from '@emotion/styled';
 import Link from 'next/link';
+import { useDispatch } from 'react-redux';
+import { useAppSelector } from 'redux/hooks';
+import { signIn, signOut } from 'redux/reducers/users';
 import PrimaryButton from '../Buttons/PrimaryButton';
 
 export const Flex = styled.div`
@@ -33,6 +36,9 @@ const Header: React.FC = () => {
     font-size: 18px;
   `;
 
+  const { username } = useAppSelector((state) => state.userReducer);
+  const dispatch = useDispatch();
+
   const openRecruitModal = () => {};
 
   const openLoginModal = () => {};
@@ -56,7 +62,17 @@ const Header: React.FC = () => {
         </Flex>
         <Flex>
           <PrimaryButton content="Recruit" clickEvent={openRecruitModal} />
-          <PrimaryButton content="Log In" clickEvent={openLoginModal} />
+          {username ? (
+            <PrimaryButton
+              content="Log Out"
+              clickEvent={() => dispatch(signOut())}
+            />
+          ) : (
+            <PrimaryButton
+              content="Log In"
+              clickEvent={() => dispatch(signIn())}
+            />
+          )}
         </Flex>
       </Header>
     </Wrapper>
