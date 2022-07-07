@@ -11,7 +11,6 @@ pipeline {
             steps { 
                 sh "npm install -g yarn"
                 sh "yarn install"
-                sh "rm -rf .next"
                 sh "yarn build"
             }
         }
