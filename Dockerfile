@@ -6,8 +6,6 @@ COPY ["package.json", "yarn.lock", "/frontend/"]
 
 EXPOSE 3000
 
-RUN yarn
+COPY ./.next /frontend/.next
 
-COPY ./ /frontend/
-
-CMD yarn run dev --port 3000
+CMD yarn run start
