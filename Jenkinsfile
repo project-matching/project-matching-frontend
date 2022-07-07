@@ -9,7 +9,7 @@ pipeline {
     stages {
         stage('frontend build') {
             steps { 
-                sh "npm intall -g yarn"
+                sh "npm install -g yarn"
                 sh "yarn install"
                 sh "yarn clean"
                 sh "yarn build"
