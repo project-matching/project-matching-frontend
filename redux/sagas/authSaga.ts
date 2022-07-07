@@ -3,7 +3,7 @@ import { push } from 'connected-react-router';
 import { put, select, takeEvery } from 'redux-saga/effects';
 import { fail, pending, signin, signOut, success } from '../reducers/auth';
 
-// const USER_API_URL = 'https://localhost:3000';
+// const USER_API_URL = 'https://3.39.48.25:8080';
 
 // class UserService {
 //   public static async signin(reqData: SigninReqType): Promise<string> {
