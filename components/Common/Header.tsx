@@ -41,7 +41,7 @@ const Header: React.FC = () => {
 
   const openRecruitModal = () => {};
 
-  const openLoginModal = () => {};
+  // const openLoginModal = () => {};
 
   return (
     <Wrapper>
