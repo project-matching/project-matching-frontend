@@ -1,4 +1,4 @@
-FROM node:16.15.1
+FROM node:16.15.1-alpine
 
 WORKDIR /frontend
 
@@ -8,6 +8,6 @@ EXPOSE 3000
 
 RUN yarn
 
-COPY ./ /frontend/
+COPY ./.next /frontend/.next
 
-CMD yarn run dev --port 3000
+CMD yarn run start
