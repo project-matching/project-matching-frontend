@@ -16,7 +16,7 @@ export class UserService {
     });
   }
 
-  public static async getUserInfo(token: string): Promise<UserInfoType> {
+  public static async getUserInfo(token: string | null): Promise<UserInfoType> {
     const response = await axios.get(`${USER_API_URL}/user/info`, {
       headers: { Authorization: `Bearer ${token}` },
     });
