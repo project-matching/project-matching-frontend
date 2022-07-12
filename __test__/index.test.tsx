@@ -2,7 +2,8 @@
 
 import Header from '@/components/Common/Header';
 import '@testing-library/jest-dom';
-import { render, screen } from '@testing-library/react';
+import { screen } from '@testing-library/react';
+import { render } from './test-utils';
 
 describe('Header', () => {
   it('renders header logo', () => {
