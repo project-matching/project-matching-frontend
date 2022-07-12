@@ -1,13 +1,16 @@
-import { createAction, createSlice } from '@reduxjs/toolkit';
+import { createAction, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { UserInfoType } from 'redux/sagas/userSaga';
 
 interface UserState {
-  username: string | null;
-  position: string | null;
+  loading: boolean;
+  error: any;
+  userInfo: UserInfoType | null;
 }
 
 const initialState: UserState = {
-  username: null,
-  position: null,
+  loading: false,
+  error: null,
+  userInfo: null,
 };
 
 const userState = 'user';
@@ -16,24 +19,36 @@ const userSlice = createSlice({
   name: userState,
   initialState,
   reducers: {
-    setUserInfo: (state, actions) => {
+    pending(state) {
       return {
         ...state,
-        username: actions.payload.username,
-        position: actions.payload.position,
+        loading: true,
+        error: null,
       };
     },
-    resetUserInfo: (state) => {
+    success(state, action: PayloadAction<UserState['userInfo']>) {
       return {
         ...state,
-        username: null,
-        position: null,
+        loading: false,
+        userInfo: action.payload,
+        error: null,
+      };
+    },
+    fail(state, action: PayloadAction<UserState['error']>) {
+      return {
+        ...state,
+        loading: false,
+        error: action.payload,
       };
     },
   },
 });
 
-export const { setUserInfo, resetUserInfo } = userSlice.actions;
+export const {
+  pending: userPending,
+  fail: userFail,
+  success: userSuccess,
+} = userSlice.actions;
 
 export const getUserInfo = createAction(`${userState}/getUserInfo`);
 

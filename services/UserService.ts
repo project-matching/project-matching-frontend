@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { SigninReqType } from 'redux/sagas/authSaga';
+import { UserInfoType } from 'redux/sagas/userSaga';
 
 const USER_API_URL = '/api/v1';
 
@@ -15,9 +16,10 @@ export class UserService {
     });
   }
 
-  public static async getUserInfo(token: string): Promise<any> {
-    await axios.get(`${USER_API_URL}/user/info`, {
+  public static async getUserInfo(token: string): Promise<UserInfoType> {
+    const response = await axios.get(`${USER_API_URL}/user/info`, {
       headers: { Authorization: `Bearer ${token}` },
     });
+    return response.data.data;
   }
 }

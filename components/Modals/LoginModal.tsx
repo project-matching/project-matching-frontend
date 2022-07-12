@@ -80,7 +80,9 @@ const LoginModal = () => {
     dispatch(closeModal('LoginModal'));
   };
 
-  const submitSignUp = () => {};
+  const submitSignUp = (e: React.SyntheticEvent) => {
+    e.preventDefault();
+  };
 
   return (
     <Container>
@@ -121,11 +123,10 @@ const LoginModal = () => {
       ) : (
         <Body>
           <Form onSubmit={submitSignUp}>
-            <Input type="text" placeholder="Name" />
-            <Input type="email" placeholder="Email" />
-            <Input type="password" placeholder="Password" />
-            <Input type="password" placeholder="Confirm password" />
-
+            <Input type="text" placeholder="Name" required />
+            <Input type="email" placeholder="Email" required />
+            <Input type="password" placeholder="Password" required />
+            <Input type="password" placeholder="Confirm password" required />
             <PrimaryButton type="submit" wFull>
               Sign up
             </PrimaryButton>

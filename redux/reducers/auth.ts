@@ -44,7 +44,11 @@ const authSlice = createSlice({
   },
 });
 
-export const { pending, success, fail } = authSlice.actions;
+export const {
+  pending: authPending,
+  success: authSuccess,
+  fail: authFail,
+} = authSlice.actions;
 
 export const signin = createAction<SigninReqType>(`${authState}/signin`);
 export const signOut = createAction(`${authState}/signOut`);

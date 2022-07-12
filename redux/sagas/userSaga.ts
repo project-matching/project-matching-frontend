@@ -1,19 +1,39 @@
-import { put, takeLatest } from 'redux-saga/effects';
-import { getUserInfo, setUserInfo } from 'redux/reducers/users';
+import { call, put, takeLatest } from 'redux-saga/effects';
+import { authSuccess } from 'redux/reducers/auth';
+import {
+  getUserInfo,
+  userFail,
+  userPending,
+  userSuccess,
+} from 'redux/reducers/users';
+import { TokenService } from 'services/TokenService';
+import { UserService } from 'services/UserService';
+
+export type UserInfoType =
+  | {
+      no: number | null;
+      profile: string | null;
+      name: string | null;
+      email: string | null;
+    }
+  | string;
 
 function* getUserInfoSaga() {
   try {
-    // const token = TokenService.get();
-    // const userInfo = yield call(UserService.getUserInfo, token);
-    const userInfo = {
-      username: 'Olivia',
-      posiiton: 'frontend',
-    };
-
-    yield put(setUserInfo(userInfo));
+    yield put(userPending());
+    const token = TokenService.get();
+    const userInfo: UserInfoType = yield call(UserService.getUserInfo, token);
+    if (typeof userInfo === 'string') {
+      TokenService.remove();
+      yield put(userSuccess(null));
+    } else {
+      yield put(userSuccess(userInfo));
+      yield put(authSuccess(token));
+    }
   } catch (error: any) {
-    // TODO: 토큰 만료 시 작동
-    // yield put(fail);
+    yield put(
+      userFail(new Error(error?.response?.data?.error || 'UNKNOWN_ERROR'))
+    );
   }
 }
 
