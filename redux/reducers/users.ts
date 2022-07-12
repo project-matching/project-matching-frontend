@@ -1,32 +1,40 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createAction, createSlice } from '@reduxjs/toolkit';
 
 interface UserState {
   username: string | null;
+  position: string | null;
 }
 
 const initialState: UserState = {
   username: null,
+  position: null,
 };
 
+const userState = 'user';
+
 const userSlice = createSlice({
-  name: 'user',
+  name: userState,
   initialState,
   reducers: {
-    signIn: (state) => {
+    setUserInfo: (state, actions) => {
       return {
         ...state,
-        username: 'true',
+        username: actions.payload.username,
+        position: actions.payload.position,
       };
     },
-    signOut: (state) => {
+    resetUserInfo: (state) => {
       return {
         ...state,
         username: null,
+        position: null,
       };
     },
   },
 });
 
-export const { signIn, signOut } = userSlice.actions;
+export const { setUserInfo, resetUserInfo } = userSlice.actions;
+
+export const getUserInfo = createAction(`${userState}/getUserInfo`);
 
 export default userSlice.reducer;

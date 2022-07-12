@@ -46,9 +46,7 @@ const authSlice = createSlice({
 
 export const { pending, success, fail } = authSlice.actions;
 
-export const signin = createAction<PayloadAction<SigninReqType>>(
-  `${authState}/signin`
-);
+export const signin = createAction<SigninReqType>(`${authState}/signin`);
 export const signOut = createAction(`${authState}/signOut`);
 
 export default authSlice.reducer;

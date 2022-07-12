@@ -1,3 +1,4 @@
+import AuthComponent from '@/components/Common/AuthComponent';
 import { Global, ThemeProvider } from '@emotion/react';
 import type { AppProps } from 'next/app';
 import { Provider } from 'react-redux';
@@ -12,6 +13,7 @@ function MyApp({ Component, pageProps }: AppProps) {
       <Provider store={store}>
         <ThemeProvider theme={theme}>
           <Global styles={reset} />
+          <AuthComponent />
           <Component {...pageProps} />
         </ThemeProvider>
       </Provider>

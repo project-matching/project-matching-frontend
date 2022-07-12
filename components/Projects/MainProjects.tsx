@@ -1,5 +1,6 @@
 import { Divider } from '@/styles/global';
 import styled from '@emotion/styled';
+import Link from 'next/link';
 import React from 'react';
 import SmallCard from './SmallCard';
 
@@ -20,8 +21,15 @@ const MainProjects: React.FC<PropsMainProjects> = ({ title }) => {
 
   const Grid = styled.div`
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
-    gap: 30px;
+    @media ${(props) => props.theme.mq.desktopL} {
+      grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+    }
+
+    @media ${(props) => props.theme.mq.tablet} {
+      grid-template-columns: 1fr 1fr 1fr;
+    }
+
+    gap: 20px;
   `;
 
   const H1 = styled.h1`
@@ -37,7 +45,11 @@ const MainProjects: React.FC<PropsMainProjects> = ({ title }) => {
     <Section>
       <Flex>
         <H1>{title}</H1>
-        <Span>&gt; more</Span>
+        <Span>
+          <Link href={title === 'Recruiting' ? 'recruiting' : 'in-service'}>
+            &gt; more
+          </Link>
+        </Span>
       </Flex>
       <Divider />
       <Grid>

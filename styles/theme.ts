@@ -1,3 +1,21 @@
+import { Theme } from '@emotion/react';
+
+declare module '@emotion/react' {
+  export interface Theme {
+    colors: {
+      primary: string;
+      secondary: string;
+    };
+    sizes: {
+      sm: string;
+      m: string;
+      lg: string;
+      xl: string;
+    };
+    mq: typeof device;
+  }
+}
+
 const size = {
   mobileS: '320px',
   mobileM: '375px',
@@ -9,25 +27,26 @@ const size = {
 };
 
 const device = {
-  mobileS: `only screen and (min-width: ${size.mobileS})`,
-  mobileM: `only screen and (min-width: ${size.mobileM})`,
-  mobileL: `only screen and (min-width: ${size.mobileL})`,
-  tablet: `only screen and (min-width: ${size.tablet})`,
-  laptop: `only screen and (min-width: ${size.laptop})`,
-  laptopL: `only screen and (min-width: ${size.laptopL})`,
-  desktop: `only screen and (min-width: ${size.desktop})`,
-  desktopL: `only screen and (min-width: ${size.desktop})`,
+  mobileS: `only screen and (max-width: ${size.mobileS})`,
+  mobileM: `only screen and (max-width: ${size.mobileM})`,
+  mobileL: `only screen and (max-width: ${size.mobileL})`,
+  tablet: `only screen and (max-width: ${size.tablet})`,
+  laptop: `only screen and (max-width: ${size.laptop})`,
+  laptopL: `only screen and (max-width: ${size.laptopL})`,
+  desktop: `only screen and (max-width: ${size.desktop})`,
+  desktopL: `only screen and (max-width: ${size.desktop})`,
 };
 
-export const theme = {
+export const theme: Theme = {
   colors: {
-    primary: '#cc00cc',
+    primary: '#2937f5',
     secondary: '#3300cc',
   },
   sizes: {
     sm: '12px',
     m: '14px',
     lg: '16px',
+    xl: '24px',
   },
   mq: device,
 };

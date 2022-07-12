@@ -3,8 +3,10 @@ import styled from '@emotion/styled';
 import Link from 'next/link';
 import { useDispatch } from 'react-redux';
 import { useAppSelector } from 'redux/hooks';
-import { signIn, signOut } from 'redux/reducers/users';
+import { signOut } from 'redux/reducers/auth';
+import { openModal } from 'redux/reducers/modals';
 import PrimaryButton from '../Buttons/PrimaryButton';
+import Logo from './Logo';
 
 export const Flex = styled.div`
   display: flex;
@@ -14,17 +16,10 @@ export const Flex = styled.div`
 
 const Header: React.FC = () => {
   const Header = styled.header`
-    margin: 10px 0;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-  `;
-
-  const Logo = styled.div`
-    font-size: 24px;
-    font-weight: bold;
-    padding-bottom: 5px;
   `;
 
   const Nav = styled.nav`
@@ -36,46 +31,46 @@ const Header: React.FC = () => {
     font-size: 18px;
   `;
 
-  const { username } = useAppSelector((state) => state.userReducer);
+  const { token } = useAppSelector((state) => state.authReducer);
   const dispatch = useDispatch();
 
   const openRecruitModal = () => {};
 
-  // const openLoginModal = () => {};
+  const openLoginModal = () => {
+    dispatch(openModal('LoginModal'));
+  };
 
   return (
-    <Wrapper>
-      <Header>
-        <Flex>
-          <Logo>Logo</Logo>
-          <Nav>
-            <Link href="/" passHref>
-              <A>Home</A>
-            </Link>
-            <Link href="/recruiting" passHref>
-              <A>Recruiting</A>
-            </Link>
-            <Link href="/in-service" passHref>
-              <A>In-Service</A>
-            </Link>
-          </Nav>
-        </Flex>
-        <Flex>
-          <PrimaryButton content="Recruit" clickEvent={openRecruitModal} />
-          {username ? (
-            <PrimaryButton
-              content="Log Out"
-              clickEvent={() => dispatch(signOut())}
-            />
-          ) : (
-            <PrimaryButton
-              content="Log In"
-              clickEvent={() => dispatch(signIn())}
-            />
-          )}
-        </Flex>
-      </Header>
-    </Wrapper>
+    <>
+      <Wrapper>
+        <Header>
+          <Flex>
+            <Logo />
+            <Nav>
+              <Link href="/" passHref>
+                <A>Home</A>
+              </Link>
+              <Link href="/recruiting" passHref>
+                <A>Recruiting</A>
+              </Link>
+              <Link href="/in-service" passHref>
+                <A>In-Service</A>
+              </Link>
+            </Nav>
+          </Flex>
+          <Flex>
+            <PrimaryButton onClick={openRecruitModal}>Recruit</PrimaryButton>
+            {token ? (
+              <PrimaryButton onClick={() => dispatch(signOut())}>
+                Log Out
+              </PrimaryButton>
+            ) : (
+              <PrimaryButton onClick={openLoginModal}>Log In</PrimaryButton>
+            )}
+          </Flex>
+        </Header>
+      </Wrapper>
+    </>
   );
 };
 
