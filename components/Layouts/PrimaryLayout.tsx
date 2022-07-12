@@ -6,6 +6,7 @@ import React from 'react';
 import { useAppSelector } from 'redux/hooks';
 import Header from '../Common/Header';
 import LoginModal from '../Modals/LoginModal';
+import RecruitModal from '../Modals/RecruitModal';
 
 export const ModalContainer = styled.div`
   position: relative;
@@ -42,6 +43,13 @@ const PrimaryLayout: React.FC<LayoutProps> = ({ children }) => {
         <ModalContainer>
           <Backdrop>
             <LoginModal />
+          </Backdrop>
+        </ModalContainer>
+      )}
+      {modalReducer.RecruitModal && (
+        <ModalContainer>
+          <Backdrop>
+            <RecruitModal />
           </Backdrop>
         </ModalContainer>
       )}

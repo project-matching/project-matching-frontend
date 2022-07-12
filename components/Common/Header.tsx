@@ -34,7 +34,9 @@ const Header: React.FC = () => {
   const { token } = useAppSelector((state) => state.authReducer);
   const dispatch = useDispatch();
 
-  const openRecruitModal = () => {};
+  const openRecruitModal = () => {
+    dispatch(openModal('RecruitModal'));
+  };
 
   const openLoginModal = () => {
     dispatch(openModal('LoginModal'));
