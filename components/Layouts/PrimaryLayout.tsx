@@ -28,7 +28,7 @@ export const Backdrop = styled.div`
 `;
 
 const PrimaryLayout: React.FC<LayoutProps> = ({ children }) => {
-  const { modalReducer } = useAppSelector((state) => state);
+  const { modal } = useAppSelector((state) => state);
   return (
     <>
       <Head>
@@ -39,14 +39,14 @@ const PrimaryLayout: React.FC<LayoutProps> = ({ children }) => {
         />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      {modalReducer.LoginModal && (
+      {modal.LoginModal && (
         <ModalContainer>
           <Backdrop>
             <LoginModal />
           </Backdrop>
         </ModalContainer>
       )}
-      {modalReducer.RecruitModal && (
+      {modal.RecruitModal && (
         <ModalContainer>
           <Backdrop>
             <RecruitModal />

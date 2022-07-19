@@ -1,7 +1,7 @@
 import PrimaryLayout from '@/components/Layouts/PrimaryLayout';
 
-const recruiting = () => {
-  return <PrimaryLayout>recruiting</PrimaryLayout>;
+const Recruiting = () => {
+  return <PrimaryLayout>Recruiting</PrimaryLayout>;
 };
 
-export default recruiting;
+export default Recruiting;

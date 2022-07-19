@@ -31,7 +31,7 @@ const Header: React.FC = () => {
     font-size: 18px;
   `;
 
-  const { token } = useAppSelector((state) => state.authReducer);
+  const { token } = useAppSelector((state) => state.auth);
   const dispatch = useDispatch();
 
   const openRecruitModal = () => {
@@ -55,8 +55,8 @@ const Header: React.FC = () => {
               <Link href="/recruiting" passHref>
                 <A>Recruiting</A>
               </Link>
-              <Link href="/in-service" passHref>
-                <A>In-Service</A>
+              <Link href="/recruited" passHref>
+                <A>Recruited</A>
               </Link>
             </Nav>
           </Flex>

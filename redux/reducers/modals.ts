@@ -5,7 +5,7 @@ interface ModalState {
   LoginModal: boolean;
 }
 
-type ActionProps = 'LoginModal' | 'RecruitModal';
+type ActionProps = keyof ModalState;
 
 const initialState: ModalState = {
   RecruitModal: false,
