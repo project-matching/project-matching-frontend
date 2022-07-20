@@ -3,9 +3,10 @@
 import Header from '@/components/Common/Header';
 import Home from '@/pages/index';
 import '@testing-library/jest-dom';
-import { fireEvent, screen } from '@testing-library/react';
+import { login } from 'mocks/handlers';
+import { server } from 'mocks/server';
 import { act } from 'react-dom/test-utils';
-import { render } from './test-utils';
+import { fireEvent, render, screen } from './test-utils';
 
 describe('Header and navigations', () => {
   beforeEach(() => {
@@ -102,10 +103,11 @@ describe('Login modal', () => {
   });
 
   // Validation
-  it('check validation of signin input values', () => {
+  it('check validation of signin input values', async () => {
     const emailInput = screen.getByPlaceholderText('Email');
     const passwordInput = screen.getByPlaceholderText('Password');
 
+    server.use(login);
     act(() => {});
   });
 });
