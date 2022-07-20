@@ -19,7 +19,7 @@ const AllTheProviders: React.FC<ReactProps> = ({ children }) => {
 
 const customRender = (
   ui: ReactElement,
-  options?: Omit<RenderOptions, 'queries'>
+  options?: Omit<RenderOptions, 'wrapper'>
 ): RenderResult => render(ui, { wrapper: AllTheProviders, ...options });
 
 // re-export everything

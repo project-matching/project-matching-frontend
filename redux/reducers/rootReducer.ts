@@ -1,10 +1,12 @@
 import { combineReducers } from '@reduxjs/toolkit';
-import authReducer from './auth';
-import modalReducer from './modals';
-import userReducer from './users';
+import auth from './auth';
+import modal from './modals';
+import user from './users';
+import validation from './validation';
 
 export default combineReducers({
-  userReducer,
-  authReducer,
-  modalReducer,
+  user,
+  auth,
+  modal,
+  validation,
 });

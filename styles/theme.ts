@@ -5,6 +5,7 @@ declare module '@emotion/react' {
     colors: {
       primary: string;
       secondary: string;
+      error: string;
     };
     sizes: {
       sm: string;
@@ -41,6 +42,7 @@ export const theme: Theme = {
   colors: {
     primary: '#2937f5',
     secondary: '#3300cc',
+    error: 'red',
   },
   sizes: {
     sm: '12px',

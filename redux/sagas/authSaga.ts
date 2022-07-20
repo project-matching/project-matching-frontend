@@ -1,6 +1,11 @@
 import { PayloadAction } from '@reduxjs/toolkit';
 import { call, put, select, takeLatest } from 'redux-saga/effects';
+import { closeModal } from 'redux/reducers/modals';
 import { getUserInfo } from 'redux/reducers/users';
+import {
+  removeSigninErrorMsg,
+  setSigninErrorMsg,
+} from 'redux/reducers/validation';
 import { TokenService } from 'services/TokenService';
 import { UserService } from 'services/UserService';
 import {
@@ -22,11 +27,14 @@ function* signinSaga({ payload }: PayloadAction<SigninReqType>) {
     const token: string = yield call(UserService.signin, payload);
     TokenService.set(token);
     yield put(authSuccess(token));
-    yield put(getUserInfo());
+    yield put(getUserInfo()); // 토큰으로 유저 정보 가져오기
+    yield put(removeSigninErrorMsg());
+    yield put(closeModal('LoginModal'));
   } catch (error: any) {
     yield put(
       authFail(new Error(error?.response?.data?.error || 'UNKNOWN_ERROR'))
     );
+    yield put(setSigninErrorMsg('auth')); // validation
   }
 }
 

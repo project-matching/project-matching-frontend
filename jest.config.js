@@ -17,6 +17,8 @@ const customJestConfig = {
     '@/components/(.+)': '<rootDir>/components/$1',
     '@/styles/(.+)': '<rootDir>/styles/$1',
     '@/pages/(.+)': '<rootDir>/pages/$1',
+    '@/mocks/(.+)': '<rootDir>/mocks/$1',
+    '@/(.+)': '<rootDir>/$1',
   },
 };
 

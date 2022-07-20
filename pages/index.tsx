@@ -5,7 +5,7 @@ const Home: React.FC = () => {
   return (
     <PrimaryLayout>
       <MainProjects title="Recruiting" />
-      <MainProjects title="In-Service" />
+      <MainProjects title="Recruited" />
     </PrimaryLayout>
   );
 };
