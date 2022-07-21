@@ -1,4 +1,4 @@
-import PrimaryLayout from '@/components/Layouts/PrimaryLayout';
+import PrimaryLayout from 'src/components/Layouts/PrimaryLayout';
 
 const Recruiting = () => {
   return <PrimaryLayout>Recruiting</PrimaryLayout>;

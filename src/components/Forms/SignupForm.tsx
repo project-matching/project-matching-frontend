@@ -1,6 +1,6 @@
-import { Flex } from '@/styles/global';
 import styled from '@emotion/styled';
 import React, { HTMLInputTypeAttribute, useState } from 'react';
+import { Flex } from 'src/styles/global';
 import PrimaryButton from '../Buttons/PrimaryButton';
 
 const Body = styled.div`

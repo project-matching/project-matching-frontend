@@ -1,5 +1,5 @@
 import { createAction, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { SigninReqType } from 'redux/sagas/authSaga';
+import { SigninReqType } from 'src/redux/sagas/authSaga';
 
 interface AuthState {
   token: string | null;

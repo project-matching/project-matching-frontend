@@ -1,9 +1,9 @@
-import { Divider, Wrapper } from '@/styles/global';
 import styled from '@emotion/styled';
-import { LayoutProps } from 'lib/type';
 import Head from 'next/head';
 import React from 'react';
-import { useAppSelector } from 'redux/hooks';
+import { LayoutProps } from 'src/lib/type';
+import { useAppSelector } from 'src/redux/hooks';
+import { Divider, Wrapper } from 'src/styles/global';
 import Header from '../Common/Header';
 import LoginModal from '../Modals/LoginModal';
 import RecruitModal from '../Modals/RecruitModal';

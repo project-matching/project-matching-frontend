@@ -1,8 +1,8 @@
 import styled from '@emotion/styled';
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { closeModal } from 'redux/reducers/modals';
-import { removeSigninErrorMsg } from 'redux/reducers/validation';
+import { closeModal } from 'src/redux/reducers/modals';
+import { removeSigninErrorMsg } from 'src/redux/reducers/validation';
 import Logo from '../Common/Logo';
 import SigninForm from '../Forms/SigninForm';
 import SignupForm from '../Forms/SignupForm';

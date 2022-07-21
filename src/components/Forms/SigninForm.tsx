@@ -1,10 +1,10 @@
-import { Divider, Flex } from '@/styles/global';
 import styled from '@emotion/styled';
 import React, { HTMLInputTypeAttribute } from 'react';
 import { useDispatch } from 'react-redux';
-import { useAppSelector } from 'redux/hooks';
-import { signin } from 'redux/reducers/auth';
-import { setSigninErrorMsg } from 'redux/reducers/validation';
+import { useAppSelector } from 'src/redux/hooks';
+import { signin } from 'src/redux/reducers/auth';
+import { setSigninErrorMsg } from 'src/redux/reducers/validation';
+import { Divider, Flex } from 'src/styles/global';
 import PrimaryButton from '../Buttons/PrimaryButton';
 
 const Body = styled.div`

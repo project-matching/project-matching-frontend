@@ -1,10 +1,10 @@
-import { Wrapper } from '@/styles/global';
 import styled from '@emotion/styled';
 import Link from 'next/link';
 import { useDispatch } from 'react-redux';
-import { useAppSelector } from 'redux/hooks';
-import { signOut } from 'redux/reducers/auth';
-import { openModal } from 'redux/reducers/modals';
+import { useAppSelector } from 'src/redux/hooks';
+import { signOut } from 'src/redux/reducers/auth';
+import { openModal } from 'src/redux/reducers/modals';
+import { Wrapper } from 'src/styles/global';
 import PrimaryButton from '../Buttons/PrimaryButton';
 import Logo from './Logo';
 

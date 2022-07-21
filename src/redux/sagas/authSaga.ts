@@ -1,13 +1,13 @@
 import { PayloadAction } from '@reduxjs/toolkit';
 import { call, put, select, takeLatest } from 'redux-saga/effects';
-import { closeModal } from 'redux/reducers/modals';
-import { getUserInfo } from 'redux/reducers/users';
+import { closeModal } from 'src/redux/reducers/modals';
+import { getUserInfo } from 'src/redux/reducers/users';
 import {
   removeSigninErrorMsg,
   setSigninErrorMsg,
-} from 'redux/reducers/validation';
-import { TokenService } from 'services/TokenService';
-import { UserService } from 'services/UserService';
+} from 'src/redux/reducers/validation';
+import { TokenService } from 'src/services/TokenService';
+import { UserService } from 'src/services/UserService';
 import {
   authFail,
   authPending,

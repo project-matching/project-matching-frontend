@@ -1,5 +1,5 @@
 import { createAction, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { UserInfoType } from 'redux/sagas/userSaga';
+import { UserInfoType } from 'src/redux/sagas/userSaga';
 
 interface UserState {
   loading: boolean;

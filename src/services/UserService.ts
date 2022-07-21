@@ -1,5 +1,5 @@
-import { SigninReqType } from 'redux/sagas/authSaga';
-import { UserInfoType } from 'redux/sagas/userSaga';
+import { SigninReqType } from 'src/redux/sagas/authSaga';
+import { UserInfoType } from 'src/redux/sagas/userSaga';
 import { appApi } from './AppApi';
 
 export class UserService {
