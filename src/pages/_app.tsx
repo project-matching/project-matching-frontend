@@ -1,9 +1,8 @@
-import AuthComponent from '@/components/Common/AuthComponent';
 import { Global, ThemeProvider } from '@emotion/react';
 import type { AppProps } from 'next/app';
 import { Provider } from 'react-redux';
-import { store, wrapper } from 'redux/store';
-import '../styles/globals.css';
+import AuthComponent from 'src/components/Common/AuthComponent';
+import { store, wrapper } from 'src/redux/store';
 import reset from '../styles/reset';
 import { theme } from '../styles/theme';
 

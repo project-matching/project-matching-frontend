@@ -1,9 +1,9 @@
-import { theme } from '@/styles/theme';
 import { ThemeProvider } from '@emotion/react';
 import { render, RenderOptions, RenderResult } from '@testing-library/react';
 import React, { ReactElement, ReactNode } from 'react';
 import { Provider } from 'react-redux';
-import { store } from 'redux/store';
+import { store } from 'src/redux/store';
+import { theme } from 'src/styles/theme';
 
 interface ReactProps {
   children?: NonNullable<ReactNode>;

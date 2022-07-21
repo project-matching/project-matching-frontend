@@ -1,13 +1,13 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
-import { authSuccess } from 'redux/reducers/auth';
+import { authSuccess } from 'src/redux/reducers/auth';
 import {
   getUserInfo,
   userFail,
   userPending,
   userSuccess,
-} from 'redux/reducers/users';
-import { TokenService } from 'services/TokenService';
-import { UserService } from 'services/UserService';
+} from 'src/redux/reducers/users';
+import { TokenService } from 'src/services/TokenService';
+import { UserService } from 'src/services/UserService';
 
 export type UserInfoType =
   | {

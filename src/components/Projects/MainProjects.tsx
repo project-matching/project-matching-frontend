@@ -1,7 +1,7 @@
-import { Divider } from '@/styles/global';
 import styled from '@emotion/styled';
 import Link from 'next/link';
 import React from 'react';
+import { Divider } from 'src/styles/global';
 import SmallCard from './SmallCard';
 
 interface PropsMainProjects {

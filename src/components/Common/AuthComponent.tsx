@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { getUserInfo } from 'redux/reducers/users';
-import { TokenService } from 'services/TokenService';
+import { getUserInfo } from 'src/redux/reducers/users';
+import { TokenService } from 'src/services/TokenService';
 
 const AuthComponent = () => {
   const dispatch = useDispatch();
