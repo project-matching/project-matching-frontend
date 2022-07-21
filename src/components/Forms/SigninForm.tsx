@@ -1,8 +1,8 @@
 import styled from '@emotion/styled';
-import React, { HTMLInputTypeAttribute } from 'react';
+import React, { HTMLInputTypeAttribute, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useAppSelector } from 'src/redux/hooks';
-import { signin } from 'src/redux/reducers/auth';
+import { signin, signinOAuth } from 'src/redux/reducers/auth';
 import { setSigninErrorMsg } from 'src/redux/reducers/validation';
 import { Divider, Flex } from 'src/styles/global';
 import PrimaryButton from '../Buttons/PrimaryButton';
@@ -32,6 +32,18 @@ const Form = styled.form`
 const A = styled.a`
   font-weight: bold;
   cursor: pointer;
+`;
+
+const GoogleAuth = styled.div`
+  display: flex;
+  align-items: center;
+  padding: 8px;
+  border: 1px solid black;
+`;
+
+const GoogleAuthText = styled.div`
+  font-size: ${(props) => props.theme.sizes.m};
+  margin-left: 24px;
 `;
 
 const Grid = styled.div`
@@ -116,6 +128,56 @@ const SigninForm = ({ setSigninForm }: SigninFormProps) => {
     }
   };
 
+  const [externalPopup, setExternalPopup] = useState<Window | null>(null);
+
+  useEffect(() => {
+    if (!externalPopup) {
+      return;
+    }
+
+    const timer = setInterval(() => {
+      if (!externalPopup) {
+        timer && clearInterval(timer);
+        return;
+      }
+      const currentUrl = externalPopup.location.href;
+      if (!currentUrl) {
+        return;
+      }
+      const searchParams = new URL(currentUrl).searchParams;
+      const token = searchParams.get('token');
+      if (token) {
+        externalPopup.close();
+        // ERROR: CORS
+        // TODO: 실제 계정으로 동작하는지 테스트 필요
+        dispatch(signinOAuth(token));
+      }
+    }, 500);
+  }, [externalPopup, dispatch]);
+
+  const connectOAuth = (url: string) => {
+    const width = 500;
+    const height = 500;
+
+    const left = window.screenX + (window.outerWidth - width) / 2;
+    const top = window.screenY + (window.outerHeight - height) / 2.5;
+
+    const title = `Google 소셜 로그인`;
+    const popup = window.open(
+      url,
+      title,
+      `width=${width},height=${height},left=${left},top=${top}`
+    );
+    setExternalPopup(popup);
+  };
+
+  const googleOAuth = (_e: React.MouseEvent<HTMLAnchorElement>) => {
+    connectOAuth('http://localhost:8080/oauth2/authorization/google');
+  };
+  const githubOAuth = (_e: React.MouseEvent<HTMLAnchorElement>) => {
+    connectOAuth('http://localhost:8080/oauth2/authorization/github');
+  };
+
   return (
     <Body>
       <Form onSubmit={submit}>
@@ -132,8 +194,8 @@ const SigninForm = ({ setSigninForm }: SigninFormProps) => {
         <Span>OR</Span>
         <Divider />
       </Grid>
-      <PrimaryButton wFull>Google</PrimaryButton>
-      <PrimaryButton wFull>Github</PrimaryButton>
+      <a onClick={googleOAuth}>Google</a>
+      <a onClick={githubOAuth}>Gibhub</a>
 
       <Flex justifyCenter itemsCenter>
         <StatusContainer>
