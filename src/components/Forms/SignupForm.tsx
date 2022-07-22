@@ -40,6 +40,7 @@ const A = styled.a`
 
 const StatusContainer = styled.div`
   margin: 20px 0 10px 0;
+  font-size: ${(props) => props.theme.sizes.sm};
 `;
 
 interface SigninFormProps {
@@ -163,12 +164,12 @@ const SignupForm = ({ submitSignup, setSigninForm }: SigninFormProps) => {
         )}
 
         <PrimaryButton type="submit" wFull>
-          Sign up
+          회원가입
         </PrimaryButton>
       </Form>
       <Flex justifyCenter itemsCenter>
         <StatusContainer>
-          Have an account? <A onClick={() => setSigninForm(true)}>Sign in</A>
+          계정이 있나요? <A onClick={() => setSigninForm(true)}>로그인</A>
         </StatusContainer>
       </Flex>
     </Body>

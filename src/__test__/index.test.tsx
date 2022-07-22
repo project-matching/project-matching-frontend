@@ -36,10 +36,10 @@ describe('Header and navigations', () => {
     expect(recruiting).toBeInTheDocument();
 
     // TODO: nav 클릭 시 해당 페이지로 이동 => Element가 null로 잡히는 것 해결하기
-    console.log(
-      '------------SHOW_THE_RECRUITING_ELELMENT-------------------',
-      recruiting
-    );
+    // console.log(
+    //   '------------SHOW_THE_RECRUITING_ELELMENT-------------------',
+    //   recruiting
+    // );
     // recruiting.click();
   });
 });
@@ -56,17 +56,17 @@ describe('Login modal', () => {
     expect(screen.getByPlaceholderText('Email')).toBeInTheDocument();
     expect(screen.getByPlaceholderText('Password')).toBeInTheDocument();
 
-    expect(screen.getByRole('button', { name: 'Sign in' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: '로그인' })).toBeInTheDocument();
 
     expect(screen.getByText('OR')).toBeInTheDocument();
 
-    expect(screen.getByText('Google')).toBeInTheDocument();
-    expect(screen.getByText("Don't have any account?")).toBeInTheDocument();
+    expect(screen.getByText('Google', { exact: false })).toBeInTheDocument();
+    expect(screen.getByText('계정이 없나요?')).toBeInTheDocument();
   });
 
   it('toggle signin & signup modal', () => {
     act(() => {
-      fireEvent.click(screen.getByText('Sign up'));
+      fireEvent.click(screen.getByText('회원가입'));
     });
 
     expect(screen.getByPlaceholderText('Name')).toBeInTheDocument();
@@ -74,23 +74,25 @@ describe('Login modal', () => {
     expect(screen.getByPlaceholderText('Password')).toBeInTheDocument();
     expect(screen.getByPlaceholderText('Confirm password')).toBeInTheDocument();
 
-    expect(screen.getByRole('button', { name: 'Sign up' })).toBeInTheDocument();
+    expect(
+      screen.getByRole('button', { name: '회원가입' })
+    ).toBeInTheDocument();
 
-    expect(screen.getByText('Have an account?')).toBeInTheDocument();
+    expect(screen.getByText('계정이 있나요?')).toBeInTheDocument();
 
     act(() => {
-      fireEvent.click(screen.getByText('Sign in'));
+      fireEvent.click(screen.getByText('로그인'));
     });
 
     expect(screen.getByPlaceholderText('Email')).toBeInTheDocument();
     expect(screen.getByPlaceholderText('Password')).toBeInTheDocument();
 
-    expect(screen.getByRole('button', { name: 'Sign in' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: '로그인' })).toBeInTheDocument();
 
     expect(screen.getByText('OR')).toBeInTheDocument();
 
-    expect(screen.getByText('Google')).toBeInTheDocument();
-    expect(screen.getByText("Don't have any account?")).toBeInTheDocument();
+    expect(screen.getByText('Google', { exact: false })).toBeInTheDocument();
+    expect(screen.getByText('계정이 없나요?')).toBeInTheDocument();
   });
 
   it('close sign in modal when close button is clicked', () => {
