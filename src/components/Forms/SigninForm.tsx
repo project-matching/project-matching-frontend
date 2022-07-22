@@ -1,10 +1,11 @@
 import styled from '@emotion/styled';
-import React, { HTMLInputTypeAttribute } from 'react';
+import React, { HTMLInputTypeAttribute, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useAppSelector } from 'src/redux/hooks';
-import { signin } from 'src/redux/reducers/auth';
+import { signin, signinOAuth } from 'src/redux/reducers/auth';
 import { setSigninErrorMsg } from 'src/redux/reducers/validation';
 import { Divider, Flex } from 'src/styles/global';
+import OAuthButton from '../Buttons/OAuthButton';
 import PrimaryButton from '../Buttons/PrimaryButton';
 
 const Body = styled.div`
@@ -48,6 +49,7 @@ const Span = styled.div`
 
 const StatusContainer = styled.div`
   margin: 20px 0 10px 0;
+  font-size: ${(props) => props.theme.sizes.sm};
 `;
 
 interface SigninFormProps {
@@ -116,6 +118,61 @@ const SigninForm = ({ setSigninForm }: SigninFormProps) => {
     }
   };
 
+  const authProviders = [
+    {
+      id: 0,
+      serviceProvider: 'google',
+      content: 'Google 계정으로 로그인',
+    },
+    {
+      id: 1,
+      serviceProvider: 'github',
+      content: 'Github 계정으로 로그인',
+    },
+  ];
+
+  const [externalPopup, setExternalPopup] = useState<Window | null>(null);
+
+  useEffect(() => {
+    if (!externalPopup) {
+      return;
+    }
+
+    const timer = setInterval(() => {
+      if (!externalPopup) {
+        timer && clearInterval(timer);
+        return;
+      }
+      const currentUrl = externalPopup.location.href; // cross-origin의 경우 에러
+      if (!currentUrl) {
+        return;
+      }
+      const searchParams = new URL(currentUrl).searchParams;
+      const token = searchParams.get('token');
+      if (token) {
+        externalPopup.close();
+        // ERROR: CORS
+        dispatch(signinOAuth(token));
+      }
+    }, 500);
+  }, [externalPopup, dispatch]);
+
+  const connectOAuth = (serviceProvider: string) => () => {
+    const width = 500;
+    const height = 500;
+
+    const left = window.screenX + (window.outerWidth - width) / 2;
+    const top = window.screenY + (window.outerHeight - height) / 2.5;
+
+    const title = `${serviceProvider} 소셜 로그인`;
+    const popup = window.open(
+      `http://localhost:8080/oauth2/authorization/${serviceProvider}`,
+      title,
+      `width=${width},height=${height},left=${left},top=${top}`
+    );
+    setExternalPopup(popup);
+  };
+
   return (
     <Body>
       <Form onSubmit={submit}>
@@ -123,7 +180,7 @@ const SigninForm = ({ setSigninForm }: SigninFormProps) => {
           <Input key={id} {...props} />
         ))}
         <PrimaryButton type="submit" wFull>
-          Sign in
+          로그인
         </PrimaryButton>
       </Form>
       {signinErrorMsg && <ErrorMessage>{signinErrorMsg}</ErrorMessage>}
@@ -132,13 +189,19 @@ const SigninForm = ({ setSigninForm }: SigninFormProps) => {
         <Span>OR</Span>
         <Divider />
       </Grid>
-      <PrimaryButton wFull>Google</PrimaryButton>
-      <PrimaryButton wFull>Github</PrimaryButton>
+
+      {authProviders.map(({ id, serviceProvider, ...props }) => (
+        <OAuthButton
+          key={id}
+          serviceProvider={serviceProvider}
+          {...props}
+          onClick={connectOAuth(serviceProvider)}
+        />
+      ))}
 
       <Flex justifyCenter itemsCenter>
         <StatusContainer>
-          Don&apos;t have any account?{' '}
-          <A onClick={() => setSigninForm(false)}>Sign up</A>
+          계정이 없나요? <A onClick={() => setSigninForm(false)}>회원가입</A>
         </StatusContainer>
       </Flex>
     </Body>

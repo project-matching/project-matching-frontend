@@ -5,7 +5,7 @@ const nextConfig = {
     return [
       {
         destination: 'http://localhost:8080/:path*',
-        // destination: 'http://3.39.48.25:8080/swagger-ui.html/:path*',
+        // destination: 'http://3.39.48.25:8080/:path*',
         source: '/api/:path*',
       },
     ];

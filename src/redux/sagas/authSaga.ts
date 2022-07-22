@@ -13,6 +13,7 @@ import {
   authPending,
   authSuccess,
   signin,
+  signinOAuth,
   signOut,
 } from '../reducers/auth';
 
@@ -27,7 +28,7 @@ function* signinSaga({ payload }: PayloadAction<SigninReqType>) {
     const token: string = yield call(UserService.signin, payload);
     TokenService.set(token);
     yield put(authSuccess(token));
-    yield put(getUserInfo()); // 토큰으로 유저 정보 가져오기
+    yield put(getUserInfo());
     yield put(removeSigninErrorMsg());
     yield put(closeModal('LoginModal'));
   } catch (error: any) {
@@ -43,7 +44,6 @@ function* signOutSaga() {
     yield put(authPending());
     const token: string = yield select((state) => state.authReducer.token);
     yield call(UserService.signOut, token);
-    yield put(getUserInfo());
     TokenService.set(token);
   } catch (error: any) {
     yield put(
@@ -52,10 +52,27 @@ function* signOutSaga() {
   } finally {
     TokenService.remove();
     yield put(authSuccess(null));
+    yield put(getUserInfo());
+  }
+}
+
+function* oAuthSaga({ payload }: PayloadAction<string>) {
+  try {
+    yield put(authPending());
+    const token: string = payload;
+    TokenService.set(token);
+    yield put(authSuccess(token));
+    yield put(getUserInfo());
+    yield put(closeModal('LoginModal'));
+  } catch (error: any) {
+    yield put(
+      authFail(new Error(error?.response?.data?.error || 'UNKNOWN_ERROR'))
+    );
   }
 }
 
 export function* authSaga() {
   yield takeLatest(signin.type, signinSaga);
   yield takeLatest(signOut.type, signOutSaga);
+  yield takeLatest(signinOAuth.type, oAuthSaga);
 }

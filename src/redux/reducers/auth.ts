@@ -51,6 +51,7 @@ export const {
 } = authSlice.actions;
 
 export const signin = createAction<SigninReqType>(`${authState}/signin`);
+export const signinOAuth = createAction<string>(`${authState}/signinOAuth`);
 export const signOut = createAction(`${authState}/signOut`);
 
 export default authSlice.reducer;
