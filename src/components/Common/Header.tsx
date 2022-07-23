@@ -38,8 +38,8 @@ const Header: React.FC = () => {
     dispatch(openModal('RecruitModal'));
   };
 
-  const openLoginModal = () => {
-    dispatch(openModal('LoginModal'));
+  const openAuthModal = () => {
+    dispatch(openModal('AuthModal'));
   };
 
   return (
@@ -67,7 +67,7 @@ const Header: React.FC = () => {
                 Log Out
               </PrimaryButton>
             ) : (
-              <PrimaryButton onClick={openLoginModal}>Log In</PrimaryButton>
+              <PrimaryButton onClick={openAuthModal}>Log In</PrimaryButton>
             )}
           </Flex>
         </Header>

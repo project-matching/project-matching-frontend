@@ -7,10 +7,7 @@ import { setSigninErrorMsg } from 'src/redux/reducers/validation';
 import { Divider, Flex } from 'src/styles/global';
 import OAuthButton from '../Buttons/OAuthButton';
 import PrimaryButton from '../Buttons/PrimaryButton';
-
-const Body = styled.div`
-  margin: 20px 45px;
-`;
+import { AuthFormTypes } from '../Modals/AuthModal';
 
 const ErrorMessage = styled.span`
   color: ${(props) => props.theme.colors.error};
@@ -48,12 +45,17 @@ const Span = styled.div`
 `;
 
 const StatusContainer = styled.div`
-  margin: 20px 0 10px 0;
   font-size: ${(props) => props.theme.sizes.sm};
+  margin-bottom: 10px;
+  text-align: center;
+`;
+
+const ModalFoot = styled.div`
+  margin: 20px 0 10px 0;
 `;
 
 interface SigninFormProps {
-  setSigninForm: (_: boolean) => void;
+  setAuthForm: (_: AuthFormTypes) => void;
 }
 
 interface FormValueType {
@@ -89,11 +91,11 @@ const inputs: InputType[] = [
   },
 ];
 
-const SigninForm = ({ setSigninForm }: SigninFormProps) => {
+const SigninForm = ({ setAuthForm }: SigninFormProps) => {
   const { signinErrorMsg } = useAppSelector((state) => state.validation);
   const dispatch = useDispatch();
 
-  const submit = (e: React.FormEvent<HTMLFormElement>) => {
+  const submitSignin = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     const target = e.target as typeof e.target & {
@@ -174,8 +176,8 @@ const SigninForm = ({ setSigninForm }: SigninFormProps) => {
   };
 
   return (
-    <Body>
-      <Form onSubmit={submit}>
+    <>
+      <Form onSubmit={submitSignin}>
         {inputs.map(({ id, ...props }) => (
           <Input key={id} {...props} />
         ))}
@@ -200,11 +202,17 @@ const SigninForm = ({ setSigninForm }: SigninFormProps) => {
       ))}
 
       <Flex justifyCenter itemsCenter>
-        <StatusContainer>
-          계정이 없나요? <A onClick={() => setSigninForm(false)}>회원가입</A>
-        </StatusContainer>
+        <ModalFoot>
+          <StatusContainer>
+            계정이 없나요? <A onClick={() => setAuthForm('signup')}>회원가입</A>
+          </StatusContainer>
+          <StatusContainer>
+            비밀번호를 잊으셨나요?{' '}
+            <A onClick={() => setAuthForm('changePassword')}>비밀번호 찾기</A>
+          </StatusContainer>
+        </ModalFoot>
       </Flex>
-    </Body>
+    </>
   );
 };
 

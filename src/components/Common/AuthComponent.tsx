@@ -6,6 +6,7 @@ import { TokenService } from 'src/services/TokenService';
 const AuthComponent = () => {
   const dispatch = useDispatch();
 
+  // TODO: admin 인증 필요
   useEffect(() => {
     if (localStorage !== undefined) {
       const storedToken = TokenService.get();

@@ -1,8 +1,12 @@
-import { SigninReqType } from 'src/redux/sagas/authSaga';
+import { SigninReqType, SignupReqType } from 'src/redux/sagas/authSaga';
 import { UserInfoType } from 'src/redux/sagas/userSaga';
 import { appApi } from './AppApi';
 
 export class UserService {
+  public static async signup(reqData: SignupReqType) {
+    await appApi.post(`/user`, reqData);
+  }
+
   public static async signin(reqData: SigninReqType): Promise<string> {
     const response = await appApi.post(`/common/login`, reqData);
     return response.data.data;

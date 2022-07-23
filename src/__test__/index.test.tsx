@@ -93,6 +93,7 @@ describe('Login modal', () => {
 
     expect(screen.getByText('Google', { exact: false })).toBeInTheDocument();
     expect(screen.getByText('계정이 없나요?')).toBeInTheDocument();
+    expect(screen.getByText('비밀번호를 잊으셨나요?')).toBeInTheDocument();
   });
 
   it('close sign in modal when close button is clicked', () => {
@@ -106,8 +107,8 @@ describe('Login modal', () => {
 
   // Validation
   it('check validation of signin input values', async () => {
-    const emailInput = screen.getByPlaceholderText('Email');
-    const passwordInput = screen.getByPlaceholderText('Password');
+    // const emailInput = screen.getByPlaceholderText('Email');
+    // const passwordInput = screen.getByPlaceholderText('Password');
 
     server.use(login);
     act(() => {});

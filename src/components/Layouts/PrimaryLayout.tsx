@@ -1,12 +1,12 @@
 import styled from '@emotion/styled';
 import Head from 'next/head';
 import React from 'react';
-import { LayoutProps } from 'src/lib/type';
 import { useAppSelector } from 'src/redux/hooks';
 import { Divider, Wrapper } from 'src/styles/global';
 import Header from '../Common/Header';
-import LoginModal from '../Modals/LoginModal';
+import AuthModal from '../Modals/AuthModal';
 import RecruitModal from '../Modals/RecruitModal';
+import SignupEmailSentModal from '../Modals/SignupEmailSentModal';
 
 export const ModalContainer = styled.div`
   position: relative;
@@ -27,6 +27,10 @@ export const Backdrop = styled.div`
   z-index: 999;
 `;
 
+export interface LayoutProps {
+  children: React.ReactNode;
+}
+
 const PrimaryLayout: React.FC<LayoutProps> = ({ children }) => {
   const { modal } = useAppSelector((state) => state);
   return (
@@ -39,10 +43,10 @@ const PrimaryLayout: React.FC<LayoutProps> = ({ children }) => {
         />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      {modal.LoginModal && (
+      {modal.AuthModal && (
         <ModalContainer>
           <Backdrop>
-            <LoginModal />
+            <AuthModal />
           </Backdrop>
         </ModalContainer>
       )}
@@ -50,6 +54,13 @@ const PrimaryLayout: React.FC<LayoutProps> = ({ children }) => {
         <ModalContainer>
           <Backdrop>
             <RecruitModal />
+          </Backdrop>
+        </ModalContainer>
+      )}
+      {modal.SignupEmailSentModal && (
+        <ModalContainer>
+          <Backdrop>
+            <SignupEmailSentModal />
           </Backdrop>
         </ModalContainer>
       )}

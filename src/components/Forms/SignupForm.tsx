@@ -1,16 +1,32 @@
 import styled from '@emotion/styled';
 import React, { HTMLInputTypeAttribute, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { openModal } from 'src/redux/reducers/modals';
 import { Flex } from 'src/styles/global';
 import PrimaryButton from '../Buttons/PrimaryButton';
+import { AuthFormTypes } from '../Modals/AuthModal';
 
-const Body = styled.div`
-  margin: 20px 45px;
+const Content = styled.div`
+  padding: 0 0 20px;
+  text-align: center;
+  font-size: ${(props) => props.theme.sizes.sm};
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`;
+
+const H1 = styled.h1`
+  font-size: ${(props) => props.theme.sizes.lg};
+  font-weight: bold;
+  padding-bottom: 10px;
 `;
 
 const ErrorMessage = styled.span`
   color: ${(props) => props.theme.colors.error};
   font-size: ${(props) => props.theme.sizes.sm};
   display: none;
+  line-height: 1.3;
 `;
 
 const Input = styled.input`
@@ -21,10 +37,15 @@ const Input = styled.input`
   &:invalid ~ span {
     display: block;
   }
+  /* &:invalid {
+    display: block;
+    border: 1px solid red;
+    border-radius: 3px;
+  } */
 `;
 
 const InputContainer = styled.div`
-  margin-bottom: 10px;
+  margin-bottom: 5px;
 `;
 
 const Form = styled.form`
@@ -44,8 +65,7 @@ const StatusContainer = styled.div`
 `;
 
 interface SigninFormProps {
-  submitSignup: (_: React.FormEvent<HTMLFormElement>) => void;
-  setSigninForm: (_: boolean) => void;
+  setAuthForm: (_: AuthFormTypes) => void;
 }
 
 interface FormValueType {
@@ -64,6 +84,7 @@ interface InputType {
   label: string;
   pattern: string;
   required: boolean;
+  autoFocus: boolean;
 }
 
 const initialValues: FormValueType = {
@@ -73,8 +94,9 @@ const initialValues: FormValueType = {
   confirmPassword: '',
 };
 
-const SignupForm = ({ submitSignup, setSigninForm }: SigninFormProps) => {
+const SignupForm = ({ setAuthForm }: SigninFormProps) => {
   const [inputValues, setInputValues] = useState<FormValueType>(initialValues);
+  const dispatch = useDispatch();
 
   const inputs: InputType[] = [
     {
@@ -83,21 +105,23 @@ const SignupForm = ({ submitSignup, setSigninForm }: SigninFormProps) => {
       type: 'text',
       placeholder: 'Name',
       label: 'Name',
-      errorMessage: 'It should be a valid email address',
-      pattern:
-        "/^[a-zA-Z0-9.! #$%&'*+/=? ^_`{|}~-]+@[a-zA-Z0-9-]+(?:. [a-zA-Z0-9-]+)*$/",
+      errorMessage:
+        '이름은 3자 이상 10자 이하의 한글, 영어 대소문자, 숫자로 이루어져야 하며 특수문자를 포함하지 않아야 합니다.',
+      pattern: '^[a-zA-Z가-힣0-9]{3,10}$',
       required: true,
+      autoFocus: true,
     },
     {
       id: 1,
       name: 'email',
       type: 'email',
       placeholder: 'Email',
-      errorMessage: 'It should be a valid email address',
+      errorMessage: '올바른 이메일 형식이어야 합니다.',
       pattern:
-        "/^[a-zA-Z0-9.! #$%&'*+/=? ^_`{|}~-]+@[a-zA-Z0-9-]+(?:. [a-zA-Z0-9-]+)*$/",
+        "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:.[a-zA-Z0-9-]+)*$",
       label: 'Email',
       required: true,
+      autoFocus: false,
     },
     {
       id: 2,
@@ -105,11 +129,12 @@ const SignupForm = ({ submitSignup, setSigninForm }: SigninFormProps) => {
       type: 'password',
       placeholder: 'Password',
       errorMessage:
-        'Password should be more than 8-20 charactors and it should include at least 1 letter, 1 number, and 1 special charactor',
-      pattern: '/^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,20})/i',
-
+        '비밀번호는 8-20자의 영어 대소문자, 숫자, 특수문자로 이루어져야합니다.',
+      pattern:
+        '^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[- !@#$%^&*])[a-zA-Z0-9 -!@#$%^&*]{8,20}',
       label: 'Password',
       required: true,
+      autoFocus: false,
     },
     {
       id: 3,
@@ -117,11 +142,10 @@ const SignupForm = ({ submitSignup, setSigninForm }: SigninFormProps) => {
       type: 'password',
       placeholder: 'Confirm password',
       label: 'Confirm Password',
-      errorMessage:
-        'Password should be more than 8-20 charactors and it should include at least 1 letter, 1 number, and 1 special charactor',
-      pattern: '/^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,20})/i',
-
+      errorMessage: '비밀번호와 동일해야 합니다.',
+      pattern: `^${inputValues.password}$`,
       required: true,
+      autoFocus: false,
     },
   ];
 
@@ -134,9 +158,38 @@ const SignupForm = ({ submitSignup, setSigninForm }: SigninFormProps) => {
       [inputName]: target.value,
     });
   };
+  console.log(inputValues);
+
+  const convertToRegEx = (pattern: string): RegExp => RegExp(pattern);
+
+  const submitSignup = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const target = e.target as typeof e.target & {
+      name: { value: string };
+      email: { value: string };
+      password: { value: string };
+    };
+
+    const name = target.name.value;
+    const email = target.email.value;
+    const password = target.password.value;
+
+    // dispatch(
+    //   signup({
+    //     name,
+    //     email,
+    //     password,
+    //   })
+    // );
+
+    dispatch(openModal('SignupEmailSentModal'));
+  };
 
   return (
-    <Body>
+    <>
+      <Content>
+        <H1>회원가입</H1>
+      </Content>
       <Form onSubmit={submitSignup}>
         {inputs.map(
           ({
@@ -147,6 +200,7 @@ const SignupForm = ({ submitSignup, setSigninForm }: SigninFormProps) => {
             errorMessage,
             required,
             pattern,
+            autoFocus,
           }) => (
             <InputContainer key={id}>
               <Input
@@ -157,8 +211,12 @@ const SignupForm = ({ submitSignup, setSigninForm }: SigninFormProps) => {
                 onChange={onChange}
                 required={required}
                 pattern={pattern}
+                autoFocus={autoFocus}
               />
-              <ErrorMessage>{errorMessage}</ErrorMessage>
+              {convertToRegEx(pattern).test(inputValues[name]) ||
+              inputValues[name] === '' ? null : (
+                <ErrorMessage>{errorMessage}</ErrorMessage>
+              )}
             </InputContainer>
           )
         )}
@@ -169,10 +227,10 @@ const SignupForm = ({ submitSignup, setSigninForm }: SigninFormProps) => {
       </Form>
       <Flex justifyCenter itemsCenter>
         <StatusContainer>
-          계정이 있나요? <A onClick={() => setSigninForm(true)}>로그인</A>
+          계정이 있나요? <A onClick={() => setAuthForm('signin')}>로그인</A>
         </StatusContainer>
       </Flex>
-    </Body>
+    </>
   );
 };
 
