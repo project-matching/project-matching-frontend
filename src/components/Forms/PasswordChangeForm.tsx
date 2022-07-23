@@ -1,6 +1,6 @@
 import { Flex } from '@/styles/global';
 import styled from '@emotion/styled';
-import React from 'react';
+import React, { useState } from 'react';
 import PrimaryButton from '../Buttons/PrimaryButton';
 import { AuthFormTypes } from '../Modals/AuthModal';
 
@@ -60,18 +60,30 @@ interface PasswordChangeFormProps {
 }
 
 const PasswordChangeForm = ({ setAuthForm }: PasswordChangeFormProps) => {
+  const [submit, setSubmit] = useState(false);
+
   const submitChangePassword = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     // TODO: 비밀번호 변경을 위한 이메일 전송 로직
+
+    if (!submit) {
+      setSubmit(true);
+    }
   };
 
   return (
     <>
       <Content>
         <H1>비밀번호 변경</H1>
-        <Span>
-          회원님의 <b>이메일 주소</b>를 적어주세요.
-        </Span>
+        {submit ? (
+          <Span>
+            <b>아래 주소로 이메일이 전송되었습니다.</b>
+          </Span>
+        ) : (
+          <Span>
+            회원님의 <b>이메일 주소</b>를 적어주세요.
+          </Span>
+        )}
       </Content>
       <Form onSubmit={submitChangePassword}>
         <Input
@@ -81,7 +93,11 @@ const PasswordChangeForm = ({ setAuthForm }: PasswordChangeFormProps) => {
           autoFocus
           required
         />
-        <PrimaryButton wFull>변경 요청</PrimaryButton>
+        {submit ? (
+          <PrimaryButton wFull>재전송</PrimaryButton>
+        ) : (
+          <PrimaryButton wFull>변경 요청</PrimaryButton>
+        )}
       </Form>
       <Flex justifyCenter itemsCenter>
         <ModalFoot>

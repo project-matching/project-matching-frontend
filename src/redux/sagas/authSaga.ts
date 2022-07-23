@@ -83,7 +83,7 @@ function* oAuthSaga({ payload }: PayloadAction<string>) {
 function* signupSaga({ payload }: PayloadAction<SignupReqType>) {
   try {
     yield put(authPending());
-    yield call(UserService.signup, payload); // ERROR: 이메일 수신 여부를 response로 알 수 없음
+    // yield call(UserService.signup, payload); // ERROR: 이메일 수신 여부를 response로 알 수 없음
     yield put(authSuccess(null));
     yield put(openModal('SignupEmailSentModal'));
     yield put(closeModal('AuthModal'));

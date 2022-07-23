@@ -9,6 +9,22 @@ import OAuthButton from '../Buttons/OAuthButton';
 import PrimaryButton from '../Buttons/PrimaryButton';
 import { AuthFormTypes } from '../Modals/AuthModal';
 
+const Content = styled.div`
+  padding: 0 0 20px;
+  text-align: center;
+  font-size: ${(props) => props.theme.sizes.sm};
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`;
+
+const H1 = styled.h1`
+  font-size: ${(props) => props.theme.sizes.lg};
+  font-weight: bold;
+  padding-bottom: 10px;
+`;
+
 const ErrorMessage = styled.span`
   color: ${(props) => props.theme.colors.error};
   font-size: ${(props) => props.theme.sizes.sm};
@@ -177,6 +193,9 @@ const SigninForm = ({ setAuthForm }: SigninFormProps) => {
 
   return (
     <>
+      <Content>
+        <H1>로그인</H1>
+      </Content>
       <Form onSubmit={submitSignin}>
         {inputs.map(({ id, ...props }) => (
           <Input key={id} {...props} />
