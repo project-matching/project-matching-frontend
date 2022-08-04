@@ -50,6 +50,6 @@ export const {
   success: userSuccess,
 } = userSlice.actions;
 
-export const getUserInfo = createAction(`${userState}/getUserInfo`);
+export const updateUserInfo = createAction(`${userState}/updateUserInfo`);
 
 export default userSlice.reducer;

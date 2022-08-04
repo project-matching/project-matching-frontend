@@ -1,7 +1,7 @@
 import { PayloadAction } from '@reduxjs/toolkit';
 import { call, put, select, takeLatest } from 'redux-saga/effects';
 import { closeModal, openModal } from 'src/redux/reducers/modals';
-import { getUserInfo } from 'src/redux/reducers/users';
+import { updateUserInfo } from 'src/redux/reducers/users';
 import {
   removeSigninErrorMsg,
   setSigninErrorMsg,
@@ -35,7 +35,7 @@ function* signinSaga({ payload }: PayloadAction<SigninReqType>) {
     const token: string = yield call(UserService.signin, payload);
     TokenService.set(token);
     yield put(authSuccess(token));
-    yield put(getUserInfo());
+    yield put(updateUserInfo());
     yield put(removeSigninErrorMsg());
     yield put(closeModal('AuthModal'));
   } catch (error: any) {
@@ -50,7 +50,7 @@ function* signOutSaga() {
   try {
     yield put(authPending());
     const token: string = yield select((state) => state.authReducer.token);
-    yield call(UserService.signOut, token);
+    yield call(UserService.signOut);
     TokenService.set(token);
   } catch (error: any) {
     yield put(
@@ -59,7 +59,7 @@ function* signOutSaga() {
   } finally {
     TokenService.remove();
     yield put(authSuccess(null));
-    yield put(getUserInfo());
+    yield put(updateUserInfo());
   }
 }
 
@@ -69,7 +69,7 @@ function* oAuthSaga({ payload }: PayloadAction<string>) {
     const token: string = payload;
     TokenService.set(token);
     yield put(authSuccess(token));
-    yield put(getUserInfo());
+    yield put(updateUserInfo());
     yield put(removeSigninErrorMsg());
     yield put(closeModal('AuthModal'));
   } catch (error: any) {

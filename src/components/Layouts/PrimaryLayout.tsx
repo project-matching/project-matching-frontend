@@ -5,7 +5,6 @@ import { useAppSelector } from 'src/redux/hooks';
 import { Divider, Wrapper } from 'src/styles/global';
 import Header from '../Common/Header';
 import AuthModal from '../Modals/AuthModal';
-import RecruitModal from '../Modals/RecruitModal';
 import SignupEmailSentModal from '../Modals/SignupEmailSentModal';
 
 export const ModalContainer = styled.div`
@@ -43,24 +42,11 @@ const PrimaryLayout: React.FC<LayoutProps> = ({ children }) => {
         />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      {modal.AuthModal && (
+      {Object.values(modal).some((v) => v) && (
         <ModalContainer>
           <Backdrop>
-            <AuthModal />
-          </Backdrop>
-        </ModalContainer>
-      )}
-      {modal.RecruitModal && (
-        <ModalContainer>
-          <Backdrop>
-            <RecruitModal />
-          </Backdrop>
-        </ModalContainer>
-      )}
-      {modal.SignupEmailSentModal && (
-        <ModalContainer>
-          <Backdrop>
-            <SignupEmailSentModal />
+            {modal.AuthModal && <AuthModal />}
+            {modal.SignupEmailSentModal && <SignupEmailSentModal />}
           </Backdrop>
         </ModalContainer>
       )}

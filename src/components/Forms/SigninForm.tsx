@@ -184,7 +184,7 @@ const SigninForm = ({ setAuthForm }: SigninFormProps) => {
 
     const title = `${serviceProvider} 소셜 로그인`;
     const popup = window.open(
-      `http://localhost:8080/oauth2/authorization/${serviceProvider}`,
+      `http://localhost:8080/v1/oauth2/authorization/${serviceProvider}`,
       title,
       `width=${width},height=${height},left=${left},top=${top}`
     );

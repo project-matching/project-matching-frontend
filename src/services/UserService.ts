@@ -12,16 +12,12 @@ export class UserService {
     return response.data.data;
   }
 
-  public static async signOut(token: string): Promise<void> {
-    await appApi.get(`/common/logout`, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
+  public static async signOut(): Promise<void> {
+    await appApi.get(`/common/logout`);
   }
 
-  public static async getUserInfo(token: string | null): Promise<UserInfoType> {
-    const response = await appApi.get(`/user/info`, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
-    return response.data.data;
+  public static async getUserInfo(): Promise<UserInfoType> {
+    const response = await appApi.get(`/user/info`);
+    return response.data.data ?? null;
   }
 }
