@@ -1,5 +1,6 @@
 import styled from '@emotion/styled';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import { useDispatch } from 'react-redux';
 import { useAppSelector } from 'src/redux/hooks';
 import { openModal } from 'src/redux/reducers/components/modals';
@@ -16,6 +17,8 @@ export const Flex = styled.div`
 `;
 
 const Header: React.FC = () => {
+  const router = useRouter();
+
   const Header = styled.header`
     display: flex;
     flex-direction: row;
@@ -31,6 +34,9 @@ const Header: React.FC = () => {
   const A = styled.a`
     margin: 10px;
     font-size: 18px;
+    color: ${(props) =>
+      props.href === router.asPath ? 'black' : props.theme.colors.gray};
+    font-weight: bold;
   `;
 
   const { token } = useAppSelector((state) => state.auth);

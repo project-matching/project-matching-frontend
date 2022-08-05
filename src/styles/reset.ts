@@ -140,6 +140,9 @@ const reset = css`
     text-decoration: none;
     cursor: pointer;
   }
+  i {
+    cursor: pointer;
+  }
 `;
 
 export default reset;
