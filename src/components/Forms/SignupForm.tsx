@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import React, { HTMLInputTypeAttribute, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { closeModal, openModal } from 'src/redux/reducers/modals';
+import { signup } from 'src/redux/reducers/auth';
 import { Flex } from 'src/styles/global';
 import PrimaryButton from '../Buttons/PrimaryButton';
 import { AuthFormTypes } from '../Modals/AuthModal';
@@ -173,17 +173,19 @@ const SignupForm = ({ setAuthForm }: SigninFormProps) => {
     const email = target.email.value;
     const password = target.password.value;
 
-    // dispatch(
-    //   signup({
-    //     name,
-    //     email,
-    //     password,
-    //   })
-    // );
+    dispatch(
+      signup({
+        name,
+        email,
+        password,
+      })
+    );
 
-    dispatch(openModal('SignupEmailSentModal'));
-    dispatch(closeModal('AuthModal'));
+    // dispatch(openModal('SignupEmailSentModal'));
+    // dispatch(closeModal('AuthModal'));
   };
+
+  console.log(inputValues);
 
   return (
     <>

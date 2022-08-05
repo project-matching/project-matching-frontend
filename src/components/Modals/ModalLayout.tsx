@@ -1,7 +1,10 @@
 import styled from '@emotion/styled';
 import { useDispatch } from 'react-redux';
-import { closeModal, ModalActionProps } from 'src/redux/reducers/modals';
-import { removeSigninErrorMsg } from 'src/redux/reducers/validation';
+import {
+  closeModal,
+  ModalActionProps,
+} from 'src/redux/reducers/components/modals';
+import { removeSigninErrorMsg } from 'src/redux/reducers/components/validation';
 import Logo from '../Common/Logo';
 
 const Container = styled.div`

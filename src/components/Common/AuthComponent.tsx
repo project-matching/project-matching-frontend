@@ -11,8 +11,10 @@ const AuthComponent = () => {
   const token = useAppSelector((state) => state.auth.token);
 
   /**
-   * TODO: 매 요청마다 서버에 token 전송
+   * TODO:
    * localStorage에 토큰이 존재할 경우 토큰 업데이트
+   * 토큰이 만료되었을 경우 localStorage에서 토큰을 제거하고, 재로그인 요청
+   * 로그아웃을 할 경우 유저 정보 초기화
    */
   useEffect(() => {
     if (localStorage !== undefined) {

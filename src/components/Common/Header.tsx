@@ -2,10 +2,11 @@ import styled from '@emotion/styled';
 import Link from 'next/link';
 import { useDispatch } from 'react-redux';
 import { useAppSelector } from 'src/redux/hooks';
-import { signOut } from 'src/redux/reducers/auth';
-import { openModal } from 'src/redux/reducers/modals';
+import { openModal } from 'src/redux/reducers/components/modals';
 import { Wrapper } from 'src/styles/global';
 import PrimaryButton from '../Buttons/PrimaryButton';
+import Notification from '../Headers/Notification';
+import Profile from '../Headers/Profile';
 import Logo from './Logo';
 
 export const Flex = styled.div`
@@ -20,6 +21,7 @@ const Header: React.FC = () => {
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
+    user-select: none;
   `;
 
   const Nav = styled.nav`
@@ -63,9 +65,10 @@ const Header: React.FC = () => {
           <Flex>
             <PrimaryButton onClick={openRecruitModal}>Recruit</PrimaryButton>
             {token ? (
-              <PrimaryButton onClick={() => dispatch(signOut())}>
-                Log Out
-              </PrimaryButton>
+              <>
+                <Notification />
+                <Profile />
+              </>
             ) : (
               <PrimaryButton onClick={openAuthModal}>Log In</PrimaryButton>
             )}

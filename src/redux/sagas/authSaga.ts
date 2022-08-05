@@ -1,11 +1,11 @@
 import { PayloadAction } from '@reduxjs/toolkit';
 import { call, put, select, takeLatest } from 'redux-saga/effects';
-import { closeModal, openModal } from 'src/redux/reducers/modals';
-import { updateUserInfo } from 'src/redux/reducers/users';
+import { closeModal, openModal } from 'src/redux/reducers/components/modals';
 import {
   removeSigninErrorMsg,
   setSigninErrorMsg,
-} from 'src/redux/reducers/validation';
+} from 'src/redux/reducers/components/validation';
+import { updateUserInfo } from 'src/redux/reducers/users';
 import { TokenService } from 'src/services/TokenService';
 import { UserService } from 'src/services/UserService';
 import {
@@ -83,13 +83,14 @@ function* oAuthSaga({ payload }: PayloadAction<string>) {
 function* signupSaga({ payload }: PayloadAction<SignupReqType>) {
   try {
     yield put(authPending());
-    // yield call(UserService.signup, payload); // ERROR: 이메일 수신 여부를 response로 알 수 없음
+    yield call(UserService.signup, payload);
     yield put(authSuccess(null));
     yield put(openModal('SignupEmailSentModal'));
     yield put(closeModal('AuthModal'));
   } catch (error: any) {
     yield put(
       authFail(new Error(error?.response?.data?.error || 'UNKNOWN_ERROR'))
+      // TODO: 이메일이 이미 존재할 경우 경고창
     );
   }
 }

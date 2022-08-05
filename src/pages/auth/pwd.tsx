@@ -125,6 +125,7 @@ const ChangePassword = () => {
     // );
 
     // TODO: 변경 후 메인 홈으로 이동
+    // (PATCH) : /v1/common/password/confirm (email, password, authToken 필요)
   };
 
   return (

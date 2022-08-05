@@ -1,10 +1,20 @@
+import { UserInfoType } from 'src/redux/reducers/users';
 import { SigninReqType, SignupReqType } from 'src/redux/sagas/authSaga';
-import { UserInfoType } from 'src/redux/sagas/userSaga';
 import { appApi } from './AppApi';
+
+interface confirmEmailType {
+  email: string;
+  authToken: string;
+}
 
 export class UserService {
   public static async signup(reqData: SignupReqType) {
     await appApi.post(`/user`, reqData);
+  }
+
+  public static async confirmEmail(reqData: confirmEmailType): Promise<string> {
+    const response = await appApi.post(`/user/confirm`, reqData);
+    return response.data.data; // jwt
   }
 
   public static async signin(reqData: SigninReqType): Promise<string> {

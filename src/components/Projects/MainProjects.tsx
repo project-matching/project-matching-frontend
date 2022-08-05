@@ -46,7 +46,7 @@ const MainProjects: React.FC<PropsMainProjects> = ({ title }) => {
       <Flex>
         <H1>{title}</H1>
         <Span>
-          <Link href={title === 'Recruiting' ? 'recruiting' : 'in-service'}>
+          <Link href={title === 'Recruiting' ? 'recruiting' : 'recruited'}>
             &gt; more
           </Link>
         </Span>
