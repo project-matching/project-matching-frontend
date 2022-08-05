@@ -15,7 +15,7 @@ const SmallButton = styled.button<ButtonProps>`
       : `
       margin: 5px 0;
     `}
-  padding: 5px 0;
+  padding: 5px 10px;
   border: none;
   color: white;
   background-color: ${(props) =>

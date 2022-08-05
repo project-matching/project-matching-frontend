@@ -8,6 +8,7 @@ import { Wrapper } from 'src/styles/global';
 import PrimaryButton from '../Buttons/PrimaryButton';
 import Notification from '../Headers/Notification';
 import Profile from '../Headers/Profile';
+import HeaderSearchBar from '../SearchBar/HeaderSearchBar';
 import Logo from './Logo';
 
 export const Flex = styled.div`
@@ -69,6 +70,7 @@ const Header: React.FC = () => {
             </Nav>
           </Flex>
           <Flex>
+            {router.asPath !== '/' && <HeaderSearchBar />}
             <PrimaryButton onClick={openRecruitModal}>Recruit</PrimaryButton>
             {token ? (
               <>
