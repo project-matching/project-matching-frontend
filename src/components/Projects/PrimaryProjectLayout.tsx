@@ -4,11 +4,13 @@ import React from 'react';
 import { Divider } from 'src/styles/global';
 import SmallCard from './SmallCard';
 
-interface PropsMainProjects {
+interface PropsPrimaryProjectLayout {
   title: string;
 }
 
-const MainProjects: React.FC<PropsMainProjects> = ({ title }) => {
+const PrimaryProjectLayout: React.FC<PropsPrimaryProjectLayout> = ({
+  title,
+}) => {
   const Section = styled.section`
     margin-top: 20px;
   `;
@@ -63,4 +65,4 @@ const MainProjects: React.FC<PropsMainProjects> = ({ title }) => {
   );
 };
 
-export default MainProjects;
+export default PrimaryProjectLayout;
