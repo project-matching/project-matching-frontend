@@ -18,6 +18,11 @@ jest.mock('next/router', () => ({
   },
 }));
 
+jest.mock('@fortawesome/fontawesome-svg-core/import.macro', () => ({
+  solid() {},
+  regular() {},
+}));
+
 beforeAll(() => server.listen());
 
 afterEach(() => server.resetHandlers());

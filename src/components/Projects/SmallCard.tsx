@@ -1,4 +1,6 @@
 import styled from '@emotion/styled';
+import { regular, solid } from '@fortawesome/fontawesome-svg-core/import.macro';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Image from 'next/image';
 import { useState } from 'react';
 
@@ -79,7 +81,11 @@ const SmallCard = () => {
         <Top>
           <Author>작성자</Author>
           <i onClick={() => setBookmark(!isBookmarked)}>
-            {isBookmarked ? 'marked' : 'mark?'}
+            {isBookmarked ? (
+              <FontAwesomeIcon icon={solid('bookmark')} />
+            ) : (
+              <FontAwesomeIcon icon={regular('bookmark')} />
+            )}
           </i>
         </Top>
         <H3>Team-matching service for side project</H3>
@@ -129,7 +135,9 @@ const SmallCard = () => {
         <span>프로젝트 인원: 4/8</span>
       </Req>
       <View>
-        <i>EYE</i>
+        <i>
+          <FontAwesomeIcon icon={solid('eye')} />
+        </i>
         <span>23</span>
       </View>
     </CardContainer>

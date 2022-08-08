@@ -1,4 +1,6 @@
 import styled from '@emotion/styled';
+import { solid } from '@fortawesome/fontawesome-svg-core/import.macro';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useState } from 'react';
 import SmallButton from '../Buttons/SmallButton';
 
@@ -30,7 +32,9 @@ const HeaderSearchBar = () => {
 
   return (
     <Container>
-      <i>ICON</i>
+      <i>
+        <FontAwesomeIcon icon={solid('magnifying-glass')} />
+      </i>
       <Input />
       <SmallButton onClick={() => setRecruiting(!isRecruiting)}>
         {isRecruiting ? '모집완료' : '모집중'}

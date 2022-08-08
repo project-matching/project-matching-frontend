@@ -142,6 +142,8 @@ const reset = css`
   }
   i {
     cursor: pointer;
+    width: 15px;
+    height: 15px;
   }
 `;
 
