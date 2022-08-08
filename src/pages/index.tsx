@@ -1,11 +1,13 @@
+import PrimaryProjectLayout from '@/components/Projects/PrimaryProjectLayout';
+import MainSearchBar from '@/components/SearchBar/MainSearchBar';
 import PrimaryLayout from 'src/components/Layouts/PrimaryLayout';
-import MainProjects from 'src/components/Projects/MainProjects';
 
 const Home: React.FC = () => {
   return (
     <PrimaryLayout>
-      <MainProjects title="Recruiting" />
-      <MainProjects title="Recruited" />
+      <MainSearchBar />
+      <PrimaryProjectLayout title="Recruiting" />
+      <PrimaryProjectLayout title="Recruited" />
     </PrimaryLayout>
   );
 };

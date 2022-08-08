@@ -1,12 +1,11 @@
 import SecondaryProjectLayout from '@/components/Projects/SecondaryProjectLayout';
 import PrimaryLayout from 'src/components/Layouts/PrimaryLayout';
-
-const Recruited = () => {
+const SearchResult = () => {
   return (
     <PrimaryLayout>
-      <SecondaryProjectLayout title="모집 완료된 프로젝트" />
+      <SecondaryProjectLayout title="검색 결과" />
     </PrimaryLayout>
   );
 };
 
-export default Recruited;
+export default SearchResult;

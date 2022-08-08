@@ -7,6 +7,17 @@ import '@testing-library/jest-dom/extend-expect';
 
 import { server } from '@/mocks/server';
 
+jest.mock('next/router', () => ({
+  useRouter() {
+    return {
+      route: '/',
+      pathname: '',
+      query: '',
+      asPath: '',
+    };
+  },
+}));
+
 beforeAll(() => server.listen());
 
 afterEach(() => server.resetHandlers());

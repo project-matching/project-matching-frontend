@@ -1,5 +1,5 @@
 import { createAction, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { SigninReqType } from 'src/redux/sagas/authSaga';
+import { SigninReqType, SignupReqType } from 'src/redux/sagas/authSaga';
 
 interface AuthState {
   token: string | null;
@@ -51,6 +51,7 @@ export const {
 } = authSlice.actions;
 
 export const signin = createAction<SigninReqType>(`${authState}/signin`);
+export const signup = createAction<SignupReqType>(`${authState}/signup`);
 export const signinOAuth = createAction<string>(`${authState}/signinOAuth`);
 export const signOut = createAction(`${authState}/signOut`);
 

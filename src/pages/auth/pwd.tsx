@@ -1,25 +1,23 @@
+import PrimaryButton from '@/components/Buttons/PrimaryButton';
 import styled from '@emotion/styled';
-import React, { HTMLInputTypeAttribute, useState } from 'react';
+import { HTMLInputTypeAttribute, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { signup } from 'src/redux/reducers/auth';
-import { Flex } from 'src/styles/global';
-import PrimaryButton from '../Buttons/PrimaryButton';
-import { AuthFormTypes } from '../Modals/AuthModal';
 
-const Content = styled.div`
-  padding: 0 0 20px;
-  text-align: center;
-  font-size: ${(props) => props.theme.sizes.sm};
+const Wrapper = styled.div`
+  height: 100vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
 `;
 
-const H1 = styled.h1`
-  font-size: ${(props) => props.theme.sizes.lg};
+const Heading = styled.h1`
+  font-size: ${(props) => props.theme.sizes.xl};
   font-weight: bold;
-  padding-bottom: 10px;
+`;
+
+const Desc = styled.p`
+  margin: 3rem 0;
 `;
 
 const ErrorMessage = styled.span`
@@ -37,11 +35,6 @@ const Input = styled.input`
   &:invalid ~ span {
     display: block;
   }
-  /* &:invalid {
-    display: block;
-    border: 1px solid red;
-    border-radius: 3px;
-  } */
 `;
 
 const InputContainer = styled.div`
@@ -49,28 +42,13 @@ const InputContainer = styled.div`
 `;
 
 const Form = styled.form`
+  width: 300px;
   button {
     margin-top: 15px;
   }
 `;
 
-const A = styled.a`
-  font-weight: bold;
-  cursor: pointer;
-`;
-
-const StatusContainer = styled.div`
-  margin: 20px 0 10px 0;
-  font-size: ${(props) => props.theme.sizes.sm};
-`;
-
-interface SigninFormProps {
-  setAuthForm: (_: AuthFormTypes) => void;
-}
-
 interface FormValueType {
-  name: string;
-  email: string;
   password: string;
   confirmPassword: string;
 }
@@ -88,43 +66,17 @@ interface InputType {
 }
 
 const initialValues: FormValueType = {
-  name: '',
-  email: '',
   password: '',
   confirmPassword: '',
 };
 
-const SignupForm = ({ setAuthForm }: SigninFormProps) => {
+const ChangePassword = () => {
   const [inputValues, setInputValues] = useState<FormValueType>(initialValues);
   const dispatch = useDispatch();
 
   const inputs: InputType[] = [
     {
       id: 0,
-      name: 'name',
-      type: 'text',
-      placeholder: 'Name',
-      label: 'Name',
-      errorMessage:
-        '이름은 3자 이상 10자 이하의 한글, 영어 대소문자, 숫자로 이루어져야 하며 특수문자를 포함하지 않아야 합니다.',
-      pattern: '^[a-zA-Z가-힣0-9]{3,10}$',
-      required: true,
-      autoFocus: true,
-    },
-    {
-      id: 1,
-      name: 'email',
-      type: 'email',
-      placeholder: 'Email',
-      errorMessage: '올바른 이메일 형식이어야 합니다.',
-      pattern:
-        "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:.[a-zA-Z0-9-]+)*$",
-      label: 'Email',
-      required: true,
-      autoFocus: false,
-    },
-    {
-      id: 2,
       name: 'password',
       type: 'password',
       placeholder: 'Password',
@@ -134,10 +86,10 @@ const SignupForm = ({ setAuthForm }: SigninFormProps) => {
         '^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[- !@#$%^&*])[a-zA-Z0-9 -!@#$%^&*]{8,20}',
       label: 'Password',
       required: true,
-      autoFocus: false,
+      autoFocus: true,
     },
     {
-      id: 3,
+      id: 1,
       name: 'confirmPassword',
       type: 'password',
       placeholder: 'Confirm password',
@@ -161,38 +113,26 @@ const SignupForm = ({ setAuthForm }: SigninFormProps) => {
 
   const convertToRegEx = (pattern: string): RegExp => RegExp(pattern);
 
-  const submitSignup = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const submit = (e: React.FormEvent<HTMLFormElement>) => {
     const target = e.target as typeof e.target & {
-      name: { value: string };
-      email: { value: string };
       password: { value: string };
     };
 
-    const name = target.name.value;
-    const email = target.email.value;
     const password = target.password.value;
 
-    dispatch(
-      signup({
-        name,
-        email,
-        password,
-      })
-    );
+    // dispatch(
+    //
+    // );
 
-    // dispatch(openModal('SignupEmailSentModal'));
-    // dispatch(closeModal('AuthModal'));
+    // TODO: 변경 후 메인 홈으로 이동
+    // (PATCH) : /v1/common/password/confirm (email, password, authToken 필요)
   };
 
-  console.log(inputValues);
-
   return (
-    <>
-      <Content>
-        <H1>회원가입</H1>
-      </Content>
-      <Form onSubmit={submitSignup}>
+    <Wrapper>
+      <Heading>비밀번호 변경</Heading>
+      <Desc>새 비밀번호를 입력해주세요.</Desc>
+      <Form onSubmit={submit}>
         {inputs.map(
           ({
             id,
@@ -224,16 +164,11 @@ const SignupForm = ({ setAuthForm }: SigninFormProps) => {
         )}
 
         <PrimaryButton type="submit" wFull>
-          회원가입
+          비밀번호 변경
         </PrimaryButton>
       </Form>
-      <Flex justifyCenter itemsCenter>
-        <StatusContainer>
-          계정이 있나요? <A onClick={() => setAuthForm('signin')}>로그인</A>
-        </StatusContainer>
-      </Flex>
-    </>
+    </Wrapper>
   );
 };
 
-export default SignupForm;
+export default ChangePassword;

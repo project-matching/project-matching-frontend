@@ -1,31 +1,25 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
 import { authSuccess } from 'src/redux/reducers/auth';
 import {
-  getUserInfo,
+  initUserInfo,
+  updateUserInfo,
   userFail,
+  UserInfoType,
   userPending,
   userSuccess,
 } from 'src/redux/reducers/users';
 import { TokenService } from 'src/services/TokenService';
 import { UserService } from 'src/services/UserService';
 
-export type UserInfoType =
-  | {
-      no: number | null;
-      profile: string | null;
-      name: string | null;
-      email: string | null;
-    }
-  | string;
-
-function* getUserInfoSaga() {
+function* updateUserInfoSaga() {
   try {
     yield put(userPending());
     const token = TokenService.get();
-    const userInfo: UserInfoType = yield call(UserService.getUserInfo, token);
-    if (typeof userInfo === 'string') {
+    const userInfo: UserInfoType = yield call(UserService.getUserInfo);
+    if (!userInfo) {
       TokenService.remove();
-      yield put(userSuccess(null));
+      yield put(userSuccess(initUserInfo));
+      yield put(authSuccess(null));
     } else {
       yield put(userSuccess(userInfo));
       yield put(authSuccess(token));
@@ -38,5 +32,5 @@ function* getUserInfoSaga() {
 }
 
 export function* userSaga() {
-  yield takeLatest(getUserInfo.type, getUserInfoSaga);
+  yield takeLatest(updateUserInfo.type, updateUserInfoSaga);
 }

@@ -1,16 +1,35 @@
 import { createAction, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { UserInfoType } from 'src/redux/sagas/userSaga';
+
+export type UserInfoType = {
+  no: number | null;
+  role: string | null;
+  name: string | null;
+  email: string | null;
+  image: string | null;
+  position: string | null;
+  technicalStackDtoList: string[];
+};
 
 interface UserState {
   loading: boolean;
   error: any;
-  userInfo: UserInfoType | null;
+  userInfo: UserInfoType;
 }
+
+export const initUserInfo = {
+  no: null,
+  role: null,
+  name: null,
+  email: null,
+  image: null,
+  position: null,
+  technicalStackDtoList: [],
+};
 
 const initialState: UserState = {
   loading: false,
   error: null,
-  userInfo: null,
+  userInfo: initUserInfo,
 };
 
 const userState = 'user';
@@ -50,6 +69,6 @@ export const {
   success: userSuccess,
 } = userSlice.actions;
 
-export const getUserInfo = createAction(`${userState}/getUserInfo`);
+export const updateUserInfo = createAction(`${userState}/updateUserInfo`);
 
 export default userSlice.reducer;

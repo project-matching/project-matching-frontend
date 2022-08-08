@@ -2,27 +2,29 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 interface ModalState {
   RecruitModal: boolean;
-  LoginModal: boolean;
+  AuthModal: boolean;
+  SignupEmailSentModal: boolean;
 }
 
-type ActionProps = keyof ModalState;
+export type ModalActionProps = keyof ModalState;
 
 const initialState: ModalState = {
   RecruitModal: false,
-  LoginModal: false,
+  AuthModal: false,
+  SignupEmailSentModal: false,
 };
 
 const modalSlice = createSlice({
   name: 'modal',
   initialState,
   reducers: {
-    openModal: (state, actions: PayloadAction<ActionProps>) => {
+    openModal: (state, actions: PayloadAction<ModalActionProps>) => {
       return {
         ...state,
         [actions.payload]: true,
       };
     },
-    closeModal: (state, actions: PayloadAction<ActionProps>) => {
+    closeModal: (state, actions: PayloadAction<ModalActionProps>) => {
       return {
         ...state,
         [actions.payload]: false,

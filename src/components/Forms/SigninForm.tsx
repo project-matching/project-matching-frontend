@@ -3,13 +3,26 @@ import React, { HTMLInputTypeAttribute, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useAppSelector } from 'src/redux/hooks';
 import { signin, signinOAuth } from 'src/redux/reducers/auth';
-import { setSigninErrorMsg } from 'src/redux/reducers/validation';
+import { setSigninErrorMsg } from 'src/redux/reducers/components/validation';
 import { Divider, Flex } from 'src/styles/global';
 import OAuthButton from '../Buttons/OAuthButton';
 import PrimaryButton from '../Buttons/PrimaryButton';
+import { AuthFormTypes } from '../Modals/AuthModal';
 
-const Body = styled.div`
-  margin: 20px 45px;
+const Content = styled.div`
+  padding: 0 0 20px;
+  text-align: center;
+  font-size: ${(props) => props.theme.sizes.sm};
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`;
+
+const H1 = styled.h1`
+  font-size: ${(props) => props.theme.sizes.lg};
+  font-weight: bold;
+  padding-bottom: 10px;
 `;
 
 const ErrorMessage = styled.span`
@@ -48,12 +61,17 @@ const Span = styled.div`
 `;
 
 const StatusContainer = styled.div`
-  margin: 20px 0 10px 0;
   font-size: ${(props) => props.theme.sizes.sm};
+  margin-bottom: 10px;
+  text-align: center;
+`;
+
+const ModalFoot = styled.div`
+  margin: 20px 0 10px 0;
 `;
 
 interface SigninFormProps {
-  setSigninForm: (_: boolean) => void;
+  setAuthForm: (_: AuthFormTypes) => void;
 }
 
 interface FormValueType {
@@ -89,11 +107,11 @@ const inputs: InputType[] = [
   },
 ];
 
-const SigninForm = ({ setSigninForm }: SigninFormProps) => {
+const SigninForm = ({ setAuthForm }: SigninFormProps) => {
   const { signinErrorMsg } = useAppSelector((state) => state.validation);
   const dispatch = useDispatch();
 
-  const submit = (e: React.FormEvent<HTMLFormElement>) => {
+  const submitSignin = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     const target = e.target as typeof e.target & {
@@ -166,7 +184,7 @@ const SigninForm = ({ setSigninForm }: SigninFormProps) => {
 
     const title = `${serviceProvider} 소셜 로그인`;
     const popup = window.open(
-      `http://localhost:8080/oauth2/authorization/${serviceProvider}`,
+      `http://localhost:8080/v1/oauth2/authorization/${serviceProvider}`,
       title,
       `width=${width},height=${height},left=${left},top=${top}`
     );
@@ -174,8 +192,11 @@ const SigninForm = ({ setSigninForm }: SigninFormProps) => {
   };
 
   return (
-    <Body>
-      <Form onSubmit={submit}>
+    <>
+      <Content>
+        <H1>로그인</H1>
+      </Content>
+      <Form onSubmit={submitSignin}>
         {inputs.map(({ id, ...props }) => (
           <Input key={id} {...props} />
         ))}
@@ -200,11 +221,17 @@ const SigninForm = ({ setSigninForm }: SigninFormProps) => {
       ))}
 
       <Flex justifyCenter itemsCenter>
-        <StatusContainer>
-          계정이 없나요? <A onClick={() => setSigninForm(false)}>회원가입</A>
-        </StatusContainer>
+        <ModalFoot>
+          <StatusContainer>
+            계정이 없나요? <A onClick={() => setAuthForm('signup')}>회원가입</A>
+          </StatusContainer>
+          <StatusContainer>
+            비밀번호를 잊으셨나요?{' '}
+            <A onClick={() => setAuthForm('changePassword')}>비밀번호 찾기</A>
+          </StatusContainer>
+        </ModalFoot>
       </Flex>
-    </Body>
+    </>
   );
 };
 
