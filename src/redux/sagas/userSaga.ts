@@ -16,18 +16,16 @@ function* updateUserInfoSaga() {
     yield put(userPending());
     const token = TokenService.get();
     const userInfo: UserInfoType = yield call(UserService.getUserInfo);
-    if (!userInfo) {
-      TokenService.remove();
-      yield put(userSuccess(initUserInfo));
-      yield put(authSuccess(null));
-    } else {
-      yield put(userSuccess(userInfo));
-      yield put(authSuccess(token));
-    }
+
+    yield put(userSuccess(userInfo));
+    yield put(authSuccess(token));
   } catch (error: any) {
     yield put(
       userFail(new Error(error?.response?.data?.error || 'UNKNOWN_ERROR'))
     );
+    TokenService.remove();
+    yield put(userSuccess(initUserInfo));
+    yield put(authSuccess(null));
   }
 }
 

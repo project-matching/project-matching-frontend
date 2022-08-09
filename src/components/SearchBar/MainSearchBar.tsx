@@ -1,4 +1,6 @@
 import styled from '@emotion/styled';
+import { solid } from '@fortawesome/fontawesome-svg-core/import.macro';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useState } from 'react';
 import SmallButton from '../Buttons/SmallButton';
 
@@ -31,7 +33,9 @@ const MainSearchBar = () => {
 
   return (
     <Container>
-      <i>ICON</i>
+      <i>
+        <FontAwesomeIcon icon={solid('magnifying-glass')} />
+      </i>
       <Input placeholder="프로젝트명 또는 내용으로 원하는 프로젝트를 검색하세요." />
       <SmallButton onClick={() => setRecruiting(!isRecruiting)}>
         {isRecruiting ? '모집완료' : '모집중'}
