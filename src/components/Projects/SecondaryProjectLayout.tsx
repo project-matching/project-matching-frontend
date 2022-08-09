@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { ProjectDtoType } from 'src/redux/reducers/projects';
+import { ProjectDtoType } from 'src/redux/reducers/projects/project';
 import SmallCard from './SmallCard';
 
 const Title = styled.h2`
