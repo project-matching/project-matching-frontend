@@ -56,6 +56,7 @@ const Req = styled.div`
   margin-bottom: 20px;
   span {
     margin-right: 5px;
+    font-size: ${(props) => props.theme.sizes.sm};
   }
 `;
 
@@ -89,7 +90,26 @@ const SmallCard = ({ projectDto }: SmallCardProps) => {
     viewCount,
     register,
   } = projectDto;
+
   const [isBookmarked, setBookmark] = useState(bookMark); // TODO: 전역으로 빼기
+
+  const removeDulplicatePosition = (
+    duplicateList: ProjectDtoType['projectSimplePositionDtoList']
+  ) => {
+    if (!duplicateList) return [];
+
+    const unique: { [id: number]: string } = {};
+
+    duplicateList.forEach(
+      ({ positionNo, positionName }) =>
+        (unique[positionNo] = unique[positionNo] || positionName)
+    );
+
+    return Object.keys(unique).map((key) => ({
+      positionNo: key,
+      positionName: unique[+key],
+    }));
+  };
 
   return (
     <CardContainer>
@@ -129,9 +149,11 @@ const SmallCard = ({ projectDto }: SmallCardProps) => {
       </Req>
       <Req>
         <span>포지션: </span>
-        {projectSimplePositionDtoList?.map((positionDto) => (
-          <span key={positionDto.positionNo}>{positionDto.positionName}</span>
-        ))}
+        {removeDulplicatePosition(projectSimplePositionDtoList).map(
+          (positionDto) => (
+            <span key={positionDto.positionNo}>{positionDto.positionName}</span>
+          )
+        )}
       </Req>
       <Req>
         <span>프로젝트 인원: {currentPeople + '/' + maxPeople}</span>

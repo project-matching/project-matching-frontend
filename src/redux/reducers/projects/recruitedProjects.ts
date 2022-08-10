@@ -1,4 +1,5 @@
 import { createAction, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { ProjectPreviewType } from './../../../services/ProjectService';
 import { ProjectState } from './project';
 
 const initialState: ProjectState = {
@@ -46,6 +47,10 @@ export const {
 
 export const recruitedProjectPreview = createAction(
   `${projectState}/recruitedProjectPreview`
+);
+
+export const recruitedProject = createAction<ProjectPreviewType>(
+  `${projectState}/recruitedProject`
 );
 
 export default projectSlice.reducer;

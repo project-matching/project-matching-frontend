@@ -33,4 +33,26 @@ export class ProjectService {
     });
     return response.data.data;
   }
+
+  public static async recruitingProject(reqData: ProjectPreviewType) {
+    const response = await appApi.get('/project/recruitment', {
+      params: {
+        ...reqData,
+        offset: 0,
+        pageSize: 9,
+      },
+    });
+    return response.data.data;
+  }
+
+  public static async recruitedProject(reqData: ProjectPreviewType) {
+    const response = await appApi.get('/project/recruitment/complete', {
+      params: {
+        ...reqData,
+        offset: 0,
+        pageSize: 9,
+      },
+    });
+    return response.data.data;
+  }
 }
