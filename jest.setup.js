@@ -7,6 +7,7 @@ import '@testing-library/jest-dom/extend-expect';
 
 import { server } from '@/mocks/server';
 
+// TODO: mock 분리하기
 jest.mock('next/router', () => ({
   useRouter() {
     return {
@@ -22,6 +23,10 @@ jest.mock('@fortawesome/fontawesome-svg-core/import.macro', () => ({
   solid() {},
   regular() {},
 }));
+
+jest.mock('uuid', () => {
+  return { v4() {} };
+});
 
 beforeAll(() => server.listen());
 

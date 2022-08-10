@@ -1,8 +1,8 @@
 import styled from '@emotion/styled';
-import { solid } from '@fortawesome/fontawesome-svg-core/import.macro';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useState } from 'react';
-import SmallButton from '../Buttons/SmallButton';
+import { useRouter } from 'next/router';
+import React, { useState } from 'react';
+import ProjectStateButton from '../Buttons/Search/ProjectStateButton';
+import SearchButton from '../Buttons/Search/SearchButton';
 
 const MainSearchBar = () => {
   const Container = styled.div`
@@ -30,16 +30,33 @@ const MainSearchBar = () => {
   `;
 
   const [isRecruiting, setRecruiting] = useState(false);
+  const router = useRouter();
+
+  const submitSearchKeyword = (e: React.FormEvent) => {
+    e.preventDefault();
+
+    const target = e.target as typeof e.target & {
+      searchKeyword: { value: string };
+    };
+
+    const searchKeyword = target.searchKeyword.value;
+
+    router.push({
+      pathname: '/results',
+      query: { keyword: searchKeyword, state: isRecruiting },
+    });
+  };
 
   return (
     <Container>
-      <i>
-        <FontAwesomeIcon icon={solid('magnifying-glass')} />
-      </i>
-      <Input placeholder="프로젝트명 또는 내용으로 원하는 프로젝트를 검색하세요." />
-      <SmallButton onClick={() => setRecruiting(!isRecruiting)}>
-        {isRecruiting ? '모집완료' : '모집중'}
-      </SmallButton>
+      <form onSubmit={submitSearchKeyword}>
+        <SearchButton />
+        <Input
+          name="searchKeyword"
+          placeholder="프로젝트명 또는 내용으로 원하는 프로젝트를 검색하세요."
+        />
+      </form>
+      <ProjectStateButton state={isRecruiting} setRecruiting={setRecruiting} />
     </Container>
   );
 };

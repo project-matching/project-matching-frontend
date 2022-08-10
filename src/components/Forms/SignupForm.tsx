@@ -180,9 +180,6 @@ const SignupForm = ({ setAuthForm }: SigninFormProps) => {
         password,
       })
     );
-
-    // dispatch(openModal('SignupEmailSentModal'));
-    // dispatch(closeModal('AuthModal'));
   };
 
   console.log(inputValues);
