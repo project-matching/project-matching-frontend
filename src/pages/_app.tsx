@@ -12,6 +12,7 @@ function MyApp({ Component, pageProps }: AppProps) {
       <Provider store={store}>
         <ThemeProvider theme={theme}>
           <Global styles={reset} />
+
           <AuthComponent />
           <Component {...pageProps} />
         </ThemeProvider>

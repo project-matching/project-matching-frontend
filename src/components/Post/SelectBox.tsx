@@ -1,5 +1,6 @@
 import styled from '@emotion/styled';
 import { FC } from 'react';
+import { IPositionList } from 'src/redux/reducers/position/type';
 
 export const SSelect = styled.select<{ hasError?: boolean }>`
   width: 20%;
@@ -18,15 +19,28 @@ export const SSelect = styled.select<{ hasError?: boolean }>`
 
 interface Props {
   register: any;
-  options: string[];
+  options: any;
   name: string;
+  handleSelectPos?: any;
 }
-const FormOption: FC<Props> = ({ register, options, name, ...rest }) => {
+const FormOption: FC<Props> = ({
+  register,
+  options,
+  name,
+  handleSelectPos,
+  ...rest
+}) => {
+  options = [{ positionName: 'Select', positionNo: 0 }, ...options];
+
+  const handleSelectPosition = (e: any) => {
+    handleSelectPos(e.target.value);
+  };
+
   return (
-    <SSelect {...register(name)} {...rest}>
-      {options.map((v: string) => (
-        <option key={v} value={v}>
-          {v}
+    <SSelect {...register(name)} {...rest} onChange={handleSelectPosition}>
+      {options.map((v: IPositionList, i: number) => (
+        <option key={i} value={v.positionName}>
+          {v.positionName}
         </option>
       ))}
     </SSelect>

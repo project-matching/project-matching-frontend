@@ -1,8 +1,14 @@
 import { combineReducers } from '@reduxjs/toolkit';
 import auth from './auth';
+
 import modal from './components/modals';
 import validation from './components/validation';
-import post from './post/post';
+
+import loadPosition from './position/loadPosition';
+import createProject from './post/create/createProject';
+import loadProject from './post/load/loadProject';
+import loadTech from './tech/loadTech';
+
 import user from './users';
 
 export default combineReducers({
@@ -10,5 +16,8 @@ export default combineReducers({
   auth,
   modal,
   validation,
-  post,
+  createProject,
+  loadProject,
+  loadPosition,
+  loadTech,
 });

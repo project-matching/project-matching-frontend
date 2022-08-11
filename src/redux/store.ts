@@ -1,9 +1,14 @@
-import { configureStore, Store } from '@reduxjs/toolkit';
+import { configureStore } from '@reduxjs/toolkit';
 import { Context, createWrapper } from 'next-redux-wrapper';
+import { Store } from 'redux';
 import logger from 'redux-logger';
-import createSagaMiddleware from 'redux-saga';
+import createSagaMiddleware, { Task } from 'redux-saga';
 import rootReducer from './reducers/rootReducer';
 import rootSaga from './sagas/rootSaga';
+
+export interface SagaStore extends Store {
+  sagaTask?: Task;
+}
 
 const sagaMiddleware = createSagaMiddleware();
 

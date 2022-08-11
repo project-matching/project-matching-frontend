@@ -1,5 +1,6 @@
 import styled from '@emotion/styled';
-import { FC, useCallback } from 'react';
+import { FC, useCallback, useEffect, useState } from 'react';
+import { IPositionList } from 'src/redux/reducers/position/type';
 
 const Cir = styled.div`
   background-color: black;
@@ -9,7 +10,8 @@ const Cir = styled.div`
   justify-content: center;
   align-items: center;
   border-radius: 50%;
-  margin: 0 10px;
+  margin-left: 40px;
+  margin-right: 20px;
   cursor: pointer;
 `;
 const Box = styled.div`
@@ -22,56 +24,94 @@ const Title = styled.span`
 `;
 
 interface Props {
-  obj: any;
-  setNpm: any;
-  setNDesigner: any;
-  setNFrontend: any;
-  setNBackend: any;
-  setNFullstack: any;
+  data: IPositionList;
+  Selected: string;
+  positionBoolean: boolean;
+  userInfo: any;
+  setProjectPositionRegisterDtoList: any;
+  projectPositionRegisterDtoList: any;
+  positionList: any;
 }
 
 const Position: FC<Props> = ({
-  obj,
-  setNpm,
-  setNDesigner,
-  setNFrontend,
-  setNBackend,
-  setNFullstack,
+  data,
+  positionBoolean,
+  userInfo,
+  Selected,
+  setProjectPositionRegisterDtoList,
+  projectPositionRegisterDtoList,
+  positionList,
 }) => {
-  const increase = useCallback(
-    (name: string) => {
-      if (name === 'Pm') {
-        setNpm((cur: number) => cur + 1);
-      } else if (name === 'Designer') {
-        setNDesigner((cur: number) => cur + 1);
-      } else if (name === 'Frontend') {
-        setNFrontend((cur: number) => cur + 1);
-      } else if (name === 'Backend') {
-        setNBackend((cur: number) => cur + 1);
-      } else setNFullstack((cur: number) => cur + 1);
-    },
-    [setNpm, setNDesigner, setNFrontend, setNBackend, setNFullstack]
-  );
+  const [number, setNumber] = useState<number>(0);
+  const [meNumber, setMeNumber] = useState<number>(0);
 
-  const decrease = useCallback((name: string) => {
-    if (name === 'Pm') {
-      setNpm((cur: number) => cur - 1);
-    } else if (name === 'Designer') {
-      setNDesigner((cur: number) => cur - 1);
-    } else if (name === 'Frontend') {
-      setNFrontend((cur: number) => cur - 1);
-    } else if (name === 'Backend') {
-      setNBackend((cur: number) => cur - 1);
-    } else setNFullstack((cur: number) => cur - 1);
-  }, []);
+  useEffect(() => {
+    if (Selected) {
+      setProjectPositionRegisterDtoList([
+        {
+          position:
+            Selected === positionList[0].positionName
+              ? positionList[0]
+              : Selected === positionList[1].positionName
+              ? positionList[1]
+              : positionList[2],
+          projectRegisterUserDto: {
+            no: userInfo && userInfo.no,
+          },
+        },
+      ]);
+    }
+  }, [Selected, positionList, userInfo, setProjectPositionRegisterDtoList]);
+
+  useEffect(() => {
+    setNumber(0);
+    setMeNumber(0);
+    if (positionBoolean === true) {
+      setMeNumber((cur) => cur + 1);
+      setNumber((cur) => cur + 1);
+    } else if (positionBoolean && meNumber > 0) {
+      setMeNumber((cur) => cur - 1);
+      setNumber((cur) => cur - 1);
+    }
+  }, [positionBoolean, meNumber]);
+
+  const onUpdate = useCallback(
+    () => () => {
+      setNumber((cur) => cur + 1);
+      setProjectPositionRegisterDtoList([
+        ...projectPositionRegisterDtoList,
+        { position: data, projectRegisterUserDto: { no: null } },
+      ]);
+    },
+    [
+      setProjectPositionRegisterDtoList,
+      setNumber,
+      projectPositionRegisterDtoList,
+      data,
+    ]
+  );
+  const onDecrease = useCallback(
+    (n: number) => () => {
+      setNumber((cur) => cur - 1);
+      for (const i of projectPositionRegisterDtoList) {
+        if (i.positionNo === n) {
+          projectPositionRegisterDtoList.pop();
+          break;
+        }
+      }
+    },
+    [setNumber, projectPositionRegisterDtoList]
+  );
 
   return (
     <>
       <Box>
-        <Title>{obj[0]}</Title>
-        <Cir onClick={() => decrease(obj[0])}>-</Cir>
-        <p>0 / {obj[1]}</p>
-        <Cir onClick={() => increase(obj[0])}>+</Cir>
+        <Title>{data.positionName}</Title>
+        <Cir onClick={onDecrease(data.positionNo)}>-</Cir>
+        <p>
+          {meNumber} / {number}
+        </p>
+        <Cir onClick={onUpdate()}>+</Cir>
       </Box>
     </>
   );
