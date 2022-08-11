@@ -21,13 +21,9 @@ const SearchResult = () => {
 
   useEffect(() => {
     if (projectState) {
-      dispatch(
-        recruitedProject({ pageNumber: 0, searchContent: searchKeyword })
-      );
+      dispatch(recruitedProject({ page: 0, searchContent: searchKeyword }));
     } else {
-      dispatch(
-        recruitingProject({ pageNumber: 0, searchContent: searchKeyword })
-      );
+      dispatch(recruitingProject({ page: 0, searchContent: searchKeyword }));
     }
   }, [projectState, dispatch, searchKeyword]);
 
