@@ -14,7 +14,7 @@ import {
 } from 'src/redux/reducers/position/type';
 import { createProjectRequest } from 'src/redux/reducers/post/create/createProject';
 
-import { RootState, SagaStore, wrapper } from 'src/redux/store';
+import { RootState } from 'src/redux/store';
 
 const Container = styled.div`
   max-width: 1280px;
@@ -194,19 +194,19 @@ const ProjectDetail = () => {
   );
 };
 
-export const getServerSideProps = wrapper.getServerSideProps(
-  (store) =>
-    async ({ req, params }: any) => {
-      // store.dispatch(loadPositionRequest());
-      // store.dispatch(loadTechRequest());
-      // store.dispatch(END);
+// export const getServerSideProps = wrapper.getServerSideProps(
+//   (store) =>
+//     async ({ req, params }: any) => {
+//       store.dispatch(loadPositionRequest());
+//       store.dispatch(loadTechRequest());
+//       store.dispatch(END);
 
-      await (store as SagaStore).sagaTask?.toPromise();
+//       await (store as SagaStore).sagaTask?.toPromise();
 
-      return {
-        props: {},
-      };
-    }
-);
+//       return {
+//         props: {},
+//       };
+//     }
+// );
 
 export default ProjectDetail;
