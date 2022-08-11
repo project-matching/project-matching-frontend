@@ -2,8 +2,8 @@ import { appApi } from './AppApi';
 
 export interface ProjectPreviewType {
   offset?: number;
-  pageNumber?: number;
-  pageSize?: number;
+  page?: number;
+  size?: number;
   paged?: boolean;
   searchContent?: string;
   'sort.sorted'?: boolean;
@@ -16,8 +16,8 @@ export class ProjectService {
     const response = await appApi.get('/project/recruitment', {
       params: {
         offset: 0,
-        pageNumber: 0,
-        pageSize: 5,
+        page: 0,
+        size: 5,
       },
     });
     return response.data.data;
@@ -27,8 +27,8 @@ export class ProjectService {
     const response = await appApi.get('/project/recruitment/complete', {
       params: {
         offset: 0,
-        pageNumber: 0,
-        pageSize: 5,
+        page: 0,
+        size: 5,
       },
     });
     return response.data.data;
@@ -39,7 +39,7 @@ export class ProjectService {
       params: {
         ...reqData,
         offset: 0,
-        pageSize: 9,
+        size: 12,
       },
     });
     return response.data.data;
@@ -50,7 +50,7 @@ export class ProjectService {
       params: {
         ...reqData,
         offset: 0,
-        pageSize: 9,
+        size: 12,
       },
     });
     return response.data.data;

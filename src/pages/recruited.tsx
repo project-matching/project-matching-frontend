@@ -5,6 +5,11 @@ import PrimaryLayout from 'src/components/Layouts/PrimaryLayout';
 import { useAppSelector } from 'src/redux/hooks';
 import { recruitedProject } from 'src/redux/reducers/projects/recruitedProjects';
 
+/**
+ * TODOS:
+ * 무한 스크롤 구현
+ */
+
 const Recruited = () => {
   const token = useAppSelector((state) => state.auth.token);
 
@@ -14,7 +19,7 @@ const Recruited = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(recruitedProject({ pageNumber: 0 }));
+    dispatch(recruitedProject({ page: 0 }));
   }, [token, dispatch]);
 
   return (

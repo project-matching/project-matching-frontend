@@ -1,7 +1,10 @@
 import PrimaryButton from '@/components/Buttons/PrimaryButton';
 import styled from '@emotion/styled';
+import { useRouter } from 'next/router';
 import { HTMLInputTypeAttribute, useState } from 'react';
 import { useDispatch } from 'react-redux';
+import { TokenService } from 'src/services/TokenService';
+import { UserService } from 'src/services/UserService';
 
 const Wrapper = styled.div`
   height: 100vh;
@@ -73,6 +76,8 @@ const initialValues: FormValueType = {
 const ChangePassword = () => {
   const [inputValues, setInputValues] = useState<FormValueType>(initialValues);
   const dispatch = useDispatch();
+  const router = useRouter();
+  const { email, authToken } = router.query;
 
   const inputs: InputType[] = [
     {
@@ -113,19 +118,36 @@ const ChangePassword = () => {
 
   const convertToRegEx = (pattern: string): RegExp => RegExp(pattern);
 
-  const submit = (e: React.FormEvent<HTMLFormElement>) => {
-    const target = e.target as typeof e.target & {
-      password: { value: string };
-    };
+  const submit = async (e: React.FormEvent<HTMLFormElement>) => {
+    try {
+      e.preventDefault();
 
-    const password = target.password.value;
+      if (
+        authToken &&
+        email &&
+        typeof authToken === 'string' &&
+        typeof email === 'string'
+      ) {
+        const target = e.target as typeof e.target & {
+          password: { value: string };
+        };
 
-    // dispatch(
-    //
-    // );
+        const password = target.password.value;
 
-    // TODO: 변경 후 메인 홈으로 이동
-    // (PATCH) : /v1/common/password/confirm (email, password, authToken 필요)
+        const token = await UserService.confirmPassword({
+          authToken,
+          email,
+          password,
+        });
+
+        TokenService.set(token);
+
+        // TODO: 변경 완료 시 어디로 이동...???
+        router.push('/');
+      }
+    } catch (error: any) {
+      // TODO: 전송 실패 시..?
+    }
   };
 
   return (
