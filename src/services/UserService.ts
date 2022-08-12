@@ -2,9 +2,19 @@ import { UserInfoType } from 'src/redux/reducers/users';
 import { SigninReqType, SignupReqType } from 'src/redux/sagas/authSaga';
 import { appApi } from './AppApi';
 
-interface confirmEmailType {
+export interface confirmEmailType {
   email: string;
   authToken: string;
+}
+
+interface confirmPasswordType {
+  authToken: string;
+  email: string;
+  password: string;
+}
+
+interface sendEmailType {
+  email: string;
 }
 
 export class UserService {
@@ -14,6 +24,27 @@ export class UserService {
 
   public static async confirmEmail(reqData: confirmEmailType): Promise<string> {
     const response = await appApi.post(`/user/confirm`, reqData);
+    return response.data.data; // jwt
+  }
+
+  public static async reissueEmailAuthToken(
+    reqData: sendEmailType
+  ): Promise<string> {
+    const response = await appApi.post(`/user/reissue`, reqData);
+    return response.data.data; // boolean
+  }
+
+  public static async initPasswordRequest(
+    reqData: sendEmailType
+  ): Promise<boolean> {
+    const response = await appApi.post(`/common/password/init`, reqData);
+    return response.data.data; // boolean
+  }
+
+  public static async confirmPassword(
+    reqData: confirmPasswordType
+  ): Promise<string> {
+    const response = await appApi.patch(`/common/password/confirm`, reqData);
     return response.data.data; // jwt
   }
 

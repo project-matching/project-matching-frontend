@@ -1,6 +1,9 @@
 import { Flex } from '@/styles/global';
 import styled from '@emotion/styled';
-import React, { useState } from 'react';
+import React from 'react';
+import { useDispatch } from 'react-redux';
+import { closeModal, openModal } from 'src/redux/reducers/components/modals';
+import { UserService } from 'src/services/UserService';
 import PrimaryButton from '../Buttons/PrimaryButton';
 import { AuthFormTypes } from '../Modals/AuthModal';
 
@@ -60,14 +63,24 @@ interface PasswordChangeFormProps {
 }
 
 const PasswordChangeForm = ({ setAuthForm }: PasswordChangeFormProps) => {
-  const [submit, setSubmit] = useState(false);
+  const dispatch = useDispatch();
 
-  const submitChangePassword = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    // TODO: 비밀번호 변경을 위한 이메일 전송 로직
+  const submitChangePassword = async (e: React.FormEvent<HTMLFormElement>) => {
+    try {
+      e.preventDefault();
+      const target = e.target as typeof e.target & {
+        email: { value: string };
+      };
+      const email = target.email.value;
 
-    if (!submit) {
-      setSubmit(true);
+      const isEmailSent = await UserService.initPasswordRequest({ email });
+
+      if (isEmailSent) {
+        dispatch(closeModal('AuthModal'));
+        dispatch(openModal('SignupEmailSentModal'));
+      }
+    } catch (error: any) {
+      // TODO: 전송 실패 시??
     }
   };
 
@@ -75,15 +88,9 @@ const PasswordChangeForm = ({ setAuthForm }: PasswordChangeFormProps) => {
     <>
       <Content>
         <H1>비밀번호 변경</H1>
-        {submit ? (
-          <Span>
-            <b>아래 주소로 이메일이 전송되었습니다.</b>
-          </Span>
-        ) : (
-          <Span>
-            회원님의 <b>이메일 주소</b>를 적어주세요.
-          </Span>
-        )}
+        <Span>
+          회원가입 시 사용한 <b>이메일 주소</b>를 적어주세요.
+        </Span>
       </Content>
       <Form onSubmit={submitChangePassword}>
         <Input
@@ -93,11 +100,7 @@ const PasswordChangeForm = ({ setAuthForm }: PasswordChangeFormProps) => {
           autoFocus
           required
         />
-        {submit ? (
-          <PrimaryButton wFull>재전송</PrimaryButton>
-        ) : (
-          <PrimaryButton wFull>변경 요청</PrimaryButton>
-        )}
+        <PrimaryButton wFull>이메일 전송</PrimaryButton>
       </Form>
       <Flex justifyCenter itemsCenter>
         <ModalFoot>
