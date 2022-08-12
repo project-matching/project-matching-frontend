@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import Image from 'next/image';
 import { UserProfileType } from 'src/redux/reducers/users';
-import { v4 as uuidv4 } from 'uuid';
+import Dropdown from '../Dropdowns/Dropdown';
 import { DEFAULT_IMAGE } from '../Headers/Profile';
 
 const ImageContainer = styled.div`
@@ -91,7 +91,7 @@ const MyProfileChange = ({ myProfile }: MyProfileProps) => {
       id: 4,
       name: '기술 스택',
       content: technicalStackList,
-      vertical: false,
+      vertical: true,
     },
     {
       id: 5,
@@ -130,9 +130,7 @@ const MyProfileChange = ({ myProfile }: MyProfileProps) => {
             return (
               <InfoLi key={id} vertical={vertical}>
                 <InfoTitle>{name}</InfoTitle>
-                {content.map((techStack) => (
-                  <span key={uuidv4()}>{techStack}</span>
-                ))}
+                <Dropdown items={content} />
               </InfoLi>
             );
           }

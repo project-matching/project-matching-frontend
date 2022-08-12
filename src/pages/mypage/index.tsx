@@ -1,25 +1,6 @@
 import PrimaryLayout from '@/components/Layouts/PrimaryLayout';
 import MyPageLayout from '@/components/MyPage/MyPageLayout';
 import MyProfile from '@/components/MyPage/MyProfile';
-import styled from '@emotion/styled';
-
-const Container = styled.div`
-  margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-`;
-
-const Title = styled.h2`
-  margin: 40px 0;
-  font-weight: bold;
-`;
-
-const Section = styled.section`
-  display: flex;
-  flex-direction: row;
-  gap: 30px;
-`;
 
 const data = {
   email: 'user1@test.com',

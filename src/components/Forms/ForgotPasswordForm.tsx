@@ -58,11 +58,11 @@ const ModalFoot = styled.div`
   margin: 20px 0 10px 0;
 `;
 
-interface PasswordChangeFormProps {
+interface ForgotPasswordrops {
   setAuthForm: (_: AuthFormTypes) => void;
 }
 
-const PasswordChangeForm = ({ setAuthForm }: PasswordChangeFormProps) => {
+const ForgotPasswordForm = ({ setAuthForm }: ForgotPasswordrops) => {
   const dispatch = useDispatch();
 
   const submitChangePassword = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -116,4 +116,4 @@ const PasswordChangeForm = ({ setAuthForm }: PasswordChangeFormProps) => {
   );
 };
 
-export default PasswordChangeForm;
+export default ForgotPasswordForm;

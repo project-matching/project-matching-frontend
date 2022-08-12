@@ -1,5 +1,6 @@
 import styled from '@emotion/styled';
 import Link from 'next/link';
+import { LinksProps } from './MyPageLayout';
 
 const Container = styled.aside`
   padding: 20px;
@@ -19,30 +20,11 @@ const Container = styled.aside`
   }
 `;
 
-const links = [
-  {
-    id: 0,
-    href: '/mypage',
-    title: '내 프로필',
-  },
-  {
-    id: 1,
-    href: '/mypage/change-profile',
-    title: '내 프로필 변경',
-  },
-  {
-    id: 2,
-    href: '/mypage/change-password',
-    title: '비밀번호 변경',
-  },
-  {
-    id: 3,
-    href: '/mypage/delete-account',
-    title: '회원 탈퇴',
-  },
-];
+interface MyPageSidebarProps {
+  links: LinksProps[];
+}
 
-const MyPageSidebar = () => {
+const MyPageSidebar = ({ links }: MyPageSidebarProps) => {
   return (
     <Container>
       {links.map(({ id, href, title }) => (

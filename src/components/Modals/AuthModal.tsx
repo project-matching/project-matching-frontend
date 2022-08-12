@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import PasswordChangeForm from '../Forms/PasswordChangeForm';
+import ForgotPasswordForm from '../Forms/ForgotPasswordForm';
+
 import SigninForm from '../Forms/SigninForm';
 import SignupForm from '../Forms/SignupForm';
 import ModalLayout from './ModalLayout';
@@ -17,7 +18,7 @@ const AuthModal = () => {
       case 'signup':
         return <SignupForm setAuthForm={setAuthForm} />;
       case 'changePassword':
-        return <PasswordChangeForm setAuthForm={setAuthForm} />;
+        return <ForgotPasswordForm setAuthForm={setAuthForm} />;
       default:
         return <SigninForm setAuthForm={setAuthForm} />;
     }

@@ -98,6 +98,7 @@ const SmallCard = ({ projectDto }: SmallCardProps) => {
     register,
   } = projectDto;
 
+  // TODO: 프레젠테이션 컴포넌트로 변경 가능한지 확인
   const { bookmark, setBookmark, toggleBookmark } = useBookmark();
 
   const removeDulplicatePosition = (
