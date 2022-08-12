@@ -8,6 +8,7 @@ import {
   userPending,
   userSuccess,
 } from 'src/redux/reducers/users';
+import { appApi } from 'src/services/AppApi';
 import { TokenService } from 'src/services/TokenService';
 import { UserService } from 'src/services/UserService';
 
@@ -15,10 +16,10 @@ function* updateUserInfoSaga() {
   try {
     yield put(userPending());
     const token = TokenService.get();
+    appApi.defaults.headers.common['Authorization'] = `Bearer ${token}`;
     const userInfo: UserInfoType = yield call(UserService.getUserInfo);
-
-    yield put(userSuccess(userInfo));
     yield put(authSuccess(token));
+    yield put(userSuccess(userInfo));
   } catch (error: any) {
     yield put(
       userFail(new Error(error?.response?.data?.error || 'UNKNOWN_ERROR'))

@@ -10,10 +10,22 @@ export type UserInfoType = {
   technicalStackDtoList: string[];
 };
 
+export type UserProfileType = {
+  email: string | null;
+  github: string | null;
+  image: string | null;
+  name: string | null;
+  position: string | null;
+  selfIntroduction: string | null;
+  sex: string | null;
+  technicalStackList: string[];
+};
+
 interface UserState {
   loading: boolean;
   error: any;
   userInfo: UserInfoType;
+  userProfile: UserProfileType;
 }
 
 export const initUserInfo = {
@@ -26,10 +38,22 @@ export const initUserInfo = {
   technicalStackDtoList: [],
 };
 
+export const initUserProfile: UserProfileType = {
+  email: null,
+  github: null,
+  image: null,
+  name: null,
+  position: null,
+  selfIntroduction: null,
+  sex: null,
+  technicalStackList: [],
+};
+
 const initialState: UserState = {
   loading: false,
   error: null,
   userInfo: initUserInfo,
+  userProfile: initUserProfile,
 };
 
 const userState = 'user';

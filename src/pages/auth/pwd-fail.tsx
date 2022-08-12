@@ -24,11 +24,6 @@ const Fail = () => {
     display: flex;
     flex-direction: row;
   `;
-  /**
-   * 이메일 토큰 만료 시 페이지
-   * TODO:
-   * 1. 인증 종류에 따라 페이지를 다르게 표시할 것 (이메일 인증, 비밀번호 변경)
-   */
 
   return (
     <Wrapper>

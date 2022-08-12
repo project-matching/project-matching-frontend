@@ -2,7 +2,8 @@ import styled from '@emotion/styled';
 import { regular, solid } from '@fortawesome/fontawesome-svg-core/import.macro';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Image from 'next/image';
-import { useState } from 'react';
+import { useEffect } from 'react';
+import useBookmark from 'src/hooks/useBookmark';
 import { ProjectDtoType } from 'src/redux/reducers/projects/project';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -28,6 +29,11 @@ const Author = styled.span`
   font-size: ${(props) => props.theme.sizes.sm};
 `;
 
+/**
+ * TODO:
+ * - 글자 수 초과 시 ellipsis가 올바르게 동작하지 않음
+ * - 지원 포지션 hidden으로 숨기고 mouse hover로 표시
+ */
 const H3 = styled.div`
   font-size: ${(props) => props.theme.sizes.lg};
   font-weight: bold;
@@ -81,7 +87,8 @@ interface SmallCardProps {
 
 const SmallCard = ({ projectDto }: SmallCardProps) => {
   const {
-    bookMark,
+    bookMark: initBookmark,
+    projectNo,
     currentPeople,
     maxPeople,
     name,
@@ -91,7 +98,7 @@ const SmallCard = ({ projectDto }: SmallCardProps) => {
     register,
   } = projectDto;
 
-  const [isBookmarked, setBookmark] = useState(bookMark); // TODO: 전역으로 빼기
+  const { bookmark, setBookmark, toggleBookmark } = useBookmark();
 
   const removeDulplicatePosition = (
     duplicateList: ProjectDtoType['projectSimplePositionDtoList']
@@ -106,18 +113,22 @@ const SmallCard = ({ projectDto }: SmallCardProps) => {
     );
 
     return Object.keys(unique).map((key) => ({
-      positionNo: key,
+      positionNo: +key,
       positionName: unique[+key],
     }));
   };
+
+  useEffect(() => {
+    setBookmark(initBookmark);
+  }, [initBookmark, setBookmark]);
 
   return (
     <CardContainer>
       <Head>
         <Top>
           <Author>{register}</Author>
-          <i onClick={() => setBookmark(!isBookmarked)}>
-            {isBookmarked ? (
+          <i onClick={async () => await toggleBookmark(projectNo)}>
+            {bookmark ? (
               <FontAwesomeIcon icon={solid('bookmark')} />
             ) : (
               <FontAwesomeIcon icon={regular('bookmark')} />
@@ -128,8 +139,8 @@ const SmallCard = ({ projectDto }: SmallCardProps) => {
       </Head>
       <Req>
         <IconWrapper>
-          {projectSimpleTechnicalStackDtoList.length !== 0 &&
-            projectSimpleTechnicalStackDtoList.map((techStackDto) => (
+          {projectSimpleTechnicalStackDtoList?.length !== 0 &&
+            projectSimpleTechnicalStackDtoList?.map((techStackDto) => (
               <div key={uuidv4()}>
                 <Image
                   src={
