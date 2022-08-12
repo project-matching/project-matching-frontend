@@ -12,12 +12,17 @@ export const data = [
     bookMark: false,
     currentPeople: 2,
     maxPeople: 4,
-    name: 'Project',
+    name: 'ㄴ3ㅇ21ㄻ35ㄷ13ㅁ5ㅈㄷ1ㄹ3ㅈ5ㄷ1ㄹ3ㅈ51ㄹ31ㄴ3ㅇ21ㄻ35ㄷ13ㅁ5ㅈㄷ1ㄹ3ㅈ5ㄷ1ㄹ3ㅈ51ㄹ31',
     projectNo: 0,
     projectSimplePositionDtoList: [
       {
         positionName: 'PM',
         positionNo: 0,
+        projectNo: 0,
+      },
+      {
+        positionName: '디자이너',
+        positionNo: 1,
         projectNo: 0,
       },
     ],
@@ -145,6 +150,11 @@ export const data = [
       },
       {
         positionName: '디자이너',
+        positionNo: 1,
+        projectNo: 0,
+      },
+      {
+        positionName: 'fdsafasdfewafkjwanfkljwenflkwajenflknj',
         positionNo: 1,
         projectNo: 0,
       },

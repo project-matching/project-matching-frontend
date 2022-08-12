@@ -1,25 +1,6 @@
 import PrimaryLayout from '@/components/Layouts/PrimaryLayout';
+import MyProfileChange from '@/components/MyPage/MyPageChangeProfile';
 import MyPageLayout from '@/components/MyPage/MyPageLayout';
-import MyProfile from '@/components/MyPage/MyProfile';
-import styled from '@emotion/styled';
-
-const Container = styled.div`
-  margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-`;
-
-const Title = styled.h2`
-  margin: 40px 0;
-  font-weight: bold;
-`;
-
-const Section = styled.section`
-  display: flex;
-  flex-direction: row;
-  gap: 30px;
-`;
 
 const data = {
   email: 'user1@test.com',
@@ -35,19 +16,26 @@ const data = {
 
 /**
  * TODO:
+ * 추가로 불러올 데이터
+ * 1. 서비스에 있는 포지션
+ * 2. 서비스에 있는 기술 스택
+ *
  * 구현 사항
- * 1. 비로그인 시 접근 불가 -> 홈으로 리다이렉트
- * 2. 실제 데이터 불러오기
+ * 1. dropdown (클릭 시 서버에서 불러움)
+ * 2. Form 상태관리
+ * 3. 프로필 업로드 시 미리보기
+ * 4. 자기 소개는 200자 제한
  */
 
-const MyPage = () => {
+const MyPageChangeProfile = () => {
   return (
     <PrimaryLayout>
       <MyPageLayout>
-        <MyProfile myProfile={data} />
+        <MyProfileChange myProfile={data} />
       </MyPageLayout>
     </PrimaryLayout>
   );
 };
 
-export default MyPage;
+export default MyPageChangeProfile;
+MyPageChangeProfile;

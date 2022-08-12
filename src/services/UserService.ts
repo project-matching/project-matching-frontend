@@ -1,4 +1,4 @@
-import { UserInfoType } from 'src/redux/reducers/users';
+import { UserInfoType, UserProfileType } from 'src/redux/reducers/users';
 import { SigninReqType, SignupReqType } from 'src/redux/sagas/authSaga';
 import { appApi } from './AppApi';
 
@@ -59,6 +59,11 @@ export class UserService {
 
   public static async getUserInfo(): Promise<UserInfoType> {
     const response = await appApi.get(`/user/info`);
+    return response.data.data ?? null;
+  }
+
+  public static async getUserProfile(): Promise<UserProfileType> {
+    const response = await appApi.get(`/user`);
     return response.data.data ?? null;
   }
 }

@@ -146,7 +146,8 @@ const ChangePassword = () => {
         router.push('/');
       }
     } catch (error: any) {
-      // TODO: 전송 실패 시..?
+      // TODO: 만료 페이지로 이동
+      router.push('/pwd-fail');
     }
   };
 

@@ -8,7 +8,7 @@ import { signOut } from 'src/redux/reducers/auth';
 import SmallButton from '../Buttons/SmallButton';
 
 // TODO: 후추 저작권 없는 이미지로 변경
-const DEFAULT_IMAGE = '/default_profile.png';
+export const DEFAULT_IMAGE: string = '/default_profile.png';
 
 const ImageContainer = styled.div``;
 
@@ -73,7 +73,7 @@ const Profile = () => {
     position: relative;
 
     > ${Dropdown} {
-      display: ${isOpen ? 'block' : 'none'};
+      visibility: ${isOpen ? 'visible' : 'hidden'};
     }
   `;
 
