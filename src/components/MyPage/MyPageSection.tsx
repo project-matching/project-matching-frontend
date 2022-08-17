@@ -1,4 +1,6 @@
 import styled from '@emotion/styled';
+import { useRouter } from 'next/router';
+import { LinksProps } from './MyPageLayout';
 
 const Article = styled.article`
   padding: 40px 100px;
@@ -15,12 +17,20 @@ const ArticleTitle = styled.h3`
 
 const ArticleContnet = styled.div``;
 
-const MyPageSection = ({ children }: React.PropsWithChildren) => {
-  // TODO: ArticleTitle 동적 변경
+interface MyPageSectionProps extends React.PropsWithChildren {
+  links: LinksProps[];
+}
+
+const MyPageSection = ({ children, links }: MyPageSectionProps) => {
+  const router = useRouter();
+
+  const getTitle = (path: string) => {
+    return links.find(({ href }) => href === path)?.title;
+  };
 
   return (
     <Article>
-      <ArticleTitle>내 프로필</ArticleTitle>
+      <ArticleTitle>{getTitle(router.pathname)}</ArticleTitle>
       <ArticleContnet>{children}</ArticleContnet>
     </Article>
   );

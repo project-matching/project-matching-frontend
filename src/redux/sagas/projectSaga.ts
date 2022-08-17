@@ -16,7 +16,7 @@ import {
   recruitingProjectSuccess,
 } from '../reducers/projects/recruitingProjects';
 import {
-  ProjectPreviewType,
+  ProjectRequestType,
   ProjectService,
 } from './../../services/ProjectService';
 
@@ -55,7 +55,7 @@ function* recruitedProjectPreviewSaga() {
 
 function* recruitingProjectSaga({
   payload,
-}: PayloadAction<ProjectPreviewType>) {
+}: PayloadAction<ProjectRequestType>) {
   try {
     yield put(recruitingProjectPending());
     const projectList: ProjectDtoType[] = yield call(
@@ -73,7 +73,7 @@ function* recruitingProjectSaga({
   }
 }
 
-function* recruitedProjectSaga({ payload }: PayloadAction<ProjectPreviewType>) {
+function* recruitedProjectSaga({ payload }: PayloadAction<ProjectRequestType>) {
   try {
     yield put(recruitedProjectPending());
     const projectList: ProjectDtoType[] = yield call(

@@ -1,17 +1,17 @@
 import PrimaryLayout from '@/components/Layouts/PrimaryLayout';
-import MyProfileChange from '@/components/MyPage/MyPageChangeProfile';
 import MyPageLayout from '@/components/MyPage/MyPageLayout';
+import MyProfileChange from '@/components/MyPage/MyProfileChange';
 
 const data = {
   email: 'user1@test.com',
   github: 'https://fdsfasdf.com',
   image: '/default_profile.png',
   name: 'test user',
-  position: 'PM',
+  position: 'Frontend',
   selfIntroduction:
     '안녕하세요 블라블라안녕하세요 블라블라안녕하세요 블라블라안녕하세요 블라블라안녕하세요 블라블라안녕하세요 블라블라안녕하세요 블라블라안녕하세요 블라블라안녕하세요 블라블라안녕하세요 블라블라안녕하세요 블라블라',
-  sex: 'F',
-  technicalStackList: ['TypeScript', 'React', 'JavaScript', 'HTML5', 'CSS3'],
+  sex: 'M',
+  technicalStackList: ['TypeScript', 'React', 'JavaScript'],
 };
 
 /**

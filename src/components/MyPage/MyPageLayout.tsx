@@ -4,7 +4,7 @@ import MyPageSection from './MyPageSection';
 import MyPageSidebar from './Sidebar';
 
 const Container = styled.div`
-  margin: 0 auto;
+  margin: 0 auto 100px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -21,13 +21,42 @@ const Section = styled.section`
   gap: 30px;
 `;
 
+export interface LinksProps {
+  id: number;
+  href: string;
+  title: string;
+}
+
+const links: LinksProps[] = [
+  {
+    id: 0,
+    href: '/mypage',
+    title: '내 프로필',
+  },
+  {
+    id: 1,
+    href: '/mypage/change-profile',
+    title: '내 프로필 변경',
+  },
+  {
+    id: 2,
+    href: '/mypage/change-password',
+    title: '비밀번호 변경',
+  },
+  {
+    id: 3,
+    href: '/mypage/delete-account',
+    title: '회원 탈퇴',
+  },
+];
+
 const MyPageLayout = ({ children }: React.PropsWithChildren) => {
   return (
     <Container>
       <Title>내 페이지</Title>
       <Section>
-        <MyPageSidebar />
-        <MyPageSection>{children}</MyPageSection>
+        <MyPageSidebar links={links} />
+        <MyPageSection links={links}>{children}</MyPageSection>
       </Section>
     </Container>
   );

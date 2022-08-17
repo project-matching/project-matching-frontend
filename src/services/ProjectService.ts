@@ -1,9 +1,10 @@
 import { appApi } from './AppApi';
 
-export interface ProjectPreviewType {
+export interface ProjectRequestType {
   offset?: number;
   page?: number;
   size?: number;
+  projectNo?: number;
   paged?: boolean;
   searchContent?: string;
   'sort.sorted'?: boolean;
@@ -15,44 +16,38 @@ export class ProjectService {
   public static async recruitingProjectPreview() {
     const response = await appApi.get('/project/recruitment', {
       params: {
-        offset: 0,
-        page: 0,
         size: 5,
       },
     });
-    return response.data.data;
+    return response.data.data.content;
   }
 
   public static async recruitedProjectPreview() {
     const response = await appApi.get('/project/recruitment/complete', {
       params: {
-        offset: 0,
-        page: 0,
         size: 5,
       },
     });
-    return response.data.data;
+    return response.data.data.content;
   }
 
-  public static async recruitingProject(reqData: ProjectPreviewType) {
+  public static async recruitingProject(reqData: ProjectRequestType) {
     const response = await appApi.get('/project/recruitment', {
       params: {
         ...reqData,
-        offset: 0,
         size: 12,
       },
     });
-    return response.data.data;
+    return response.data.data.content;
   }
 
-  public static async recruitedProject(reqData: ProjectPreviewType) {
+  public static async recruitedProject(reqData: ProjectRequestType) {
     const response = await appApi.get('/project/recruitment/complete', {
       params: {
         ...reqData,
-        offset: 0,
         size: 12,
       },
     });
-    return response.data.data;
+    return response.data.data.content;
   }
 }

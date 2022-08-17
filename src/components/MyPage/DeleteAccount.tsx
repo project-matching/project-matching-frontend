@@ -1,25 +1,26 @@
-import PrimaryButton from '@/components/Buttons/PrimaryButton';
 import styled from '@emotion/styled';
-import { useRouter } from 'next/router';
 import { HTMLInputTypeAttribute, useState } from 'react';
-import { TokenService } from 'src/services/TokenService';
-import { UserService } from 'src/services/UserService';
+import PrimaryButton from '../Buttons/PrimaryButton';
 
 const Wrapper = styled.div`
-  height: 100vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
 `;
 
-const Heading = styled.h1`
-  font-size: ${(props) => props.theme.sizes.xl};
-  font-weight: bold;
+const Title = styled.h3`
+  margin-bottom: 20px;
 `;
 
 const Desc = styled.p`
-  margin: 3rem 0;
+  font-size: ${(props) => props.theme.sizes.m};
+  margin-bottom: 20px;
+
+  b {
+    color: ${(props) => props.theme.colors.error};
+    font-weight: bold;
+  }
 `;
 
 const ErrorMessage = styled.span`
@@ -30,7 +31,7 @@ const ErrorMessage = styled.span`
 `;
 
 const Input = styled.input`
-  margin: 5px 0;
+  margin: 10px 0;
   padding: 5px 10px;
   width: 100%;
   font-size: 16px;
@@ -51,8 +52,7 @@ const Form = styled.form`
 `;
 
 interface FormValueType {
-  password: string;
-  confirmPassword: string;
+  confirmDelete: string;
 }
 
 interface InputType {
@@ -68,39 +68,23 @@ interface InputType {
 }
 
 const initialValues: FormValueType = {
-  password: '',
-  confirmPassword: '',
+  confirmDelete: '',
 };
 
-const ChangePassword = () => {
+const DeleteAccount = () => {
   const [inputValues, setInputValues] = useState<FormValueType>(initialValues);
-  const router = useRouter();
-  const { email, authToken } = router.query;
 
   const inputs: InputType[] = [
     {
       id: 0,
-      name: 'password',
-      type: 'password',
-      placeholder: 'Password',
-      errorMessage:
-        '비밀번호는 8-20자의 영어 대소문자, 숫자, 특수문자로 이루어져야합니다.',
-      pattern:
-        '^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[- !@#$%^&*])[a-zA-Z0-9 -!@#$%^&*]{8,20}',
-      label: 'Password',
+      name: 'confirmDelete',
+      type: 'text',
+      placeholder: '탈퇴하겠습니다.',
+      errorMessage: '잘못 입력하셨습니다.',
+      pattern: '탈퇴하겠습니다.',
+      label: '',
       required: true,
       autoFocus: true,
-    },
-    {
-      id: 1,
-      name: 'confirmPassword',
-      type: 'password',
-      placeholder: 'Confirm password',
-      label: 'Confirm Password',
-      errorMessage: '비밀번호와 동일해야 합니다.',
-      pattern: `^${inputValues.password}$`,
-      required: true,
-      autoFocus: false,
     },
   ];
 
@@ -114,44 +98,18 @@ const ChangePassword = () => {
     });
   };
 
+  console.log(inputValues);
+
   const convertToRegEx = (pattern: string): RegExp => RegExp(pattern);
 
-  const submit = async (e: React.FormEvent<HTMLFormElement>) => {
-    try {
-      e.preventDefault();
-
-      if (
-        authToken &&
-        email &&
-        typeof authToken === 'string' &&
-        typeof email === 'string'
-      ) {
-        const target = e.target as typeof e.target & {
-          password: { value: string };
-        };
-
-        const password = target.password.value;
-
-        const token = await UserService.confirmPassword({
-          authToken,
-          email,
-          password,
-        });
-
-        TokenService.set(token);
-
-        // TODO: 변경 완료 시 어디로 이동...???
-        router.push('/');
-      }
-    } catch (error: any) {
-      router.push('/pwd-fail');
-    }
-  };
+  const submit = async (e: React.FormEvent<HTMLFormElement>) => {};
 
   return (
     <Wrapper>
-      <Heading>비밀번호 변경</Heading>
-      <Desc>새 비밀번호를 입력해주세요.</Desc>
+      <Title>정말 탈퇴하시겠습니까?</Title>
+      <Desc>
+        탈퇴하시려면 &apos;<b>탈퇴하겠습니다.</b>&apos; 라고 입력해주세요
+      </Desc>
       <Form onSubmit={submit}>
         {inputs.map(
           ({
@@ -184,11 +142,11 @@ const ChangePassword = () => {
         )}
 
         <PrimaryButton type="submit" wFull>
-          비밀번호 변경
+          회원 탈퇴
         </PrimaryButton>
       </Form>
     </Wrapper>
   );
 };
 
-export default ChangePassword;
+export default DeleteAccount;
