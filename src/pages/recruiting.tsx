@@ -19,7 +19,7 @@ const Recruiting = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(recruitingProject({ page: 0 }));
+    dispatch(recruitingProject({}));
   }, [token, dispatch]);
 
   return (

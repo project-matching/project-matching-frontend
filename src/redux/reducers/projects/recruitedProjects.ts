@@ -1,5 +1,5 @@
 import { createAction, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { ProjectPreviewType } from './../../../services/ProjectService';
+import { ProjectRequestType } from './../../../services/ProjectService';
 import { ProjectState } from './project';
 
 const initialState: ProjectState = {
@@ -49,7 +49,7 @@ export const recruitedProjectPreview = createAction(
   `${projectState}/recruitedProjectPreview`
 );
 
-export const recruitedProject = createAction<ProjectPreviewType>(
+export const recruitedProject = createAction<ProjectRequestType>(
   `${projectState}/recruitedProject`
 );
 
