@@ -1,5 +1,4 @@
 import { createAction, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { ProjectPreviewType } from 'src/services/ProjectService';
 import { ProjectState } from './project';
 
 const initialState: ProjectState = {
