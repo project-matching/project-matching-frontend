@@ -85,4 +85,8 @@ export class UserService {
   public static async patchPassword(reqData: patchPasswordType): Promise<void> {
     await appApi.patch(`/user/password`, reqData);
   }
+
+  public static async deleteUser(): Promise<void> {
+    await appApi.delete(`/user`);
+  }
 }

@@ -227,7 +227,12 @@ const MyProfileChange = ({ myProfile }: MyProfileProps) => {
         </InfoLi>
         <InfoLi>
           <InfoTitle htmlFor="name">이름</InfoTitle>
-          <input id="name" value={name || ''} onChange={handleChangeName} />
+          <input
+            id="name"
+            value={name || ''}
+            onChange={handleChangeName}
+            maxLength={20}
+          />
         </InfoLi>
         <InfoLi>
           <InfoTitle htmlFor="sex">성별</InfoTitle>

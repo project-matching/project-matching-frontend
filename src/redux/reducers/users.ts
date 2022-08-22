@@ -29,6 +29,8 @@ interface UserState {
   errorUserProfile: any;
   loadingUserPassword: boolean;
   errorUserPassword: any;
+  loadingUserDelete: boolean;
+  errorUserDelete: any;
   userInfo: UserInfoType;
   userProfile: UserProfileType;
 }
@@ -61,6 +63,8 @@ const initialState: UserState = {
   errorUserProfile: null,
   loadingUserPassword: false,
   errorUserPassword: null,
+  loadingUserDelete: false,
+  errorUserDelete: null,
   userInfo: initUserInfo,
   userProfile: initUserProfile,
 };
@@ -141,6 +145,27 @@ const userSlice = createSlice({
         errorUserPassword: null,
       };
     },
+    pendingUserDelete(state) {
+      return {
+        ...state,
+        loadingUserDelete: true,
+        errorUserDelete: null,
+      };
+    },
+    failUserDelete(state, action: PayloadAction<UserState['errorUserDelete']>) {
+      return {
+        ...state,
+        loadingUserDelete: false,
+        errorUserDelete: action.payload,
+      };
+    },
+    successUserDelete(state) {
+      return {
+        ...state,
+        loadingUserDelete: false,
+        errorUserDelete: null,
+      };
+    },
   },
 });
 
@@ -154,6 +179,9 @@ export const {
   pendingPassword: userPendingPassword,
   failPassword: userFailPassword,
   successPassword: userSuccessPassword,
+  pendingUserDelete: userPendingUserDelete,
+  failUserDelete: userFailUserDelete,
+  successUserDelete: userSuccessUserDelete,
 } = userSlice.actions;
 
 export const updateUserInfo = createAction(`${userState}/updateUserInfo`);
@@ -163,5 +191,6 @@ export const patchUserProfile = createAction<patchProfileType>(
 export const patchPassword = createAction<patchPasswordType>(
   `${userState}/patchPassword`
 );
+export const deleteUser = createAction(`${userState}/deleteUser`);
 
 export default userSlice.reducer;

@@ -3,18 +3,22 @@ import { call, put, takeLatest } from 'redux-saga/effects';
 import { authFail, authSuccess } from 'src/redux/reducers/auth';
 import { openModal } from 'src/redux/reducers/components/modals';
 import {
+  deleteUser,
   patchPassword,
   patchUserProfile,
   updateUserInfo,
   userFailPassword,
+  userFailUserDelete,
   userFailUserInfo,
   userFailUserProfile,
   UserInfoType,
   userPendingPassword,
+  userPendingUserDelete,
   userPendingUserInfo,
   userPendingUserProfile,
   UserProfileType,
   userSuccessPassword,
+  userSuccessUserDelete,
   userSuccessUserInfo,
   userSuccressProfile,
 } from 'src/redux/reducers/users';
@@ -89,10 +93,24 @@ function* updatePasswordSaga({ payload }: PayloadAction<patchPasswordType>) {
     yield call(UserService.patchPassword, payload);
     yield put(userSuccessPassword());
     yield put(openModal('SuccessPasswordChangeModal'));
-    // TODO: 성공 메세지
   } catch (error: any) {
     yield put(
       userFailPassword(
+        new Error(error?.response?.data?.error || 'UNKNOWN_ERROR')
+      )
+    );
+  }
+}
+
+function* deleteUserSaga() {
+  try {
+    yield put(userPendingUserDelete());
+    yield call(UserService.deleteUser);
+    yield put(userSuccessUserDelete());
+    yield put(openModal('SuccessDeleteUserModal'));
+  } catch (error: any) {
+    yield put(
+      userFailUserDelete(
         new Error(error?.response?.data?.error || 'UNKNOWN_ERROR')
       )
     );
@@ -104,4 +122,5 @@ export function* userSaga() {
   yield takeLatest(updateUserInfo.type, getUserProfileSaga);
   yield takeLatest(patchUserProfile.type, updateUserProfileSaga);
   yield takeLatest(patchPassword.type, updatePasswordSaga);
+  yield takeLatest(deleteUser.type, deleteUserSaga);
 }

@@ -1,5 +1,7 @@
 import styled from '@emotion/styled';
 import { HTMLInputTypeAttribute, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { deleteUser } from 'src/redux/reducers/users';
 import PrimaryButton from '../Buttons/PrimaryButton';
 
 const Wrapper = styled.div`
@@ -72,6 +74,7 @@ const initialValues: FormValueType = {
 };
 
 const DeleteAccount = () => {
+  const dispatch = useDispatch();
   const [inputValues, setInputValues] = useState<FormValueType>(initialValues);
 
   const inputs: InputType[] = [
@@ -98,11 +101,17 @@ const DeleteAccount = () => {
     });
   };
 
-  console.log(inputValues);
-
   const convertToRegEx = (pattern: string): RegExp => RegExp(pattern);
 
-  const submit = async (e: React.FormEvent<HTMLFormElement>) => {};
+  const submit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    dispatch(deleteUser());
+
+    setInputValues({
+      confirmDelete: '',
+    });
+  };
 
   return (
     <Wrapper>
