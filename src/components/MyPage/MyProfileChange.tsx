@@ -1,9 +1,12 @@
 import styled from '@emotion/styled';
 import Image from 'next/image';
-import React, { useRef, useState } from 'react';
-import { UserProfileType } from 'src/redux/reducers/users';
+import React, { useEffect, useRef, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { patchUserProfile, UserProfileType } from 'src/redux/reducers/users';
+import { PositionService } from 'src/services/PositionService';
 import PrimaryButton from '../Buttons/PrimaryButton';
 import MultiSelectDropdown from '../Dropdowns/MultiSelectDropdown';
+import UniSelectDropdown from '../Dropdowns/UniSelectDropdown';
 import { DEFAULT_IMAGE } from '../Headers/Profile';
 
 const ImageContainer = styled.div`
@@ -56,7 +59,7 @@ const InfoLi = styled.li<{ vertical?: boolean }>`
   > textarea {
     outline: none;
     border: 1px solid #d4d4d4;
-    height: 90px;
+    height: 130px;
     padding: 10px;
   }
 
@@ -80,11 +83,21 @@ const ButtonWrapper = styled.div`
   margin: 20px auto 0;
 `;
 
+const defaultSex = ['남', '여', '없음'];
+
+interface PositionDtoType {
+  positionName: string;
+  positionNo: number;
+}
+
 interface MyProfileProps {
   myProfile: UserProfileType;
 }
 
 const MyProfileChange = ({ myProfile }: MyProfileProps) => {
+  const dispatch = useDispatch();
+  const [defaultPositions, setDefaultPositions] = useState<Array<string>>([]);
+
   const {
     email,
     github: initGithub,
@@ -93,34 +106,32 @@ const MyProfileChange = ({ myProfile }: MyProfileProps) => {
     position: initPosition,
     selfIntroduction: initSelfIntroduction,
     sex: initSex,
-    technicalStackList,
+    technicalStackList: initTechnicalStackList,
   } = myProfile;
 
   const convertSex = (initSex: string) => {
     return initSex === 'M' ? '남' : initSex === 'W' ? '여' : '없음';
   };
 
-  const [selectedTechStacks, setSelectedTechStack] =
-    useState(technicalStackList);
   const [image, setImage] = useState(initImage);
   const [name, setName] = useState(initName);
-  const [position, setPosition] = useState(initPosition);
   const [sex, setSex] = useState(initSex);
+  const [position, setPosition] = useState(initPosition);
+
+  const [techStacks, setTechStack] = useState(initTechnicalStackList);
   const [github, setGithub] = useState(initGithub);
   const [selfIntroduction, setSelfIntroduction] =
     useState(initSelfIntroduction);
   const ImageInputEl = useRef<HTMLInputElement>(null);
 
   const handleProfileImage = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const target = e.currentTarget;
+    const files = e.target.files;
 
-    if (target.files) {
-      const uploadedImage = target.files[0];
+    if (files && files.length > 0) {
+      const uploadedImage = files[0];
       const imageURL = uploadedImage && URL.createObjectURL(uploadedImage);
-
       if (imageURL) {
         setImage(imageURL);
-        URL.revokeObjectURL(imageURL);
       }
     }
   };
@@ -143,16 +154,57 @@ const MyProfileChange = ({ myProfile }: MyProfileProps) => {
     setSelfIntroduction(e.target.value);
   };
 
-  const submitProfile = (e: React.FormEvent) => {
+  const submitProfile = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // 제출 시
+    const data = {
+      email,
+      github,
+      name,
+      position,
+      selfIntroduction,
+      sex,
+      techStacks,
+    };
+
+    // TODO: 수정 제출
+    const formData = new FormData();
+    for (const [key, value] of Object.entries(data)) {
+      formData.append(key, JSON.stringify(value));
+    }
+
+    dispatch(
+      patchUserProfile({
+        data: formData,
+      })
+    );
+
+    image && URL.revokeObjectURL(image);
+    setImage(DEFAULT_IMAGE);
   };
+
+  const getPositionNameOnly = (positions: PositionDtoType[]) =>
+    positions.map(({ positionName }) => positionName);
+
+  useEffect(() => {
+    // TODO: 최적화
+    const init = async () => {
+      const fetchedDefaultPositions: PositionDtoType[] =
+        await PositionService.getPositions();
+
+      setDefaultPositions(getPositionNameOnly(fetchedDefaultPositions));
+    };
+
+    if (email) {
+      init();
+    }
+  }, [email]);
 
   return (
     <form onSubmit={submitProfile}>
       <ImageContainer>
         <Image
-          src={image || DEFAULT_IMAGE}
+          // src={image || DEFAULT_IMAGE}
+          src={DEFAULT_IMAGE} // TODO: URL 변경 시 수정
           alt="profile_image"
           width="50px"
           height="50px"
@@ -175,28 +227,28 @@ const MyProfileChange = ({ myProfile }: MyProfileProps) => {
         </InfoLi>
         <InfoLi>
           <InfoTitle htmlFor="name">이름</InfoTitle>
-          <input id="name" value={name + ''} onChange={handleChangeName} />
+          <input id="name" value={name || ''} onChange={handleChangeName} />
         </InfoLi>
-        {/* <InfoLi>
+        <InfoLi>
           <InfoTitle htmlFor="sex">성별</InfoTitle>
           <UniSelectDropdown
             id="sex"
             title="성별"
-            selectedItem={convertSex(sex + '')}
-            items={['남', '여', '없음']}
+            selectedItem={convertSex(sex || '')}
+            items={defaultSex}
             onChange={setSex}
           />
-        </InfoLi> */}
-        {/* <InfoLi>
+        </InfoLi>
+        <InfoLi>
           <InfoTitle htmlFor="position">포지션</InfoTitle>
           <UniSelectDropdown
             id="position"
             title="포지션"
-            selectedItem={position + ''}
-            items={['PM', 'Frontend', 'Backend', 'Designer']}
+            selectedItem={position || '없음'}
+            items={defaultPositions}
             onChange={setPosition}
           />
-        </InfoLi> */}
+        </InfoLi>
         <InfoLi vertical={true}>
           <InfoTitle htmlFor="techStack">기술 스택</InfoTitle>
           <MultiSelectDropdown
@@ -211,15 +263,15 @@ const MyProfileChange = ({ myProfile }: MyProfileProps) => {
               'Python',
               'D3',
             ]}
-            selectedItems={selectedTechStacks}
-            setSelectedItem={setSelectedTechStack}
+            selectedItems={techStacks}
+            setSelectedItem={setTechStack}
           />
         </InfoLi>
         <InfoLi>
-          <InfoTitle htmlFor="github">Gitbhub</InfoTitle>
+          <InfoTitle htmlFor="github">Github</InfoTitle>
           <input
             id="github"
-            value={github + ''}
+            value={github || ''}
             onChange={handleChangeGithub}
           />
         </InfoLi>
@@ -228,7 +280,7 @@ const MyProfileChange = ({ myProfile }: MyProfileProps) => {
           <textarea
             id="selfIntroduction"
             maxLength={200}
-            value={selfIntroduction + ''}
+            value={selfIntroduction || ''}
             onChange={handleChangeSelfIntroduction}
           ></textarea>
         </InfoLi>

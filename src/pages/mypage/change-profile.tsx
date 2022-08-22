@@ -1,6 +1,7 @@
 import PrimaryLayout from '@/components/Layouts/PrimaryLayout';
 import MyPageLayout from '@/components/MyPage/MyPageLayout';
 import MyProfileChange from '@/components/MyPage/MyProfileChange';
+import { useAppSelector } from 'src/redux/hooks';
 
 const data = {
   email: 'user1@test.com',
@@ -14,24 +15,13 @@ const data = {
   technicalStackList: ['TypeScript', 'React', 'JavaScript'],
 };
 
-/**
- * TODO:
- * 추가로 불러올 데이터
- * 1. 서비스에 있는 포지션
- * 2. 서비스에 있는 기술 스택
- *
- * 구현 사항
- * 1. dropdown (클릭 시 서버에서 불러움)
- * 2. Form 상태관리
- * 3. 프로필 업로드 시 미리보기
- * 4. 자기 소개는 200자 제한
- */
-
 const MyPageChangeProfile = () => {
+  const userProfile = useAppSelector((state) => state.user.userProfile);
+
   return (
     <PrimaryLayout>
       <MyPageLayout>
-        <MyProfileChange myProfile={data} />
+        <MyProfileChange myProfile={userProfile} />
       </MyPageLayout>
     </PrimaryLayout>
   );

@@ -11,6 +11,11 @@ function MyApp({ Component, pageProps }: AppProps) {
   const dispatch = useDispatch();
 
   useEffect(() => {
+    // if (process.env.NODE_ENV == 'development') {
+    //   const { worker } = require('../../mocks/browser');
+    //   worker.start();
+    // }
+
     if (localStorage !== undefined) {
       dispatch(updateUserInfo());
     }

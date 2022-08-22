@@ -38,6 +38,7 @@ const authSlice = createSlice({
       return {
         ...state,
         loading: false,
+        token: null,
         error: action.payload,
       };
     },

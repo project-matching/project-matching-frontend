@@ -1,5 +1,8 @@
 import styled from '@emotion/styled';
 import { HTMLInputTypeAttribute, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { useAppSelector } from 'src/redux/hooks';
+import { patchPassword } from 'src/redux/reducers/users';
 import PrimaryButton from '../Buttons/PrimaryButton';
 
 const Wrapper = styled.div`
@@ -41,6 +44,12 @@ const Form = styled.form`
   }
 `;
 
+const SubmitErrorMessage = styled.span`
+  color: ${(props) => props.theme.colors.error};
+  font-size: ${(props) => props.theme.sizes.sm};
+  line-height: 1.3;
+`;
+
 interface FormValueType {
   oldPassword: string;
   password: string;
@@ -66,6 +75,8 @@ const initialValues: FormValueType = {
 };
 
 const ChangePasswordForm = () => {
+  const dispatch = useDispatch();
+  const errorPassword = useAppSelector((state) => state.user.errorUserPassword);
   const [inputValues, setInputValues] = useState<FormValueType>(initialValues);
 
   const inputs: InputType[] = [
@@ -76,7 +87,7 @@ const ChangePasswordForm = () => {
       placeholder: '현재 비밀번호',
       errorMessage:
         '비밀번호는 8-20자의 영어 대소문자, 숫자, 특수문자로 이루어져야합니다.',
-      pattern: '',
+      pattern: '[a-zA-Z0-9 -!@#$%^&*]+',
       label: '현재 비밀번호',
       required: true,
       autoFocus: true,
@@ -88,8 +99,7 @@ const ChangePasswordForm = () => {
       placeholder: '새 비밀번호',
       errorMessage:
         '비밀번호는 8-20자의 영어 대소문자, 숫자, 특수문자로 이루어져야합니다.',
-      pattern:
-        '^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[- !@#$%^&*])[a-zA-Z0-9 -!@#$%^&*]{8,20}',
+      pattern: `^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[- !@#$%^&*])[a-zA-Z0-9 -!@#$%^&*]{8,20}`,
       label: '새 비밀번호',
       required: true,
       autoFocus: false,
@@ -119,7 +129,21 @@ const ChangePasswordForm = () => {
 
   const convertToRegEx = (pattern: string): RegExp => RegExp(pattern);
 
-  const submit = async (e: React.FormEvent<HTMLFormElement>) => {};
+  const submit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    dispatch(
+      patchPassword({
+        oldPassword: inputValues.oldPassword,
+        newPassword: inputValues.password,
+      })
+    );
+
+    setInputValues({
+      oldPassword: '',
+      password: '',
+      confirmPassword: '',
+    });
+  };
 
   return (
     <Wrapper>
@@ -160,6 +184,9 @@ const ChangePasswordForm = () => {
           비밀번호 변경
         </PrimaryButton>
       </Form>
+      {errorPassword && (
+        <SubmitErrorMessage>올바르지 않은 비밀번호입니다.</SubmitErrorMessage>
+      )}
     </Wrapper>
   );
 };

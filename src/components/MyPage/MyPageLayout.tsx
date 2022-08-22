@@ -1,5 +1,6 @@
 import styled from '@emotion/styled';
 import React from 'react';
+import { useAppSelector } from 'src/redux/hooks';
 import MyPageSection from './MyPageSection';
 import MyPageSidebar from './Sidebar';
 
@@ -51,14 +52,20 @@ const links: LinksProps[] = [
 ];
 
 const MyPageLayout = ({ children }: React.PropsWithChildren) => {
+  const token = useAppSelector((state) => state.auth.token);
+
   return (
-    <Container>
-      <Title>내 페이지</Title>
-      <Section>
-        <MyPageSidebar links={links} />
-        <MyPageSection links={links}>{children}</MyPageSection>
-      </Section>
-    </Container>
+    <>
+      {token && (
+        <Container>
+          <Title>내 페이지</Title>
+          <Section>
+            <MyPageSidebar links={links} />
+            <MyPageSection links={links}>{children}</MyPageSection>
+          </Section>
+        </Container>
+      )}
+    </>
   );
 };
 

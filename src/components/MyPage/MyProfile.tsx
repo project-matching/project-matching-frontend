@@ -24,6 +24,7 @@ const InfoLi = styled.li<{ vertical: boolean }>`
   > span {
     margin-right: 10px;
     line-height: 1.7;
+    vertical-align: center;
 
     &${InfoTitle} {
       ${(props) =>
@@ -106,7 +107,8 @@ const MyProfile = ({ myProfile }: MyProfileProps) => {
     <form onSubmit={submitProfile}>
       <ImageContainer>
         <Image
-          src={image || DEFAULT_IMAGE}
+          // src={image || DEFAULT_IMAGE}
+          src={DEFAULT_IMAGE} // TODO: 서버 수정 후 변경
           alt="profile_image"
           width="50px"
           height="50px"
@@ -121,16 +123,17 @@ const MyProfile = ({ myProfile }: MyProfileProps) => {
             return (
               <InfoLi key={id} vertical={vertical}>
                 <InfoTitle>{name}</InfoTitle>
-                {content.map((techStack) => (
-                  <span key={uuidv4()}>{techStack}</span>
-                ))}
+                {(content.length > 0 &&
+                  content?.map((techStack) => (
+                    <span key={uuidv4()}>{techStack}</span>
+                  ))) || <span>없음</span>}
               </InfoLi>
             );
           }
           return (
             <InfoLi key={id} vertical={vertical}>
               <InfoTitle>{name}</InfoTitle>
-              <span>{content}</span>
+              <span>{content || '없음'}</span>
             </InfoLi>
           );
         })}

@@ -17,6 +17,15 @@ interface sendEmailType {
   email: string;
 }
 
+export interface patchProfileType {
+  data: FormData;
+}
+
+export interface patchPasswordType {
+  oldPassword: string;
+  newPassword: string;
+}
+
 export class UserService {
   public static async signup(reqData: SignupReqType) {
     await appApi.post(`/user`, reqData);
@@ -65,5 +74,15 @@ export class UserService {
   public static async getUserProfile(): Promise<UserProfileType> {
     const response = await appApi.get(`/user`);
     return response.data.data ?? null;
+  }
+
+  public static async patchUserProfile(
+    reqData: patchProfileType['data']
+  ): Promise<void> {
+    await appApi.patch(`/user`, reqData);
+  }
+
+  public static async patchPassword(reqData: patchPasswordType): Promise<void> {
+    await appApi.patch(`/user/password`, reqData);
   }
 }

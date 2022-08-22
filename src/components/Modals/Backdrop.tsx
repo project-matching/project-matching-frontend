@@ -2,7 +2,8 @@ import styled from '@emotion/styled';
 
 export const Backdrop = styled.div`
   position: absolute;
-  background-color: rgba(0, 0, 0, 0.7);
+  background-color: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(2px);
   top: 0;
   left: 0;
   width: 100vw;
