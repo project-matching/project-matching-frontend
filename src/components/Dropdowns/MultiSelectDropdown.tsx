@@ -99,9 +99,8 @@ const MultiSelectDropdown = ({
   selectedItems,
   setSelectedItem,
 }: DropdownProps) => {
-  const filterSelectedItems = (items: string[], selectedItems: string[]) => {
-    return items.filter((item) => !selectedItems.includes(item));
-  };
+  const filterSelectedItems = (items: string[], selectedItems: string[]) =>
+    items.filter((item) => !selectedItems.includes(item));
 
   const [options, setOption] = useState(
     filterSelectedItems(items, selectedItems)
@@ -116,7 +115,7 @@ const MultiSelectDropdown = ({
     const content = target?.parentNode?.firstChild?.textContent;
     if (content) {
       setSelectedItem(selectedItems.filter((item) => item !== content));
-      setOption([...options, content]);
+      setOption([...options, content].sort());
     }
   };
 
@@ -144,41 +143,44 @@ const MultiSelectDropdown = ({
 
   useEffect(() => {
     window.addEventListener('click', closeDropdown);
-
     return () => {
       window.removeEventListener('click', closeDropdown);
     };
   });
 
   return (
-    <Container ref={containerEl}>
-      <DropdownInput onClick={toggleDropdown}>
-        <SelectedItemContainer>
-          {selectedItems.map((selectedItem) => (
-            <SelectedItem key={uuidv4()}>
-              <div>{selectedItem}</div>
-              <FontAwesomeIcon icon={solid('xmark')} onClick={removeItem} />
-            </SelectedItem>
-          ))}
-        </SelectedItemContainer>
-        <i ref={chevronEl}>
-          {open ? (
-            <FontAwesomeIcon icon={solid('chevron-up')} />
-          ) : (
-            <FontAwesomeIcon icon={solid('chevron-down')} />
-          )}
-        </i>
-      </DropdownInput>
-      {open && items.length !== selectedItems.length ? (
-        <OptionContainer>
-          {options.map((option) => (
-            <OptionItem key={uuidv4()} onClick={handleOption}>
-              {option}
-            </OptionItem>
-          ))}
-        </OptionContainer>
-      ) : null}
-    </Container>
+    <>
+      {items.length > 0 && (
+        <Container ref={containerEl}>
+          <DropdownInput onClick={toggleDropdown}>
+            <SelectedItemContainer>
+              {selectedItems.map((selectedItem) => (
+                <SelectedItem key={uuidv4()}>
+                  <div>{selectedItem}</div>
+                  <FontAwesomeIcon icon={solid('xmark')} onClick={removeItem} />
+                </SelectedItem>
+              ))}
+            </SelectedItemContainer>
+            <i ref={chevronEl}>
+              {open ? (
+                <FontAwesomeIcon icon={solid('chevron-up')} />
+              ) : (
+                <FontAwesomeIcon icon={solid('chevron-down')} />
+              )}
+            </i>
+          </DropdownInput>
+          {open && items.length !== selectedItems.length ? (
+            <OptionContainer>
+              {options.map((option) => (
+                <OptionItem key={uuidv4()} onClick={handleOption}>
+                  {option}
+                </OptionItem>
+              ))}
+            </OptionContainer>
+          ) : null}
+        </Container>
+      )}
+    </>
   );
 };
 

@@ -23,24 +23,25 @@ interface DropdownProps {
   title: string;
   items: string[];
   selectedItem: string;
-  onChange: React.Dispatch<React.SetStateAction<string | null>>;
+  setItem: React.Dispatch<React.SetStateAction<string>>;
 }
 
 const UniSelectDropdown = ({
   title,
   items,
   selectedItem,
-  onChange,
+  setItem,
 }: DropdownProps) => {
   const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    onChange(e.target.value);
+    setItem(e.target.value);
   };
+
   return (
     <Container>
       <Select
         name={title}
         className="select"
-        defaultValue={selectedItem}
+        value={selectedItem}
         onChange={handleChange}
       >
         {items.map((item) => {

@@ -4,6 +4,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { patchUserProfile, UserProfileType } from 'src/redux/reducers/users';
 import { PositionService } from 'src/services/PositionService';
+import { TechStackService } from 'src/services/TechStackService';
 import PrimaryButton from '../Buttons/PrimaryButton';
 import MultiSelectDropdown from '../Dropdowns/MultiSelectDropdown';
 import UniSelectDropdown from '../Dropdowns/UniSelectDropdown';
@@ -83,11 +84,44 @@ const ButtonWrapper = styled.div`
   margin: 20px auto 0;
 `;
 
-const defaultSex = ['남', '여', '없음'];
+const defaultSex = ['없음', '남', '여'];
+
+export const decodeSex = (initSex: string) => {
+  return initSex === 'M' ? '남' : initSex === 'W' ? '여' : '없음';
+};
+
+const encodeSex = (sex: string) => {
+  return sex && sex === '남' ? 'M' : sex === '여' ? 'W' : 'N';
+};
+
+const getPositionNameOnly = (positions: PositionDtoType[]) =>
+  positions.map(({ positionName }) => positionName);
+
+const getTeckStackNameOnly = (techStacks: TechnicalStackDtoType[]) =>
+  techStacks.map(({ technicalStackName }) => technicalStackName);
+
+const getDefaultPositionOptions = async () => {
+  const fetchedDefaultPositions: PositionDtoType[] =
+    await PositionService.getPositions();
+  const defaultPositionList = getPositionNameOnly(fetchedDefaultPositions);
+  return ['없음', ...defaultPositionList];
+};
+
+const getDefaultTechStackOptions = async () => {
+  const fetchedDefaultTechStacks: TechnicalStackDtoType[] =
+    await TechStackService.getTechStacks();
+  return getTeckStackNameOnly(fetchedDefaultTechStacks);
+};
 
 interface PositionDtoType {
   positionName: string;
   positionNo: number;
+}
+
+interface TechnicalStackDtoType {
+  technicalStackName: string;
+  technicalStackNo: number;
+  image: string;
 }
 
 interface MyProfileProps {
@@ -97,6 +131,7 @@ interface MyProfileProps {
 const MyProfileChange = ({ myProfile }: MyProfileProps) => {
   const dispatch = useDispatch();
   const [defaultPositions, setDefaultPositions] = useState<Array<string>>([]);
+  const [defaultTechStacks, setDefaultTechStacks] = useState<Array<string>>([]);
 
   const {
     email,
@@ -109,19 +144,16 @@ const MyProfileChange = ({ myProfile }: MyProfileProps) => {
     technicalStackList: initTechnicalStackList,
   } = myProfile;
 
-  const convertSex = (initSex: string) => {
-    return initSex === 'M' ? '남' : initSex === 'W' ? '여' : '없음';
-  };
-
   const [image, setImage] = useState(initImage);
-  const [name, setName] = useState(initName);
-  const [sex, setSex] = useState(initSex);
-  const [position, setPosition] = useState(initPosition);
+  const [name, setName] = useState(initName || '');
+  const [sex, setSex] = useState(decodeSex(initSex || 'N'));
+  const [position, setPosition] = useState(initPosition || '없음');
 
   const [techStacks, setTechStack] = useState(initTechnicalStackList);
-  const [github, setGithub] = useState(initGithub);
-  const [selfIntroduction, setSelfIntroduction] =
-    useState(initSelfIntroduction);
+  const [github, setGithub] = useState(initGithub || '');
+  const [selfIntroduction, setSelfIntroduction] = useState(
+    initSelfIntroduction || ''
+  );
   const ImageInputEl = useRef<HTMLInputElement>(null);
 
   const handleProfileImage = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -162,14 +194,21 @@ const MyProfileChange = ({ myProfile }: MyProfileProps) => {
       name,
       position,
       selfIntroduction,
-      sex,
-      techStacks,
+      sex: encodeSex(sex),
+      technicalStackList: techStacks,
     };
 
     // TODO: 수정 제출
     const formData = new FormData();
     for (const [key, value] of Object.entries(data)) {
-      formData.append(key, JSON.stringify(value));
+      console.log(key, value);
+      if (Array.isArray(value)) {
+        value.forEach((item) => {
+          formData.append(key, item);
+        });
+      } else {
+        value && formData.append(key, value);
+      }
     }
 
     dispatch(
@@ -182,19 +221,14 @@ const MyProfileChange = ({ myProfile }: MyProfileProps) => {
     setImage(DEFAULT_IMAGE);
   };
 
-  const getPositionNameOnly = (positions: PositionDtoType[]) =>
-    positions.map(({ positionName }) => positionName);
-
   useEffect(() => {
     // TODO: 최적화
-    const init = async () => {
-      const fetchedDefaultPositions: PositionDtoType[] =
-        await PositionService.getPositions();
-
-      setDefaultPositions(getPositionNameOnly(fetchedDefaultPositions));
-    };
 
     if (email) {
+      const init = async () => {
+        setDefaultPositions(await getDefaultPositionOptions());
+        setDefaultTechStacks(await getDefaultTechStackOptions());
+      };
       init();
     }
   }, [email]);
@@ -229,7 +263,7 @@ const MyProfileChange = ({ myProfile }: MyProfileProps) => {
           <InfoTitle htmlFor="name">이름</InfoTitle>
           <input
             id="name"
-            value={name || ''}
+            value={name}
             onChange={handleChangeName}
             maxLength={20}
           />
@@ -239,59 +273,52 @@ const MyProfileChange = ({ myProfile }: MyProfileProps) => {
           <UniSelectDropdown
             id="sex"
             title="성별"
-            selectedItem={convertSex(sex || '')}
+            selectedItem={sex}
             items={defaultSex}
-            onChange={setSex}
+            setItem={setSex}
           />
         </InfoLi>
-        <InfoLi>
-          <InfoTitle htmlFor="position">포지션</InfoTitle>
-          <UniSelectDropdown
-            id="position"
-            title="포지션"
-            selectedItem={position || '없음'}
-            items={defaultPositions}
-            onChange={setPosition}
-          />
-        </InfoLi>
-        <InfoLi vertical={true}>
-          <InfoTitle htmlFor="techStack">기술 스택</InfoTitle>
-          <MultiSelectDropdown
-            id="techStack"
-            items={[
-              'TypeScript',
-              'React',
-              'JavaScript',
-              'HTML5',
-              'CSS3',
-              'Spring',
-              'Python',
-              'D3',
-            ]}
-            selectedItems={techStacks}
-            setSelectedItem={setTechStack}
-          />
-        </InfoLi>
+        {defaultPositions.length && (
+          <InfoLi>
+            <InfoTitle htmlFor="position">포지션</InfoTitle>
+            <UniSelectDropdown
+              id="position"
+              title="포지션"
+              selectedItem={position}
+              items={defaultPositions}
+              setItem={setPosition}
+            />
+          </InfoLi>
+        )}
+        {defaultTechStacks.length && (
+          <InfoLi vertical={true}>
+            <InfoTitle htmlFor="techStack">기술 스택</InfoTitle>
+            <MultiSelectDropdown
+              id="techStack"
+              items={defaultTechStacks}
+              selectedItems={techStacks}
+              setSelectedItem={setTechStack}
+            />
+          </InfoLi>
+        )}
         <InfoLi>
           <InfoTitle htmlFor="github">Github</InfoTitle>
-          <input
-            id="github"
-            value={github || ''}
-            onChange={handleChangeGithub}
-          />
+          <input id="github" value={github} onChange={handleChangeGithub} />
         </InfoLi>
         <InfoLi vertical={true}>
           <InfoTitle htmlFor="selfIntroduction">자기 소개 (200 자)</InfoTitle>
           <textarea
             id="selfIntroduction"
             maxLength={200}
-            value={selfIntroduction || ''}
+            value={selfIntroduction}
             onChange={handleChangeSelfIntroduction}
           ></textarea>
         </InfoLi>
       </InfoContainer>
       <ButtonWrapper>
-        <PrimaryButton wFull>변경</PrimaryButton>
+        <PrimaryButton wFull type="submit">
+          변경
+        </PrimaryButton>
       </ButtonWrapper>
     </form>
   );

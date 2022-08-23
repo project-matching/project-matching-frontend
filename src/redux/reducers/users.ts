@@ -175,7 +175,7 @@ export const {
   successUserInfo: userSuccessUserInfo,
   pendingUserProfile: userPendingUserProfile,
   failUserProfile: userFailUserProfile,
-  successUserProfile: userSuccressProfile,
+  successUserProfile: userSuccressUserProfile,
   pendingPassword: userPendingPassword,
   failPassword: userFailPassword,
   successPassword: userSuccessPassword,

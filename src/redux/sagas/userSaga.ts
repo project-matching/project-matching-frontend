@@ -20,7 +20,7 @@ import {
   userSuccessPassword,
   userSuccessUserDelete,
   userSuccessUserInfo,
-  userSuccressProfile,
+  userSuccressUserProfile,
 } from 'src/redux/reducers/users';
 import { appApi } from 'src/services/AppApi';
 import { TokenService } from 'src/services/TokenService';
@@ -52,7 +52,7 @@ function* getUserProfileSaga() {
   try {
     yield put(userPendingUserProfile());
     const userProfile: UserProfileType = yield call(UserService.getUserProfile);
-    yield put(userSuccressProfile(userProfile));
+    yield put(userSuccressUserProfile(userProfile));
   } catch (error: any) {
     yield put(
       userFailUserProfile(
@@ -69,11 +69,9 @@ function* getUserProfileSaga() {
 function* updateUserProfileSaga({ payload }: PayloadAction<patchProfileType>) {
   try {
     yield put(userPendingUserProfile());
-    const userProfile: UserProfileType = yield call(
-      UserService.patchUserProfile,
-      payload.data
-    );
-    yield put(userSuccressProfile(userProfile));
+    yield call(UserService.patchUserProfile, payload.data);
+    const userProfile: UserProfileType = yield call(UserService.getUserProfile);
+    yield put(userSuccressUserProfile(userProfile));
   } catch (error: any) {
     yield put(
       userFailUserProfile(

@@ -52,11 +52,11 @@ const links: LinksProps[] = [
 ];
 
 const MyPageLayout = ({ children }: React.PropsWithChildren) => {
-  const token = useAppSelector((state) => state.auth.token);
+  const userProfile = useAppSelector((state) => state.user.userProfile);
 
   return (
     <>
-      {token && (
+      {userProfile?.email && (
         <Container>
           <Title>내 페이지</Title>
           <Section>

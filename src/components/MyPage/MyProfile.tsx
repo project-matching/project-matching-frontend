@@ -3,6 +3,7 @@ import Image from 'next/image';
 import { UserProfileType } from 'src/redux/reducers/users';
 import { v4 as uuidv4 } from 'uuid';
 import { DEFAULT_IMAGE } from '../Headers/Profile';
+import { decodeSex } from './MyProfileChange';
 
 const ImageContainer = styled.div`
   margin-bottom: 50px;
@@ -133,7 +134,11 @@ const MyProfile = ({ myProfile }: MyProfileProps) => {
           return (
             <InfoLi key={id} vertical={vertical}>
               <InfoTitle>{name}</InfoTitle>
-              <span>{content || '없음'}</span>
+              <span>
+                {name === '성별'
+                  ? decodeSex(content || '')
+                  : (content && content) || '없음'}
+              </span>
             </InfoLi>
           );
         })}
