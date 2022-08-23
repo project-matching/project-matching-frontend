@@ -99,7 +99,7 @@ const ChangePasswordForm = () => {
       placeholder: '새 비밀번호',
       errorMessage:
         '비밀번호는 8-20자의 영어 대소문자, 숫자, 특수문자로 이루어져야합니다.',
-      pattern: `^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[- !@#$%^&*])[a-zA-Z0-9 -!@#$%^&*]{8,20}`,
+      pattern: `^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[- !~@#$%^&*])[a-zA-Z0-9 -!~@#$%^&*]{8,20}`,
       label: '새 비밀번호',
       required: true,
       autoFocus: false,
