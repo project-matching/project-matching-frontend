@@ -1,7 +1,7 @@
 import { useCallback, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { openModal } from 'src/redux/reducers/components/modals';
-import { appApi } from 'src/services/AppApi';
+import { BookmarkService } from 'src/services/BookmarkService';
 
 /**
  * TODO:
@@ -17,9 +17,9 @@ const useBookmark = () => {
     async (projectNo: number) => {
       try {
         if (bookmark === false) {
-          await appApi.post(`/bookmark/${projectNo}`);
+          await BookmarkService.postBookmarks(projectNo);
         } else {
-          await appApi.delete(`/bookmark/${projectNo}`);
+          await BookmarkService.deleteBookmarks(projectNo);
         }
         setBookmark(!bookmark);
       } catch (error) {

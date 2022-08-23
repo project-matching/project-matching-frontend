@@ -6,7 +6,7 @@ export const global = css``;
 export const Wrapper = styled.div`
   margin: 0 auto;
   padding: 0 40px;
-  width: 1180px;
+  max-width: 1180px;
 `;
 
 export const Divider = styled.div`

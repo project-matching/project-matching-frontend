@@ -100,7 +100,8 @@ const Profile = () => {
     <Container>
       <ImageContainer onClick={toggleDropdown}>
         <Image
-          src={image ?? DEFAULT_IMAGE}
+          // src={image || DEFAULT_IMAGE}
+          src={DEFAULT_IMAGE} // TODO: api 수정 시 상단 값으로 변경
           alt="profile_image"
           width="40px"
           height="40px"
