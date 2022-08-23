@@ -1,79 +1,80 @@
 import styled from '@emotion/styled';
-import { FC, useCallback } from 'react';
+import { FC, useEffect, useState } from 'react';
 
-const Cir = styled.div`
-  background-color: black;
-  width: 16px;
-  color: #fff;
+const PositionContainer = styled.div`
   display: flex;
-  justify-content: center;
-  align-items: center;
-  border-radius: 50%;
-  margin: 0 10px;
+  flex-direction: column;
+`
+
+const PositionItem = styled.div`
+  display: flex;
+  justify-content: space-between;
+  width: 40%;
+  margin: 5px;
+`
+
+const ApplyButton = styled.button`
+  border: 0;
+  outline: 0;
   cursor: pointer;
-`;
-const Box = styled.div`
-  display: flex;
-  width: 100%;
-  margin: 10px 0;
-`;
-const Title = styled.span`
-  width: 10%;
-`;
+  &:hover {
+    background-color: gray;
+  }
+`
 
-interface Props {
-  obj: any;
-  setNpm: any;
-  setNDesigner: any;
-  setNFrontend: any;
-  setNBackend: any;
-  setNFullstack: any;
+interface UserDto {
+  name: string;
+  no: number;
+  register: boolean;
 }
 
-const Position: FC<Props> = ({
-  obj,
-  setNpm,
-  setNDesigner,
-  setNFrontend,
-  setNBackend,
-  setNFullstack,
-}) => {
-  const increase = useCallback(
-    (name: string) => {
-      if (name === 'Pm') {
-        setNpm((cur: number) => cur + 1);
-      } else if (name === 'Designer') {
-        setNDesigner((cur: number) => cur + 1);
-      } else if (name === 'Frontend') {
-        setNFrontend((cur: number) => cur + 1);
-      } else if (name === 'Backend') {
-        setNBackend((cur: number) => cur + 1);
-      } else setNFullstack((cur: number) => cur + 1);
-    },
-    [setNpm, setNDesigner, setNFrontend, setNBackend, setNFullstack]
-  );
+interface PositionList {
+  positionName: string,
+  projectPositionNo: number,
+  userDto: UserDto | null,
+}
 
-  const decrease = useCallback((name: string) => {
-    if (name === 'Pm') {
-      setNpm((cur: number) => cur - 1);
-    } else if (name === 'Designer') {
-      setNDesigner((cur: number) => cur - 1);
-    } else if (name === 'Frontend') {
-      setNFrontend((cur: number) => cur - 1);
-    } else if (name === 'Backend') {
-      setNBackend((cur: number) => cur - 1);
-    } else setNFullstack((cur: number) => cur - 1);
+interface Props {
+  positionList: PositionList[],
+}
+
+interface list {
+  [positionName: string]: (UserDto | null)[],
+}
+
+const Position: FC<Props> = ({ positionList }) => {
+  const [positions, setPositionList] = useState<list>({});
+
+  useEffect(() => {
+    const filteredPosition: list = {};
+
+    positionList.forEach((position) => {
+      if (filteredPosition[position.positionName]) {
+        filteredPosition[position.positionName].push(position.userDto);
+      } else {
+        filteredPosition[position.positionName] = [position.userDto];
+      }
+    });
+
+    setPositionList(filteredPosition);
   }, []);
 
   return (
-    <>
-      <Box>
-        <Title>{obj[0]}</Title>
-        <Cir onClick={() => decrease(obj[0])}>-</Cir>
-        <p>0 / {obj[1]}</p>
-        <Cir onClick={() => increase(obj[0])}>+</Cir>
-      </Box>
-    </>
+    <PositionContainer>
+      {Object.keys(positions).map((positionName) => {
+        const total = positions[positionName].length;
+        const now = positions[positionName].filter(v => !v).length;
+        const state = now === total;
+        
+        return (
+          <PositionItem key={positionName}>
+            <div>{positionName}</div>
+            <div>{now} / {total}</div>
+            <ApplyButton disabled={state}>{state ? "Done" : "Apply"}</ApplyButton>
+          </PositionItem>
+        )
+      })}
+    </PositionContainer>
   );
 };
 

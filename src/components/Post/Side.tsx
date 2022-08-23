@@ -9,37 +9,37 @@ const Wrapper = styled.div`
   background-color: #4242;
 `;
 
-interface ITech {
-  id: number;
-  name: string;
-}
 interface IUser {
-  id: number;
   name: string;
-  apply: boolean;
+  no: number;
+  register: boolean;
 }
+
 interface IPosition {
-  id: number;
-  name: string;
-  user: IUser;
+  positionName: string,
+  projectPositionNo: number,
+  userDto: IUser | null
 }
+
 interface Idata {
-  ProjectNum: number;
-  title: string;
-  startData: string;
-  endData: string;
-  currentState: boolean;
-  content: string;
-  currentPeople: number;
-  allPeople: number;
-  Bookmark: boolean;
-  req: boolean;
-  tech: ITech[];
-  position: IPosition[];
+  applicationStatus: boolean,
+  bookmark: boolean,
+  currentPeople: number,
+  endDate: string,
+  introduction: string,
+  maxPeople: number,
+  name: string,
+  projectNo: number,
+  projectPositionDetailDtoList: IPosition[],
+  startDate: string,
+  state: boolean,
+  technicalStackList: string[]
 }
+
 interface Props {
   data: Idata;
 }
+
 const Side: FC<Props> = ({ data }) => {
   return (
     <Wrapper>
