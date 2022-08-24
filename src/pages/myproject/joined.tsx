@@ -11,7 +11,7 @@ const MyJoinedProject = () => {
 
   useEffect(() => {
     (async () => {
-      setJoinedProject(await ProjectService.joinedProject({}));
+      setJoinedProject(await ProjectService.joinedProject());
     })();
   }, [token]);
 

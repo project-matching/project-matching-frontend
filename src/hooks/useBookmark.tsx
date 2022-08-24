@@ -5,8 +5,7 @@ import { BookmarkService } from 'src/services/BookmarkService';
 
 /**
  * TODO:
- * 1. 북마크 입력 시 상태 변경
- * 2. 에러 처리 -> 토큰 없을 경우 로그인 유도
+ * 에러 처리 -> 토큰 없을 경우 로그인 유도
  */
 
 const useBookmark = () => {

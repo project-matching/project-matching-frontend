@@ -1,11 +1,10 @@
 import PrimaryProjectLayout from '@/components/Projects/PrimaryProjectLayout';
 import MainSearchBar from '@/components/SearchBar/MainSearchBar';
-import { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useEffect, useState } from 'react';
 import PrimaryLayout from 'src/components/Layouts/PrimaryLayout';
+import { ProjectType } from 'src/hooks/useInfiniteScroll';
 import { useAppSelector } from 'src/redux/hooks';
-import { recruitedProjectPreview } from 'src/redux/reducers/projects/recruitedProjects';
-import { recruitingProjectPreview } from 'src/redux/reducers/projects/recruitingProjects';
+import { ProjectService } from 'src/services/ProjectService';
 
 export const data = [
   {
@@ -172,20 +171,26 @@ export const data = [
   },
 ];
 
-const Home: React.FC = () => {
+interface PropTypes {
+  initRecruitingProjects: ProjectType[];
+  initRecruitedProjects: ProjectType[];
+}
+
+const Home = ({ initRecruitingProjects, initRecruitedProjects }: PropTypes) => {
   const token = useAppSelector((state) => state.auth.token);
-  const recruitedProjects = useAppSelector(
-    (state) => state.recruitedProjects.projectList
+  const [recruitingProjects, setRecruitingProjects] = useState(
+    initRecruitingProjects
   );
-  const recruitingProjects = useAppSelector(
-    (state) => state.recruitingProjects.projectList
+  const [recruitedProjects, setRecruitedProjects] = useState(
+    initRecruitedProjects
   );
-  const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(recruitingProjectPreview());
-    dispatch(recruitedProjectPreview());
-  }, [token, dispatch]);
+    (async () => {
+      setRecruitingProjects(await ProjectService.recruitingProject());
+      setRecruitedProjects(await ProjectService.recruitedProject());
+    })();
+  }, [token]);
 
   return (
     <PrimaryLayout>
@@ -205,3 +210,15 @@ const Home: React.FC = () => {
 };
 
 export default Home;
+
+export async function getStaticProps() {
+  const recruitingProject = await ProjectService.recruitingProject();
+  const recruitedProject = await ProjectService.recruitedProject();
+
+  return {
+    props: {
+      initRecruitingProjects: recruitingProject,
+      initRecruitedProjects: recruitedProject,
+    },
+  };
+}

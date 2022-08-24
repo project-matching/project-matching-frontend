@@ -11,7 +11,7 @@ const MyCreatedProject = () => {
 
   useEffect(() => {
     (async () => {
-      setCreatedProject(await ProjectService.createdProject({}));
+      setCreatedProject(await ProjectService.createdProject());
     })();
   }, [token]);
 

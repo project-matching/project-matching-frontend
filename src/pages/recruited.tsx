@@ -1,26 +1,28 @@
 import SecondaryProjectLayout from '@/components/Projects/SecondaryProjectLayout';
-import { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useEffect, useState } from 'react';
 import PrimaryLayout from 'src/components/Layouts/PrimaryLayout';
+import { ProjectType } from 'src/hooks/useInfiniteScroll';
 import { useAppSelector } from 'src/redux/hooks';
-import { recruitedProject } from 'src/redux/reducers/projects/recruitedProjects';
+import { ProjectService } from 'src/services/ProjectService';
 
 /**
  * TODOS:
  * 무한 스크롤 구현
  */
 
-const Recruited = () => {
-  const token = useAppSelector((state) => state.auth.token);
+interface PropTypes {
+  initProjects: ProjectType[];
+}
 
-  const recruitedProjects = useAppSelector(
-    (state) => state.recruitedProjects.projectList
-  );
-  const dispatch = useDispatch();
+const Recruited = ({ initProjects }: PropTypes) => {
+  const token = useAppSelector((state) => state.auth.token);
+  const [recruitedProjects, setRecruitedProject] = useState(initProjects);
 
   useEffect(() => {
-    dispatch(recruitedProject({}));
-  }, [token, dispatch]);
+    (async () => {
+      setRecruitedProject(await ProjectService.recruitedProject());
+    })();
+  }, [token]);
 
   return (
     <PrimaryLayout>
@@ -33,3 +35,13 @@ const Recruited = () => {
 };
 
 export default Recruited;
+
+export async function getStaticProps() {
+  const recruitedProject = await ProjectService.recruitedProject();
+
+  return {
+    props: {
+      initProjects: recruitedProject,
+    },
+  };
+}
