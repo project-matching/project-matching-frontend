@@ -32,12 +32,12 @@ const Home = ({ initRecruitingProjects, initRecruitedProjects }: PropTypes) => {
       <PrimaryProjectLayout
         title="Recruiting"
         projectDtoList={recruitingProjects}
-        href="recruiting"
+        href="/recruiting"
       />
       <PrimaryProjectLayout
         title="Recruited"
         projectDtoList={recruitedProjects}
-        href="recruited"
+        href="/recruited"
       />
     </PrimaryLayout>
   );
@@ -46,13 +46,24 @@ const Home = ({ initRecruitingProjects, initRecruitedProjects }: PropTypes) => {
 export default Home;
 
 export async function getStaticProps() {
-  const recruitingProject = await ProjectService.recruitingProjectPreview();
-  const recruitedProject = await ProjectService.recruitedProjectPreview();
+  try {
+    const recruitingProject = await ProjectService.recruitingProjectPreview();
+    const recruitedProject = await ProjectService.recruitedProjectPreview();
 
-  return {
-    props: {
-      initRecruitingProjects: recruitingProject,
-      initRecruitedProjects: recruitedProject,
-    },
-  };
+    return {
+      props: {
+        initRecruitingProjects: recruitingProject,
+        initRecruitedProjects: recruitedProject,
+      },
+      revalidate: 10,
+    };
+  } catch (error) {
+    console.log(error);
+    return {
+      props: {
+        initRecruitingProjects: [],
+        initRecruitedProjects: [],
+      },
+    };
+  }
 }

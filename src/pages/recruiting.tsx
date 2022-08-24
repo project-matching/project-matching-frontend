@@ -46,11 +46,22 @@ const Recruiting = ({ initProjects }: PropTypes) => {
 export default Recruiting;
 
 export async function getStaticProps() {
-  const recruitingProject = await ProjectService.recruitingProject();
+  try {
+    const recruitingProject = await ProjectService.recruitingProject();
 
-  return {
-    props: {
-      initProjects: recruitingProject.content,
-    },
-  };
+    return {
+      props: {
+        initProjects: recruitingProject.content,
+      },
+      revalidate: 10,
+    };
+  } catch (error) {
+    console.error(error);
+
+    return {
+      props: {
+        initProjects: [],
+      },
+    };
+  }
 }

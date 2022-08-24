@@ -11,10 +11,11 @@ const Bookmark = () => {
   const [bookmarkedProjects, setBookmarkedProjects] = useState([]);
 
   useEffect(() => {
-    (async () => {
-      const fetchedBookmarkedProjects = await BookmarkService.getBookmarks();
-      setBookmarkedProjects(fetchedBookmarkedProjects);
-    })();
+    token &&
+      (async () => {
+        const fetchedBookmarkedProjects = await BookmarkService.getBookmarks();
+        setBookmarkedProjects(fetchedBookmarkedProjects);
+      })();
   }, [token]);
 
   return (
