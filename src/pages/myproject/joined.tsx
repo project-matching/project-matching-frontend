@@ -10,9 +10,10 @@ const MyJoinedProject = () => {
   const [joinedProject, setJoinedProject] = useState([]);
 
   useEffect(() => {
-    (async () => {
-      setJoinedProject(await ProjectService.joinedProject());
-    })();
+    token &&
+      (async () => {
+        setJoinedProject((await ProjectService.joinedProject()).content);
+      })();
   }, [token]);
 
   return (

@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { ProjectDtoType } from 'src/redux/reducers/projects/project';
+import { ProjectType } from 'src/services/ProjectService';
 import SmallCard from './SmallCard';
 
 const Title = styled.h2`
@@ -18,11 +18,13 @@ const Grid = styled.div`
   }
 
   gap: 20px;
+
+  margin-bottom: 50px;
 `;
 
 interface SecondaryProjectLayoutProps {
   title: string;
-  projectDtoList: ProjectDtoType[];
+  projectDtoList: ProjectType[];
 }
 
 const SecondaryProjectLayout = ({

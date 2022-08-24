@@ -10,9 +10,10 @@ const MyCreatedProject = () => {
   const [createdProject, setCreatedProject] = useState([]);
 
   useEffect(() => {
-    (async () => {
-      setCreatedProject(await ProjectService.createdProject());
-    })();
+    token &&
+      (async () => {
+        setCreatedProject((await ProjectService.createdProject()).content);
+      })();
   }, [token]);
 
   return (

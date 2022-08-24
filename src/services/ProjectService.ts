@@ -12,6 +12,30 @@ export interface ProjectRequestType {
   unpaged?: boolean;
 }
 
+export interface ProjectType {
+  bookMark: true;
+  currentPeople: number;
+  maxPeople: number;
+  name: string;
+  projectNo: number;
+  projectSimplePositionDtoList: [
+    {
+      positionName: string;
+      positionNo: number;
+      projectNo: number;
+    }
+  ];
+  projectSimpleTechnicalStackDtoList: [
+    {
+      image: string;
+      projectNo: number;
+      technicalStackName: string;
+    }
+  ];
+  register: string;
+  viewCount: number;
+}
+
 export class ProjectService {
   public static async recruitingProjectPreview() {
     const response = await appApi.get('/project/recruitment', {
@@ -38,7 +62,7 @@ export class ProjectService {
         size: 12,
       },
     });
-    return response.data.data.content;
+    return response.data.data;
   }
 
   public static async recruitedProject(projectNo?: number) {
@@ -48,7 +72,35 @@ export class ProjectService {
         size: 12,
       },
     });
-    return response.data.data.content;
+    return response.data.data;
+  }
+
+  public static async searchedRecruitingProject(
+    searchContent: string,
+    projectNo?: number
+  ) {
+    const response = await appApi.get('/project/recruitment', {
+      params: {
+        searchContent,
+        projectNo,
+        size: 12,
+      },
+    });
+    return response.data.data;
+  }
+
+  public static async searchedRecruitedProject(
+    searchContent: string,
+    projectNo?: number
+  ) {
+    const response = await appApi.get('/project/recruitment/complete', {
+      params: {
+        searchContent,
+        projectNo,
+        size: 12,
+      },
+    });
+    return response.data.data;
   }
 
   public static async createdProjectPreview(projectNo?: number) {
@@ -68,7 +120,7 @@ export class ProjectService {
         size: 12,
       },
     });
-    return response.data.data.content;
+    return response.data.data;
   }
 
   public static async joinedProjectPreview(projectNo?: number) {
@@ -88,7 +140,7 @@ export class ProjectService {
         size: 12,
       },
     });
-    return response.data.data.content;
+    return response.data.data;
   }
 
   public static async appliedProjectPreview(projectNo?: number) {
@@ -108,6 +160,6 @@ export class ProjectService {
         size: 12,
       },
     });
-    return response.data.data.content;
+    return response.data.data;
   }
 }

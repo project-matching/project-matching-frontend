@@ -1,9 +1,9 @@
+import InfiniteScrollLayout from '@/components/Layouts/InfiniteScrollLayout';
 import SecondaryProjectLayout from '@/components/Projects/SecondaryProjectLayout';
 import { useEffect, useState } from 'react';
 import PrimaryLayout from 'src/components/Layouts/PrimaryLayout';
-import { ProjectType } from 'src/hooks/useInfiniteScroll';
 import { useAppSelector } from 'src/redux/hooks';
-import { ProjectService } from 'src/services/ProjectService';
+import { ProjectService, ProjectType } from 'src/services/ProjectService';
 
 /**
  * TODOS:
@@ -17,20 +17,28 @@ interface PropTypes {
 const Recruiting = ({ initProjects }: PropTypes) => {
   const token = useAppSelector((state) => state.auth.token);
   const [recruitingProject, setRecruitingProject] = useState(initProjects);
-  // const {items, setItems} = useInfiniteScroll({api: ProjectService.recruitingProject})
 
   useEffect(() => {
-    (async () => {
-      setRecruitingProject(await ProjectService.recruitingProject());
-    })();
+    token &&
+      (async () => {
+        setRecruitingProject(
+          (await ProjectService.recruitingProject()).content
+        );
+      })();
   }, [token]);
 
   return (
     <PrimaryLayout>
-      <SecondaryProjectLayout
-        title="모집 중인 프로젝트"
-        projectDtoList={recruitingProject}
-      />
+      <InfiniteScrollLayout
+        api={ProjectService.recruitingProject}
+        items={recruitingProject}
+        setItems={setRecruitingProject}
+      >
+        <SecondaryProjectLayout
+          title="모집 중인 프로젝트"
+          projectDtoList={recruitingProject}
+        />
+      </InfiniteScrollLayout>
     </PrimaryLayout>
   );
 };
@@ -42,7 +50,7 @@ export async function getStaticProps() {
 
   return {
     props: {
-      initProjects: recruitingProject,
+      initProjects: recruitingProject.content,
     },
   };
 }

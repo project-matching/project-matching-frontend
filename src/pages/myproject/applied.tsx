@@ -10,9 +10,10 @@ const MyAppliedProject = () => {
   const [appliedProject, setAppliedProject] = useState([]);
 
   useEffect(() => {
-    (async () => {
-      setAppliedProject(await ProjectService.appliedProject());
-    })();
+    token &&
+      (async () => {
+        setAppliedProject((await ProjectService.appliedProject()).content);
+      })();
   }, [token]);
 
   return (
