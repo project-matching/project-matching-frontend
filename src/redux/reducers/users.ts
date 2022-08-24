@@ -1,4 +1,5 @@
 import { createAction, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { patchPasswordType, patchProfileType } from 'src/services/UserService';
 
 export type UserInfoType = {
   no: number | null;
@@ -22,8 +23,14 @@ export type UserProfileType = {
 };
 
 interface UserState {
-  loading: boolean;
-  error: any;
+  loadingUserInfo: boolean;
+  errorUserInfo: any;
+  loadingUserProfile: boolean;
+  errorUserProfile: any;
+  loadingUserPassword: boolean;
+  errorUserPassword: any;
+  loadingUserDelete: boolean;
+  errorUserDelete: any;
   userInfo: UserInfoType;
   userProfile: UserProfileType;
 }
@@ -50,8 +57,14 @@ export const initUserProfile: UserProfileType = {
 };
 
 const initialState: UserState = {
-  loading: false,
-  error: null,
+  loadingUserInfo: false,
+  errorUserInfo: null,
+  loadingUserProfile: false,
+  errorUserProfile: null,
+  loadingUserPassword: false,
+  errorUserPassword: null,
+  loadingUserDelete: false,
+  errorUserDelete: null,
   userInfo: initUserInfo,
   userProfile: initUserProfile,
 };
@@ -62,37 +75,122 @@ const userSlice = createSlice({
   name: userState,
   initialState,
   reducers: {
-    pending(state) {
+    pendingUserInfo(state) {
       return {
         ...state,
-        loading: true,
-        error: null,
+        loadingUserInfo: true,
+        errorUserInfo: null,
       };
     },
-    success(state, action: PayloadAction<UserState['userInfo']>) {
+    failUserInfo(state, action: PayloadAction<UserState['errorUserInfo']>) {
       return {
         ...state,
-        loading: false,
+        loadingUserInfo: false,
+        userInfo: initUserInfo,
+        errorUserInfo: action.payload,
+      };
+    },
+    successUserInfo(state, action: PayloadAction<UserState['userInfo']>) {
+      return {
+        ...state,
+        loadingUserInfo: false,
         userInfo: action.payload,
-        error: null,
+        errorUserInfo: null,
       };
     },
-    fail(state, action: PayloadAction<UserState['error']>) {
+    pendingUserProfile(state) {
       return {
         ...state,
-        loading: false,
-        error: action.payload,
+        loadingUserProfile: true,
+        errorUserProfile: null,
+      };
+    },
+    failUserProfile(
+      state,
+      action: PayloadAction<UserState['errorUserProfile']>
+    ) {
+      return {
+        ...state,
+        loadingUserProfile: false,
+        userProfile: initUserProfile,
+        errorUserProfile: action.payload,
+      };
+    },
+    successUserProfile(state, action: PayloadAction<UserState['userProfile']>) {
+      return {
+        ...state,
+        loadingUserProfile: false,
+        userProfile: action.payload,
+        errorUserProfile: null,
+      };
+    },
+    pendingPassword(state) {
+      return {
+        ...state,
+        loadingUserPassword: true,
+        errorUserPassword: null,
+      };
+    },
+    failPassword(state, action: PayloadAction<UserState['errorUserPassword']>) {
+      return {
+        ...state,
+        loadingUserPassword: false,
+        errorUserPassword: action.payload,
+      };
+    },
+    successPassword(state) {
+      return {
+        ...state,
+        loadingUserPassword: false,
+        errorUserPassword: null,
+      };
+    },
+    pendingUserDelete(state) {
+      return {
+        ...state,
+        loadingUserDelete: true,
+        errorUserDelete: null,
+      };
+    },
+    failUserDelete(state, action: PayloadAction<UserState['errorUserDelete']>) {
+      return {
+        ...state,
+        loadingUserDelete: false,
+        errorUserDelete: action.payload,
+      };
+    },
+    successUserDelete(state) {
+      return {
+        ...state,
+        loadingUserDelete: false,
+        errorUserDelete: null,
       };
     },
   },
 });
 
 export const {
-  pending: userPending,
-  fail: userFail,
-  success: userSuccess,
+  pendingUserInfo: userPendingUserInfo,
+  failUserInfo: userFailUserInfo,
+  successUserInfo: userSuccessUserInfo,
+  pendingUserProfile: userPendingUserProfile,
+  failUserProfile: userFailUserProfile,
+  successUserProfile: userSuccressUserProfile,
+  pendingPassword: userPendingPassword,
+  failPassword: userFailPassword,
+  successPassword: userSuccessPassword,
+  pendingUserDelete: userPendingUserDelete,
+  failUserDelete: userFailUserDelete,
+  successUserDelete: userSuccessUserDelete,
 } = userSlice.actions;
 
 export const updateUserInfo = createAction(`${userState}/updateUserInfo`);
+export const patchUserProfile = createAction<patchProfileType>(
+  `${userState}/patchUserProfile`
+);
+export const patchPassword = createAction<patchPasswordType>(
+  `${userState}/patchPassword`
+);
+export const deleteUser = createAction(`${userState}/deleteUser`);
 
 export default userSlice.reducer;

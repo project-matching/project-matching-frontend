@@ -4,10 +4,40 @@ import Title from '../auth/Title';
 
 const Wrapper = styled.div`
   width: 20%;
+  height: 60%;
   position: fixed;
-  right: 0;
+  right: 5%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  padding: 20px;
   background-color: #4242;
+
+  h1 {
+    font-size: 20px;
+    margin: 5px 0;
+  }
 `;
+
+const PeriodRow = styled.div`
+  /* margin: 10px 0; */
+`
+
+const MemberRow = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 90%;
+  /* margin: 10px 0; */
+`
+
+const MemberDetail = styled.div`
+  display: flex;
+  justify-content: space-between;
+`
+
+const TechRow = styled.div`
+  margin: 10px 0;
+`
 
 interface IUser {
   name: string;
@@ -41,9 +71,35 @@ interface Props {
 }
 
 const Side: FC<Props> = ({ data }) => {
+  console.log(data);
   return (
     <Wrapper>
       <Title title="Project Detail" />
+      <PeriodRow>
+        <h1>Period</h1>
+        <div>{data.startDate} ~ {data.endDate}</div>
+      </PeriodRow>
+      <MemberRow>
+        <h1>Current Members({data.currentPeople} / {data.maxPeople}) </h1>
+        {data.projectPositionDetailDtoList.map(member => {
+          if (!member.userDto) return null;
+          return (
+            <MemberDetail key={member.userDto.name}>
+              <span>{member.positionName}</span>
+              <span>{member.userDto.name}</span>
+            </MemberDetail>
+          )
+        })}
+      </MemberRow>
+      <TechRow>
+        <h1>Tech Stacks</h1>
+        {data.technicalStackList.map(stack => {
+          return (
+            <div key={stack}>{stack}</div>
+          )
+        })}
+      </TechRow>
+      <button>Bookmark</button>
     </Wrapper>
   );
 };

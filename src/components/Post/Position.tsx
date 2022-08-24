@@ -1,5 +1,10 @@
 import styled from '@emotion/styled';
 import { FC, useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { useAppSelector } from 'src/redux/hooks';
+import { openModal } from 'src/redux/reducers/components/modals';
+import { Backdrop } from '../Modals/Backdrop';
+import PositionApplyModal from '../Modals/PositionApplyModal';
 
 const PositionContainer = styled.div`
   display: flex;
@@ -36,18 +41,31 @@ interface PositionList {
 
 interface Props {
   positionList: PositionList[],
+  projectName: string,
 }
 
 interface list {
   [positionName: string]: (UserDto | null)[],
 }
 
-const Position: FC<Props> = ({ positionList }) => {
+const Position: FC<Props> = ({ positionList, projectName }) => {
+  const isClicked = useAppSelector(state => state.modal.PositionApplyModal);
   const [positions, setPositionList] = useState<list>({});
+  const [appliedPosition, setAppliedPosition] = useState<string | null>(null);
+  const [appliedPositionNo, setAppliedPositionNo] = useState<number | null>(null);
+  const dispatch = useDispatch();
+
+  const openApplyModal = (applyPosition: string) => {
+    const position = positionList.filter(position => position.positionName === applyPosition);
+
+    dispatch(openModal('PositionApplyModal'));
+    setAppliedPosition(applyPosition);
+    setAppliedPositionNo(position[0].projectPositionNo)
+  };
 
   useEffect(() => {
     const filteredPosition: list = {};
-
+console.log(positionList)
     positionList.forEach((position) => {
       if (filteredPosition[position.positionName]) {
         filteredPosition[position.positionName].push(position.userDto);
@@ -60,21 +78,29 @@ const Position: FC<Props> = ({ positionList }) => {
   }, []);
 
   return (
-    <PositionContainer>
-      {Object.keys(positions).map((positionName) => {
-        const total = positions[positionName].length;
-        const now = positions[positionName].filter(v => !v).length;
-        const state = now === total;
-        
-        return (
-          <PositionItem key={positionName}>
-            <div>{positionName}</div>
-            <div>{now} / {total}</div>
-            <ApplyButton disabled={state}>{state ? "Done" : "Apply"}</ApplyButton>
-          </PositionItem>
-        )
-      })}
-    </PositionContainer>
+    <>
+      <PositionContainer>
+        {Object.keys(positions).map((positionName) => {
+          const totalApplicants = positions[positionName].length;
+          const currentApplicants = positions[positionName].filter(v => !v).length;
+          const state = currentApplicants === totalApplicants;
+          
+          return (
+            <PositionItem key={positionName}>
+              <div>{positionName}</div>
+              <div>{currentApplicants} / {totalApplicants}</div>
+              <ApplyButton disabled={state} onClick={() => {openApplyModal(positionName)}}>{state ? "Done" : "Apply"}</ApplyButton>
+            </PositionItem>
+          )
+        })}
+      </PositionContainer>
+      {isClicked && 
+        (<Backdrop>
+          <PositionApplyModal projectName={projectName} position={appliedPosition} positionNo={appliedPositionNo} />
+        </Backdrop>)
+      }
+    </>
+    
   );
 };
 

@@ -1,5 +1,7 @@
 import styled from '@emotion/styled';
 import { HTMLInputTypeAttribute, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { deleteUser } from 'src/redux/reducers/users';
 import PrimaryButton from '../Buttons/PrimaryButton';
 
 const Wrapper = styled.div`
@@ -16,6 +18,7 @@ const Title = styled.h3`
 const Desc = styled.p`
   font-size: ${(props) => props.theme.sizes.m};
   margin-bottom: 20px;
+  line-height: 1.5;
 
   b {
     color: ${(props) => props.theme.colors.error};
@@ -72,6 +75,7 @@ const initialValues: FormValueType = {
 };
 
 const DeleteAccount = () => {
+  const dispatch = useDispatch();
   const [inputValues, setInputValues] = useState<FormValueType>(initialValues);
 
   const inputs: InputType[] = [
@@ -98,18 +102,26 @@ const DeleteAccount = () => {
     });
   };
 
-  console.log(inputValues);
-
   const convertToRegEx = (pattern: string): RegExp => RegExp(pattern);
 
-  const submit = async (e: React.FormEvent<HTMLFormElement>) => {};
+  const submit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    dispatch(deleteUser());
+
+    setInputValues({
+      confirmDelete: '',
+    });
+  };
 
   return (
     <Wrapper>
       <Title>정말 탈퇴하시겠습니까?</Title>
       <Desc>
-        탈퇴하시려면 &apos;<b>탈퇴하겠습니다.</b>&apos; 라고 입력해주세요
+        탈퇴하실 경우 같은 이메일 주소로 회원가입 하실 수 없습니다.<br></br>
+        <b>회원탈퇴를 누를 경우 이 내용에 동의한 것으로 간주합니다.</b>
       </Desc>
+      <Desc>탈퇴하시려면 &apos;탈퇴하겠습니다.&apos; 라고 입력해주세요.</Desc>
       <Form onSubmit={submit}>
         {inputs.map(
           ({

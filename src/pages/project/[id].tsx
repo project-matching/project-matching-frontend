@@ -1,8 +1,7 @@
 import Title from '@/components/auth/Title';
 import PrimaryLayout from '@/components/Layouts/PrimaryLayout';
-import Comment from '@/components/Post/Comment';
 import Position from '@/components/Post/Position';
-import Side from '@/components/Post/Side';
+import DetailSection from '@/components/Post/Side';
 import styled from '@emotion/styled';
 
 const State = styled.h3`
@@ -13,6 +12,7 @@ const Wrapper = styled.div`
   margin-top: 30px;
   display: flex;
 `;
+
 const Left = styled.div`
   width: 70%;
 `;
@@ -32,10 +32,10 @@ const CommentWrapper = styled.div``;
 const fakeData = {
   "applicationStatus": true,
   "bookmark": true,
-  "currentPeople": 0,
-  "endDate": "string",
+  "currentPeople": 3,
+  "endDate": "22-09-02",
   "introduction": "와인을 추천",
-  "maxPeople": 0,
+  "maxPeople": 5,
   "name": "와인 추천 웹 사이트",
   "projectNo": 0,
   "projectPositionDetailDtoList": [
@@ -77,15 +77,17 @@ const fakeData = {
       "userDto": null,
     }
   ],
-  "startDate": "string",
+  "startDate": "22-08-21",
   "state": true,
   "technicalStackList": [
-    "string"
+    "typescript",
+    "next.js",
+    "redux"
   ]
 }
 
 const ProjectDetail = ({data = fakeData}) => {
-  
+
   return (
     <PrimaryLayout>
       <Title title={data.name} />
@@ -94,13 +96,12 @@ const ProjectDetail = ({data = fakeData}) => {
         <Left>
           <Main>
             <Title title="Positions" sm />
-            <Position positionList={data.projectPositionDetailDtoList} />
+            <Position positionList={data.projectPositionDetailDtoList} projectName={data.name} />
             <Title title="Introduction" sm />
             <Introduction>{data.introduction}</Introduction>
           </Main>
-          <Comment />
         </Left>
-        <Side data={data}></Side>
+        <DetailSection data={data}></DetailSection>
       </Wrapper>
     </PrimaryLayout>
   );
