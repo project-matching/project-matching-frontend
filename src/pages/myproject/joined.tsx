@@ -4,6 +4,7 @@ import PrimaryLayout from 'src/components/Layouts/PrimaryLayout';
 import { useAppSelector } from 'src/redux/hooks';
 import { ProjectService } from 'src/services/ProjectService';
 
+// TODO: 무한스크롤
 const MyJoinedProject = () => {
   const token = useAppSelector((state) => state.auth.token);
 
