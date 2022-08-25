@@ -33,7 +33,7 @@ function* getUserInfoSaga() {
     const token = TokenService.get();
     appApi.defaults.headers.common['Authorization'] = `Bearer ${token}`;
     const userInfo: UserInfoType = yield call(UserService.getUserInfo);
-    yield put(authSuccess({ access: token, refresh: null }));
+    yield put(authSuccess(token));
     yield put(userSuccessUserInfo(userInfo));
   } catch (error: any) {
     yield put(

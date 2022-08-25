@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import Link from 'next/link';
 import React from 'react';
-import { ProjectType } from 'src/services/ProjectService';
+import { ProjectDtoType } from 'src/redux/reducers/projects/project';
 import { Divider } from 'src/styles/global';
 import SmallCard from './SmallCard';
 
@@ -39,7 +39,7 @@ const Span = styled.span`
 
 interface PropsPrimaryProjectLayout {
   title: string;
-  projectDtoList: ProjectType[];
+  projectDtoList: ProjectDtoType[];
   href: string;
 }
 

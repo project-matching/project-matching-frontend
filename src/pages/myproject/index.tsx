@@ -13,9 +13,9 @@ const MyProject = () => {
 
   useEffect(() => {
     (async () => {
-      setCreatedProject(await ProjectService.createdProjectPreview());
-      setJoinedProject(await ProjectService.joinedProjectPreview());
-      setAppliedProject(await ProjectService.appliedProjectPreview());
+      setCreatedProject(await ProjectService.createdProjectPreview({}));
+      setJoinedProject(await ProjectService.joinedProjectPreview({}));
+      setAppliedProject(await ProjectService.appliedProjectPreview({}));
     })();
   }, [token]);
 
