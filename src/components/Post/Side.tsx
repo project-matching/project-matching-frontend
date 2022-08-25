@@ -1,5 +1,6 @@
 import styled from '@emotion/styled';
 import { FC } from 'react';
+import useBookmark from 'src/hooks/useBookmark';
 import Title from '../auth/Title';
 
 const Wrapper = styled.div`
@@ -20,24 +21,26 @@ const Wrapper = styled.div`
 `;
 
 const PeriodRow = styled.div`
-  /* margin: 10px 0; */
 `
 
 const MemberRow = styled.div`
   display: flex;
   flex-direction: column;
   width: 90%;
-  /* margin: 10px 0; */
-`
+  
+  span {
+    width: 90%;
+  }
+`;
 
 const MemberDetail = styled.div`
   display: flex;
   justify-content: space-between;
-`
+`;
 
 const TechRow = styled.div`
   margin: 10px 0;
-`
+`;
 
 interface IUser {
   name: string;
@@ -71,7 +74,9 @@ interface Props {
 }
 
 const Side: FC<Props> = ({ data }) => {
-  console.log(data);
+  const { bookmark, toggleBookmark } = useBookmark();
+
+
   return (
     <Wrapper>
       <Title title="Project Detail" />
@@ -99,7 +104,7 @@ const Side: FC<Props> = ({ data }) => {
           )
         })}
       </TechRow>
-      <button>Bookmark</button>
+      <button onClick={() => {toggleBookmark(data.projectNo)}} disabled={bookmark}>Bookmark</button>
     </Wrapper>
   );
 };

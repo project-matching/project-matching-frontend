@@ -1,9 +1,10 @@
 import styled from '@emotion/styled';
-import { ChangeEvent, FC, useState } from 'react';
+import { ChangeEvent, FC, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { closeModal } from 'src/redux/reducers/components/modals';
 import { ProjectService } from 'src/services/ProjectService';
 import { UserService } from 'src/services/UserService';
+import { TechStackService } from '../../services/TechStackService';
 import MultiSelectDropdown from '../Dropdowns/MultiSelectDropdown';
 
 const Container = styled.div`
@@ -68,26 +69,38 @@ interface Props {
   positionNo: number | null
 }
 
+interface data {
+  image: string,
+  technicalStackName: string,
+  technicalStackNo: number,
+}
+
 const PositionApplyModal: FC<Props> = ({projectName, position, positionNo}) => {
+  const [listedTechStack, setListedTechStack] = useState<string[]>(["JS"]);
   const [techStack, setTechStack] = useState<string[]>([]);
   const [githubLink, setGithubLink] = useState<string>("");
   const [motive, setMotive] = useState<string>("");
   const dispatch = useDispatch();
+
   const submitCancel = () => {
     dispatch(closeModal("PositionApplyModal"));
   }
+
   const fillMyProfile = async () => {
     const myProfile = await UserService.getUserProfile();
     const myTechStack = myProfile.technicalStackList;
 
     setTechStack(myTechStack);
   }
+
   const writeGithubLink = (e: ChangeEvent<HTMLInputElement>) => {
     setGithubLink(e.target.value);
   }
+
   const writeMotive = (e: ChangeEvent<HTMLTextAreaElement>) => {
     setMotive(e.target.value);
   }
+
   const onSubmit = async () => {
     const request = {
       gitHub: githubLink,
@@ -100,6 +113,14 @@ const PositionApplyModal: FC<Props> = ({projectName, position, positionNo}) => {
     dispatch(closeModal("PositionApplyModal"));
   }
 
+  useEffect(() => {
+    (async () => {
+      const response = await TechStackService.getTechStacks();
+
+      setListedTechStack(response.map((data: data) => data.technicalStackName));
+    })();
+
+  }, []);
   return (
     <>
       <Container>
@@ -113,7 +134,7 @@ const PositionApplyModal: FC<Props> = ({projectName, position, positionNo}) => {
             <span>내 기술 스택</span>
             <button type="button" onClick={fillMyProfile}>내 프로필로 자동 완성</button>
           </Title>
-          <MultiSelectDropdown items={["JS", "Python"]} selectedItems={techStack} setSelectedItem={setTechStack} />
+          <MultiSelectDropdown items={listedTechStack} selectedItems={techStack} setSelectedItem={setTechStack} />
         </TechBox>
         <TechBox>
           <Title>

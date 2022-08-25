@@ -42,13 +42,14 @@ interface PositionList {
 interface Props {
   positionList: PositionList[],
   projectName: string,
+  isLogin: Boolean,
 }
 
 interface list {
   [positionName: string]: (UserDto | null)[],
 }
 
-const Position: FC<Props> = ({ positionList, projectName }) => {
+const Position: FC<Props> = ({ positionList, projectName, isLogin }) => {
   const isClicked = useAppSelector(state => state.modal.PositionApplyModal);
   const [positions, setPositionList] = useState<list>({});
   const [appliedPosition, setAppliedPosition] = useState<string | null>(null);
@@ -56,6 +57,8 @@ const Position: FC<Props> = ({ positionList, projectName }) => {
   const dispatch = useDispatch();
 
   const openApplyModal = (applyPosition: string) => {
+    if (!isLogin) return dispatch(openModal("AuthModal"));
+
     const position = positionList.filter(position => position.positionName === applyPosition);
 
     dispatch(openModal('PositionApplyModal'));
@@ -65,7 +68,7 @@ const Position: FC<Props> = ({ positionList, projectName }) => {
 
   useEffect(() => {
     const filteredPosition: list = {};
-console.log(positionList)
+
     positionList.forEach((position) => {
       if (filteredPosition[position.positionName]) {
         filteredPosition[position.positionName].push(position.userDto);

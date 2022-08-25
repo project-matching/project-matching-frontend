@@ -1,8 +1,10 @@
 import Title from '@/components/auth/Title';
 import PrimaryLayout from '@/components/Layouts/PrimaryLayout';
 import Position from '@/components/Post/Position';
-import DetailSection from '@/components/Post/Side';
+import Side from '@/components/Post/Side';
 import styled from '@emotion/styled';
+import { useEffect, useState } from 'react';
+import { useAppSelector } from 'src/redux/hooks';
 
 const State = styled.h3`
   text-align: center;
@@ -52,9 +54,9 @@ const fakeData = {
       "positionName": "Designer",
       "projectPositionNo": 1,
       "userDto": {
-        "name": "elon",
+        "name": "younchong",
         "no": 1,
-        "register": false
+        "register": true,
       }
     },
     {
@@ -87,6 +89,29 @@ const fakeData = {
 }
 
 const ProjectDetail = ({data = fakeData}) => {
+  const { userInfo, userProfile } = useAppSelector(state => state.user);
+  const [isParticipant, setIsParticipant] = useState<Boolean>(false);
+  const [isRegister, setIsRegister] = useState<Boolean>(false);
+  const [isLogin, setIsLogin] = useState<Boolean>(false);
+
+  useEffect(() => {
+    userInfo.no && setIsLogin(true);
+  }, []);
+
+  useEffect(() => {
+    const Participants: (number | null | undefined)[] = data.projectPositionDetailDtoList.map(position => position.userDto?.no);
+
+    setIsParticipant(Participants.includes(userInfo.no));
+    data.projectPositionDetailDtoList.forEach(position => {
+      const userDto = position.userDto;
+
+      if (userDto?.no === userInfo.no) {
+        setIsParticipant(true);
+
+        if (userDto.register) setIsRegister(true);
+      }
+    });
+  }, [isLogin]);
 
   return (
     <PrimaryLayout>
@@ -96,12 +121,12 @@ const ProjectDetail = ({data = fakeData}) => {
         <Left>
           <Main>
             <Title title="Positions" sm />
-            <Position positionList={data.projectPositionDetailDtoList} projectName={data.name} />
+            <Position positionList={data.projectPositionDetailDtoList} projectName={data.name} isLogin={isLogin} />
             <Title title="Introduction" sm />
             <Introduction>{data.introduction}</Introduction>
           </Main>
         </Left>
-        <DetailSection data={data}></DetailSection>
+        <Side data={data}></Side>
       </Wrapper>
     </PrimaryLayout>
   );
