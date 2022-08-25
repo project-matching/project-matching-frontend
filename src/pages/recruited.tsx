@@ -1,35 +1,65 @@
+import InfiniteScrollLayout from '@/components/Layouts/InfiniteScrollLayout';
 import SecondaryProjectLayout from '@/components/Projects/SecondaryProjectLayout';
-import { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useEffect, useState } from 'react';
 import PrimaryLayout from 'src/components/Layouts/PrimaryLayout';
 import { useAppSelector } from 'src/redux/hooks';
-import { recruitedProject } from 'src/redux/reducers/projects/recruitedProjects';
+import { ProjectService, ProjectType } from 'src/services/ProjectService';
 
 /**
  * TODOS:
  * 무한 스크롤 구현
  */
 
-const Recruited = () => {
-  const token = useAppSelector((state) => state.auth.token);
+interface PropTypes {
+  initProjects: ProjectType[];
+}
 
-  const recruitedProjects = useAppSelector(
-    (state) => state.recruitedProjects.projectList
-  );
-  const dispatch = useDispatch();
+const Recruited = ({ initProjects }: PropTypes) => {
+  const token = useAppSelector((state) => state.auth.token);
+  const [recruitedProjects, setRecruitedProject] = useState(initProjects);
 
   useEffect(() => {
-    dispatch(recruitedProject({}));
-  }, [token, dispatch]);
+    token &&
+      (async () => {
+        setRecruitedProject((await ProjectService.recruitedProject()).content);
+      })();
+  }, [token]);
 
   return (
     <PrimaryLayout>
-      <SecondaryProjectLayout
-        title="모집 완료된 프로젝트"
-        projectDtoList={recruitedProjects}
-      />
+      <InfiniteScrollLayout
+        api={ProjectService.recruitingProject}
+        items={recruitedProjects}
+        setItems={setRecruitedProject}
+      >
+        <SecondaryProjectLayout
+          title="모집 완료된 프로젝트"
+          projectDtoList={recruitedProjects}
+        />
+      </InfiniteScrollLayout>
     </PrimaryLayout>
   );
 };
 
 export default Recruited;
+
+export async function getStaticProps() {
+  try {
+    const recruitedProject = await ProjectService.recruitedProject();
+
+    return {
+      props: {
+        initProjects: recruitedProject.content,
+      },
+      revalidate: 10,
+    };
+  } catch (error) {
+    console.error(error);
+
+    return {
+      props: {
+        initProjects: [],
+      },
+    };
+  }
+}

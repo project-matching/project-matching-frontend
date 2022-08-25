@@ -22,15 +22,15 @@ const Grid = styled.div`
   margin-bottom: 50px;
 `;
 
-interface SecondaryProjectLayoutProps {
+interface BookmarkProjectLayoutProps {
   title: string;
   projectDtoList: ProjectType[];
 }
 
-const SecondaryProjectLayout = ({
+const BookmarkProjectLayout = ({
   title,
   projectDtoList,
-}: SecondaryProjectLayoutProps) => {
+}: BookmarkProjectLayoutProps) => {
   return (
     <>
       <Title>{title}</Title>
@@ -39,6 +39,7 @@ const SecondaryProjectLayout = ({
           <SmallCard
             key={projectNo}
             projectDto={{ projectNo, ...projectDto }}
+            update={true}
           />
         ))}
       </Grid>
@@ -46,4 +47,4 @@ const SecondaryProjectLayout = ({
   );
 };
 
-export default SecondaryProjectLayout;
+export default BookmarkProjectLayout;
