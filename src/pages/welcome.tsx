@@ -3,29 +3,29 @@ import styled from '@emotion/styled';
 import Link from 'next/link';
 import { useAppSelector } from 'src/redux/hooks';
 
+const Wrapper = styled.div`
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`;
+
+const Heading = styled.h1`
+  font-size: ${(props) => props.theme.sizes.xl};
+  font-weight: bold;
+`;
+
+const Desc = styled.p`
+  margin: 7rem 0;
+`;
+
+const ButtonContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+`;
+
 const Welcome = () => {
-  const Wrapper = styled.div`
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-  `;
-
-  const Heading = styled.h1`
-    font-size: ${(props) => props.theme.sizes.xl};
-    font-weight: bold;
-  `;
-
-  const Desc = styled.p`
-    margin: 7rem 0;
-  `;
-
-  const ButtonContainer = styled.div`
-    display: flex;
-    flex-direction: row;
-  `;
-
   /**
    * 회원가입 환영메세지
    *
@@ -41,7 +41,7 @@ const Welcome = () => {
       <Heading>{userInfo?.name}님 가입을 환영합니다!</Heading>
       <Desc>프로젝트 참가율을 높이기 위해 추가 정보를 입력해주세요.</Desc>
       <ButtonContainer>
-        <Link href="/user/detail">
+        <Link href="/mypage/change-profile">
           <PrimaryButton>추가정보 입력하러 가기</PrimaryButton>
         </Link>
         <Link href="/">
