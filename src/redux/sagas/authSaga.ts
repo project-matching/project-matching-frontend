@@ -16,7 +16,6 @@ import {
   signinOAuth,
   signOut,
   signup,
-  TokenType,
 } from '../reducers/auth';
 
 export type SigninReqType = {
@@ -33,9 +32,9 @@ export type SignupReqType = {
 function* signinSaga({ payload }: PayloadAction<SigninReqType>) {
   try {
     yield put(authPending());
-    const tokens: TokenType = yield call(UserService.signin, payload);
-    tokens.access && TokenService.set(tokens.access);
-    yield put(authSuccess(tokens));
+    const token: string = yield call(UserService.signin, payload);
+    TokenService.set(token);
+    yield put(authSuccess(token));
     yield put(updateUserInfo());
     yield put(removeSigninErrorMsg());
     yield put(closeModal('AuthModal'));
@@ -59,17 +58,17 @@ function* signOutSaga() {
     );
   } finally {
     TokenService.remove();
-    yield put(authSuccess({ access: null, refresh: null }));
+    yield put(authSuccess(null));
     yield put(updateUserInfo());
   }
 }
 
-function* oAuthSaga({ payload }: PayloadAction<TokenType>) {
+function* oAuthSaga({ payload }: PayloadAction<string>) {
   try {
     yield put(authPending());
-    const tokens: TokenType = payload;
-    tokens.access && TokenService.set(tokens.access);
-    yield put(authSuccess({ access: null, refresh: null }));
+    const token: string = payload;
+    TokenService.set(token);
+    yield put(authSuccess(token));
     yield put(updateUserInfo());
     yield put(removeSigninErrorMsg());
     yield put(closeModal('AuthModal'));
@@ -85,7 +84,7 @@ function* signupSaga({ payload }: PayloadAction<SignupReqType>) {
   try {
     yield put(authPending());
     yield call(UserService.signup, payload);
-    yield put(authSuccess({ access: null, refresh: null }));
+    yield put(authSuccess(null));
     yield put(openModal('SignupEmailSentModal'));
     yield put(closeModal('AuthModal'));
   } catch (error: any) {

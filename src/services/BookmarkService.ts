@@ -1,13 +1,8 @@
 import { appApi } from './AppApi';
 
 export class BookmarkService {
-  public static async getBookmarks(projectNo?: number) {
-    const response = await appApi.get('/bookmark', {
-      params: {
-        projectNo,
-        size: 12,
-      },
-    });
+  public static async getBookmarks() {
+    const response = await appApi.get('/bookmark');
     return response.data.data.content;
   }
   public static async postBookmarks(projectNo: number) {

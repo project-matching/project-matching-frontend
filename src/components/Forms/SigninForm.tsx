@@ -166,12 +166,11 @@ const SigninForm = ({ setAuthForm }: SigninFormProps) => {
         return;
       }
       const searchParams = new URL(currentUrl).searchParams;
-      const access = searchParams.get('token');
-      const refresh = searchParams.get('refresh');
-      if (access && refresh) {
+      const token = searchParams.get('token');
+      if (token) {
         externalPopup.close();
         // ERROR: CORS
-        dispatch(signinOAuth({ access, refresh }));
+        dispatch(signinOAuth(token));
       }
     }, 500);
   }, [externalPopup, dispatch]);
