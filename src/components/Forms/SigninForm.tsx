@@ -171,9 +171,14 @@ const SigninForm = ({ setAuthForm }: SigninFormProps) => {
       if (access && refresh) {
         externalPopup.close();
         // ERROR: CORS
+        setExternalPopup(null);
         dispatch(signinOAuth({ access, refresh }));
       }
     }, 500);
+
+    return () => {
+      if (externalPopup) externalPopup.close();
+    };
   }, [externalPopup, dispatch]);
 
   const connectOAuth = (serviceProvider: string) => () => {
@@ -185,7 +190,7 @@ const SigninForm = ({ setAuthForm }: SigninFormProps) => {
 
     const title = `${serviceProvider} 소셜 로그인`;
     const popup = window.open(
-      `http://localhost:8080/v1/oauth2/authorization/${serviceProvider}`,
+      `/api/v1/oauth2/authorization/${serviceProvider}`,
       title,
       `width=${width},height=${height},left=${left},top=${top}`
     );
