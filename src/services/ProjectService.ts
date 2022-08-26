@@ -123,4 +123,10 @@ export class ProjectService {
 
     return response;
   }
+
+  public static async getProjectDetail(projectNo: string) {
+    const response = await appApi.get(`/project/${projectNo}`);
+
+    return response.data;
+  }
 }

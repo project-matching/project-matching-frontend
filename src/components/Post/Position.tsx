@@ -9,14 +9,14 @@ import PositionApplyModal from '../Modals/PositionApplyModal';
 const PositionContainer = styled.div`
   display: flex;
   flex-direction: column;
-`
+`;
 
 const PositionItem = styled.div`
   display: flex;
   justify-content: space-between;
   width: 40%;
   margin: 5px;
-`
+`;
 
 const ApplyButton = styled.button`
   border: 0;
@@ -25,7 +25,7 @@ const ApplyButton = styled.button`
   &:hover {
     background-color: gray;
   }
-`
+`;
 
 interface UserDto {
   name: string;

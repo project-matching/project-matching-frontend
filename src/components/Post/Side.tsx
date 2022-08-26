@@ -5,7 +5,6 @@ import Title from '../auth/Title';
 
 const Wrapper = styled.div`
   width: 20%;
-  height: 60%;
   position: fixed;
   right: 5%;
   display: flex;
@@ -17,6 +16,16 @@ const Wrapper = styled.div`
   h1 {
     font-size: 20px;
     margin: 5px 0;
+  }
+
+  button {
+    border: 0;
+    outline: 0;
+    padding: 5px;
+    cursor: pointer;
+    &:hover {
+    background-color: gray;
+    }
   }
 `;
 
@@ -35,7 +44,11 @@ const MemberRow = styled.div`
 
 const MemberDetail = styled.div`
   display: flex;
-  justify-content: space-between;
+  justify-content: space-evenly;
+
+  .leader {
+    color: #ff0000;
+  }
 `;
 
 const TechRow = styled.div`
@@ -76,7 +89,6 @@ interface Props {
 const Side: FC<Props> = ({ data }) => {
   const { bookmark, toggleBookmark } = useBookmark();
 
-
   return (
     <Wrapper>
       <Title title="Project Detail" />
@@ -91,7 +103,8 @@ const Side: FC<Props> = ({ data }) => {
           return (
             <MemberDetail key={member.userDto.name}>
               <span>{member.positionName}</span>
-              <span>{member.userDto.name}</span>
+              <span>{member.userDto.name} </span>
+              {member.userDto.register && <span className="leader">(Leader)</span>}
             </MemberDetail>
           )
         })}
