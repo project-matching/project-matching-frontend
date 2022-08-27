@@ -42,22 +42,22 @@ interface PositionList {
 interface Props {
   positionList: PositionList[],
   projectName: string,
-  isLogin: Boolean,
 }
 
 interface list {
   [positionName: string]: (UserDto | null)[],
 }
 
-const Position: FC<Props> = ({ positionList, projectName, isLogin }) => {
+const Position: FC<Props> = ({ positionList, projectName}) => {
+  const token = useAppSelector(state => state.auth.token);
   const isClicked = useAppSelector(state => state.modal.PositionApplyModal);
   const [positions, setPositionList] = useState<list>({});
   const [appliedPosition, setAppliedPosition] = useState<string | null>(null);
   const [appliedPositionNo, setAppliedPositionNo] = useState<number | null>(null);
   const dispatch = useDispatch();
-
+  
   const openApplyModal = (applyPosition: string) => {
-    if (!isLogin) return dispatch(openModal("AuthModal"));
+    if (!token) return dispatch(openModal("AuthModal"));
 
     const position = positionList.filter(position => position.positionName === applyPosition);
 
@@ -70,11 +70,9 @@ const Position: FC<Props> = ({ positionList, projectName, isLogin }) => {
     const filteredPosition: list = {};
 
     positionList.forEach((position) => {
-      if (filteredPosition[position.positionName]) {
-        filteredPosition[position.positionName].push(position.userDto);
-      } else {
-        filteredPosition[position.positionName] = [position.userDto];
-      }
+      filteredPosition[position.positionName] ?
+      filteredPosition[position.positionName].push(position.userDto) :
+      filteredPosition[position.positionName] = [position.userDto];
     });
 
     setPositionList(filteredPosition);
@@ -85,9 +83,9 @@ const Position: FC<Props> = ({ positionList, projectName, isLogin }) => {
       <PositionContainer>
         {Object.keys(positions).map((positionName) => {
           const totalApplicants = positions[positionName].length;
-          const currentApplicants = positions[positionName].filter(v => !v).length;
+          const currentApplicants = positions[positionName].filter(userDto => !userDto).length;
           const state = currentApplicants === totalApplicants;
-          
+
           return (
             <PositionItem key={positionName}>
               <div>{positionName}</div>
@@ -103,7 +101,6 @@ const Position: FC<Props> = ({ positionList, projectName, isLogin }) => {
         </Backdrop>)
       }
     </>
-    
   );
 };
 

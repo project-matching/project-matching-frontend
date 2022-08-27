@@ -129,11 +129,11 @@ interface comment {
   userNo: number,
 }
 
-const ProjectDetail = ({data = fakeData}) => {
-  const { userInfo, userProfile } = useAppSelector(state => state.user);
+const ProjectDetail = ({ data = fakeData }) => {
+  const token = useAppSelector(state => state.auth.token);
+  const { userInfo, userProfile, } = useAppSelector(state => state.user);
   const [isParticipant, setIsParticipant] = useState<Boolean>(false);
   const [isRegister, setIsRegister] = useState<Boolean>(false);
-  const [isLogin, setIsLogin] = useState<Boolean>(false);
   const [comments, setComments] = useState<comment[]>([]);
   const router = useRouter();
 
@@ -172,11 +172,7 @@ const ProjectDetail = ({data = fakeData}) => {
   }, []);
 
   useEffect(() => {
-    userInfo.no ? setIsLogin(true) : setIsLogin(false);
-  }, [userInfo.no]);
-
-  useEffect(() => {
-    const positionDetailList = data.projectPositionDetailDtoList
+    const positionDetailList = data.projectPositionDetailDtoList;
     const Participants: (number | null | undefined)[] = data.projectPositionDetailDtoList.map(position => position.userDto?.no);
 
     setIsParticipant(Participants.includes(userInfo.no));
@@ -189,7 +185,7 @@ const ProjectDetail = ({data = fakeData}) => {
         if (userDto.register) setIsRegister(true);
       }
     });
-  }, [isLogin]);
+  }, [token]);
 
   return (
     <PrimaryLayout>
@@ -199,7 +195,7 @@ const ProjectDetail = ({data = fakeData}) => {
         <Left>
           <Main>
             <Title title="Positions" sm />
-            <Position positionList={data.projectPositionDetailDtoList} projectName={data.name} isLogin={isLogin} />
+            <Position positionList={data.projectPositionDetailDtoList} projectName={data.name} />
             <Title title="Introduction" sm />
             <Introduction>{data.introduction}</Introduction>
           </Main>
