@@ -4,15 +4,17 @@ import PrimaryLayout from 'src/components/Layouts/PrimaryLayout';
 import { useAppSelector } from 'src/redux/hooks';
 import { ProjectService } from 'src/services/ProjectService';
 
+// TODO: 무한스크롤
 const MyAppliedProject = () => {
   const token = useAppSelector((state) => state.auth.token);
 
   const [appliedProject, setAppliedProject] = useState([]);
 
   useEffect(() => {
-    (async () => {
-      setAppliedProject(await ProjectService.appliedProject({}));
-    })();
+    token &&
+      (async () => {
+        setAppliedProject((await ProjectService.appliedProject()).content);
+      })();
   }, [token]);
 
   return (
