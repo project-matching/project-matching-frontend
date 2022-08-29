@@ -12,6 +12,13 @@ export interface ProjectRequestType {
   unpaged?: boolean;
 }
 
+interface ApplyRequestType {
+  gitHub: string,
+  motive: string,
+  projectPositionNo: number | null,
+  technicalStackList: string[]
+}
+
 export class ProjectService {
   public static async recruitingProjectPreview() {
     const response = await appApi.get('/project/recruitment', {
@@ -109,5 +116,17 @@ export class ProjectService {
       },
     });
     return response.data.data.content;
+  }
+
+  public static async applyProject(reqData: ApplyRequestType) {
+    const response = await appApi.post('/participate', reqData);
+
+    return response;
+  }
+
+  public static async getProjectDetail(projectNo: string) {
+    const response = await appApi.get(`/project/${projectNo}`);
+
+    return response.data;
   }
 }
