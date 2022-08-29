@@ -4,6 +4,8 @@ import { render } from '@testing-library/react';
 import Home from '../../pages/index';
 
 it('renders homepage unchanged', () => {
-  const { container } = render(<Home />);
+  const { container } = render(
+    <Home initRecruitedProjects={[]} initRecruitingProjects={[]} />
+  );
   expect(container).toMatchSnapshot();
 });

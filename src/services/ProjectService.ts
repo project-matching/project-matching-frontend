@@ -12,11 +12,28 @@ export interface ProjectRequestType {
   unpaged?: boolean;
 }
 
-interface ApplyRequestType {
-  gitHub: string,
-  motive: string,
-  projectPositionNo: number | null,
-  technicalStackList: string[]
+export interface ProjectType {
+  bookMark: true;
+  currentPeople: number;
+  maxPeople: number;
+  name: string;
+  projectNo: number;
+  projectSimplePositionDtoList: [
+    {
+      positionName: string;
+      positionNo: number;
+      projectNo: number;
+    }
+  ];
+  projectSimpleTechnicalStackDtoList: [
+    {
+      image: string;
+      projectNo: number;
+      technicalStackName: string;
+    }
+  ];
+  register: string;
+  viewCount: number;
 }
 
 export class ProjectService {
@@ -38,95 +55,111 @@ export class ProjectService {
     return response.data.data.content;
   }
 
-  public static async recruitingProject(reqData: ProjectRequestType) {
+  public static async recruitingProject(projectNo: number | null = null) {
     const response = await appApi.get('/project/recruitment', {
       params: {
-        ...reqData,
+        projectNo,
         size: 12,
       },
     });
-    return response.data.data.content;
+    return response.data.data;
   }
 
-  public static async recruitedProject(reqData: ProjectRequestType) {
+  public static async recruitedProject(projectNo: number | null = null) {
     const response = await appApi.get('/project/recruitment/complete', {
       params: {
-        ...reqData,
+        projectNo,
         size: 12,
       },
     });
-    return response.data.data.content;
+    return response.data.data;
   }
 
-  public static async createdProjectPreview(reqData: ProjectRequestType) {
+  public static async searchedRecruitingProject(
+    searchContent: string,
+    projectNo: number | null = null
+  ) {
+    const response = await appApi.get('/project/recruitment', {
+      params: {
+        searchContent,
+        projectNo,
+        size: 12,
+      },
+    });
+    return response.data.data;
+  }
+
+  public static async searchedRecruitedProject(
+    searchContent: string,
+    projectNo: number | null = null
+  ) {
+    const response = await appApi.get('/project/recruitment/complete', {
+      params: {
+        searchContent,
+        projectNo,
+        size: 12,
+      },
+    });
+    return response.data.data;
+  }
+
+  public static async createdProjectPreview(projectNo: number | null = null) {
     const response = await appApi.get('/project/create/self', {
       params: {
-        ...reqData,
+        projectNo,
         size: 5,
       },
     });
     return response.data.data.content;
   }
 
-  public static async createdProject(reqData: ProjectRequestType) {
+  public static async createdProject(projectNo: number | null = null) {
     const response = await appApi.get('/project/create/self', {
       params: {
-        ...reqData,
+        projectNo,
         size: 12,
       },
     });
-    return response.data.data.content;
+    return response.data.data;
   }
 
-  public static async joinedProjectPreview(reqData: ProjectRequestType) {
+  public static async joinedProjectPreview(projectNo: number | null = null) {
     const response = await appApi.get('/project/participate', {
       params: {
-        ...reqData,
+        projectNo,
         size: 5,
       },
     });
     return response.data.data.content;
   }
 
-  public static async joinedProject(reqData: ProjectRequestType) {
+  public static async joinedProject(projectNo: number | null = null) {
     const response = await appApi.get('/project/participate', {
       params: {
-        ...reqData,
+        projectNo,
         size: 12,
       },
     });
-    return response.data.data.content;
+    return response.data.data;
   }
 
-  public static async appliedProjectPreview(reqData: ProjectRequestType) {
+  public static async appliedProjectPreview(projectNo: number | null = null) {
     const response = await appApi.get('/project/application', {
       params: {
-        ...reqData,
+        projectNo,
         size: 5,
       },
     });
     return response.data.data.content;
   }
 
-  public static async appliedProject(reqData: ProjectRequestType) {
+  public static async appliedProject(projectNo: number | null = null) {
     const response = await appApi.get('/project/application', {
       params: {
-        ...reqData,
+        projectNo,
         size: 12,
       },
     });
-    return response.data.data.content;
-  }
-
-  public static async applyProject(reqData: ApplyRequestType) {
-    const response = await appApi.post('/participate', reqData);
-
-    return response;
-  }
-
-  public static async getProjectDetail(projectNo: string) {
-    const response = await appApi.get(`/project/${projectNo}`);
-
-    return response.data;
+    return response.data.data;
   }
 }
