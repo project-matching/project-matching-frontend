@@ -1,6 +1,7 @@
 import Title from '@/components/auth/Title';
 import PrimaryLayout from '@/components/Layouts/PrimaryLayout';
 import ConfirmModal from '@/components/Post/ConfirmModal';
+import Position from '@/components/Post/Position';
 import styled from '@emotion/styled';
 import { useCallback, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -133,14 +134,14 @@ const ProjectDetail = () => {
           <Title title="Positions" sm />
           {newObj.map((v: any, i: number) => (
             <div key={i}>
-              {/* <Position
+              <Position
                 obj={v}
                 setNpm={setNpm}
                 setNDesigner={setNDesigner}
                 setNFrontend={setNFrontend}
                 setNBackend={setNBackend}
                 setNFullstack={setNFullstack}
-              /> */}
+              />
             </div>
           ))}
 
