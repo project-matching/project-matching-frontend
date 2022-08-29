@@ -1,123 +1,49 @@
 import styled from '@emotion/styled';
 import { FC } from 'react';
-import useBookmark from 'src/hooks/useBookmark';
 import Title from '../auth/Title';
 
 const Wrapper = styled.div`
   width: 20%;
   position: fixed;
-  right: 5%;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-evenly;
-  padding: 20px;
+  right: 0;
   background-color: #4242;
-
-  h1 {
-    font-size: 20px;
-    margin: 5px 0;
-  }
-
-  button {
-    border: 0;
-    outline: 0;
-    padding: 5px;
-    cursor: pointer;
-    &:hover {
-    background-color: gray;
-    }
-  }
 `;
 
-const PeriodRow = styled.div`
-`
-
-const MemberRow = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 90%;
-  
-  span {
-    width: 90%;
-  }
-`;
-
-const MemberDetail = styled.div`
-  display: flex;
-  justify-content: space-evenly;
-
-  .leader {
-    color: #ff0000;
-  }
-`;
-
-const TechRow = styled.div`
-  margin: 10px 0;
-`;
-
-interface IUser {
+interface ITech {
+  id: number;
   name: string;
-  no: number;
-  register: boolean;
 }
-
+interface IUser {
+  id: number;
+  name: string;
+  apply: boolean;
+}
 interface IPosition {
-  positionName: string,
-  projectPositionNo: number,
-  userDto: IUser | null
+  id: number;
+  name: string;
+  user: IUser;
 }
-
 interface Idata {
-  applicationStatus: boolean,
-  bookmark: boolean,
-  currentPeople: number,
-  endDate: string,
-  introduction: string,
-  maxPeople: number,
-  name: string,
-  projectNo: number,
-  projectPositionDetailDtoList: IPosition[],
-  startDate: string,
-  state: boolean,
-  technicalStackList: string[]
+  ProjectNum: number;
+  title: string;
+  startData: string;
+  endData: string;
+  currentState: boolean;
+  content: string;
+  currentPeople: number;
+  allPeople: number;
+  Bookmark: boolean;
+  req: boolean;
+  tech: ITech[];
+  position: IPosition[];
 }
-
 interface Props {
   data: Idata;
 }
-
 const Side: FC<Props> = ({ data }) => {
-  const { bookmark, toggleBookmark } = useBookmark();
-
   return (
     <Wrapper>
       <Title title="Project Detail" />
-      <PeriodRow>
-        <h1>Period</h1>
-        <div>{data.startDate} ~ {data.endDate}</div>
-      </PeriodRow>
-      <MemberRow>
-        <h1>Current Members({data.currentPeople} / {data.maxPeople}) </h1>
-        {data.projectPositionDetailDtoList.map(member => {
-          if (!member.userDto) return null;
-          return (
-            <MemberDetail key={member.userDto.name}>
-              <span>{member.positionName}</span>
-              <span>{member.userDto.name} </span>
-              {member.userDto.register && <span className="leader">(Leader)</span>}
-            </MemberDetail>
-          )
-        })}
-      </MemberRow>
-      <TechRow>
-        <h1>Tech Stacks</h1>
-        {data.technicalStackList.map(stack => {
-          return (
-            <div key={stack}>{stack}</div>
-          )
-        })}
-      </TechRow>
-      <button onClick={() => {toggleBookmark(data.projectNo)}} disabled={bookmark}>Bookmark</button>
     </Wrapper>
   );
 };
