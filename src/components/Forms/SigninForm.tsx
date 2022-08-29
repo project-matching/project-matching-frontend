@@ -1,8 +1,8 @@
 import styled from '@emotion/styled';
-import React, { HTMLInputTypeAttribute, useEffect, useState } from 'react';
+import React, { HTMLInputTypeAttribute } from 'react';
 import { useDispatch } from 'react-redux';
 import { useAppSelector } from 'src/redux/hooks';
-import { signin, signinOAuth } from 'src/redux/reducers/auth';
+import { signin } from 'src/redux/reducers/auth';
 import { setSigninErrorMsg } from 'src/redux/reducers/components/validation';
 import { Divider, Flex } from 'src/styles/global';
 import OAuthButton from '../Buttons/OAuthButton';
@@ -149,38 +149,6 @@ const SigninForm = ({ setAuthForm }: SigninFormProps) => {
     },
   ];
 
-  const [externalPopup, setExternalPopup] = useState<Window | null>(null);
-
-  useEffect(() => {
-    if (!externalPopup) {
-      return;
-    }
-
-    const timer = setInterval(() => {
-      if (!externalPopup) {
-        timer && clearInterval(timer);
-        return;
-      }
-      const currentUrl = externalPopup.location.href; // cross-origin의 경우 에러
-      if (!currentUrl) {
-        return;
-      }
-      const searchParams = new URL(currentUrl).searchParams;
-      const access = searchParams.get('token');
-      const refresh = searchParams.get('refresh');
-      if (access && refresh) {
-        externalPopup.close();
-        // ERROR: CORS
-        setExternalPopup(null);
-        dispatch(signinOAuth({ access, refresh }));
-      }
-    }, 500);
-
-    return () => {
-      if (externalPopup) externalPopup.close();
-    };
-  }, [externalPopup, dispatch]);
-
   const connectOAuth = (serviceProvider: string) => () => {
     const width = 500;
     const height = 500;
@@ -189,12 +157,11 @@ const SigninForm = ({ setAuthForm }: SigninFormProps) => {
     const top = window.screenY + (window.outerHeight - height) / 2.5;
 
     const title = `${serviceProvider} 소셜 로그인`;
-    const popup = window.open(
+    window.open(
       `/api/v1/oauth2/authorization/${serviceProvider}`,
       title,
       `width=${width},height=${height},left=${left},top=${top}`
     );
-    setExternalPopup(popup);
   };
 
   return (
