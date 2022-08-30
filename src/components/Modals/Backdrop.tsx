@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 
 export const Backdrop = styled.div`
-  position: absolute;
+  position: fixed;
   background-color: rgba(0, 0, 0, 0.5);
   backdrop-filter: blur(2px);
   top: 0;

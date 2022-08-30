@@ -6,6 +6,7 @@ interface ModalState {
   SignupEmailSentModal: boolean;
   SuccessPasswordChangeModal: boolean;
   SuccessDeleteUserModal: boolean;
+  NotificationModal: boolean;
 }
 
 export type ModalActionProps = keyof ModalState;
@@ -16,6 +17,7 @@ const initialState: ModalState = {
   SignupEmailSentModal: false,
   SuccessPasswordChangeModal: false,
   SuccessDeleteUserModal: false,
+  NotificationModal: false,
 };
 
 const modalSlice = createSlice({
