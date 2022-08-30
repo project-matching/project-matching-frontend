@@ -33,15 +33,6 @@ const Head = styled.div`
   }
 `;
 
-const detailData = {
-  notificationNo: 1004,
-  type: 'PROJECT_PARTICIPATION_REQUEST',
-  title: '[프로젝트 참가 신청] project21 name',
-  content: 'string',
-  read: false,
-  createDate: '2022-08-25T13:21:52',
-};
-
 const NotificationModal = () => {
   const dispatch = useDispatch();
   const notificationDetail = useAppSelector(

@@ -1,14 +1,15 @@
+import InfiniteScrollLayout from '@/components/Layouts/InfiniteScrollLayout';
 import SecondaryProjectLayout from '@/components/Projects/SecondaryProjectLayout';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import PrimaryLayout from 'src/components/Layouts/PrimaryLayout';
-import { ProjectService } from 'src/services/ProjectService';
-
-// TODO: 무한 스크롤
+import { ProjectService, ProjectType } from 'src/services/ProjectService';
 
 const SearchResult = () => {
-  const [recruitingProjects, setRecruitingProject] = useState([]);
-  const [recruitedProjects, setRecruitedProject] = useState([]);
+  const [recruitingProjects, setRecruitingProject] = useState<ProjectType[]>(
+    []
+  );
+  const [recruitedProjects, setRecruitedProject] = useState<ProjectType[]>([]);
 
   const router = useRouter();
   const searchKeyword = router.query.keyword as string;
@@ -33,12 +34,18 @@ const SearchResult = () => {
 
   return (
     <PrimaryLayout>
-      <SecondaryProjectLayout
-        title={`${
-          projectState ? '모집 완료된' : '모집 중인'
-        } "${searchKeyword}" 검색 결과`}
-        projectDtoList={projectState ? recruitedProjects : recruitingProjects}
-      />
+      <InfiniteScrollLayout
+        api={ProjectService.appliedProject}
+        items={projectState ? recruitedProjects : recruitingProjects}
+        setItems={projectState ? setRecruitedProject : setRecruitingProject}
+      >
+        <SecondaryProjectLayout
+          title={`${
+            projectState ? '모집 완료된' : '모집 중인'
+          } "${searchKeyword}" 검색 결과`}
+          projectDtoList={projectState ? recruitedProjects : recruitingProjects}
+        />
+      </InfiniteScrollLayout>
     </PrimaryLayout>
   );
 };

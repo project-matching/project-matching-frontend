@@ -5,11 +5,6 @@ import PrimaryLayout from 'src/components/Layouts/PrimaryLayout';
 import { useAppSelector } from 'src/redux/hooks';
 import { ProjectService, ProjectType } from 'src/services/ProjectService';
 
-/**
- * TODOS:
- * 무한 스크롤 구현
- */
-
 interface PropTypes {
   initProjects: ProjectType[];
 }

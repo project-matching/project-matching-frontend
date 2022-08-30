@@ -1,14 +1,14 @@
+import InfiniteScrollLayout from '@/components/Layouts/InfiniteScrollLayout';
 import SecondaryProjectLayout from '@/components/Projects/SecondaryProjectLayout';
 import { useEffect, useState } from 'react';
 import PrimaryLayout from 'src/components/Layouts/PrimaryLayout';
 import { useAppSelector } from 'src/redux/hooks';
-import { ProjectService } from 'src/services/ProjectService';
+import { ProjectService, ProjectType } from 'src/services/ProjectService';
 
-// TODO: 무한스크롤
 const MyCreatedProject = () => {
   const token = useAppSelector((state) => state.auth.token);
 
-  const [createdProject, setCreatedProject] = useState([]);
+  const [createdProject, setCreatedProject] = useState<ProjectType[]>([]);
 
   useEffect(() => {
     token &&
@@ -20,10 +20,16 @@ const MyCreatedProject = () => {
   return (
     <PrimaryLayout>
       {token && (
-        <SecondaryProjectLayout
-          title="내가 만든 프로젝트"
-          projectDtoList={createdProject}
-        />
+        <InfiniteScrollLayout
+          api={ProjectService.createdProject}
+          items={createdProject}
+          setItems={setCreatedProject}
+        >
+          <SecondaryProjectLayout
+            title="내가 만든 프로젝트"
+            projectDtoList={createdProject}
+          />
+        </InfiniteScrollLayout>
       )}
     </PrimaryLayout>
   );
