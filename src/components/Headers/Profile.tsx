@@ -10,7 +10,9 @@ import SmallButton from '../Buttons/SmallButton';
 // TODO: 후추 저작권 없는 이미지로 변경
 export const DEFAULT_IMAGE: string = '/default_profile.png';
 
-const ImageContainer = styled.div``;
+const ImageContainer = styled.div`
+  cursor: pointer;
+`;
 
 const Dropdown = styled.div`
   position: absolute;
