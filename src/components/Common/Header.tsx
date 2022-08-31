@@ -36,7 +36,9 @@ const Header: React.FC = () => {
     margin: 10px;
     font-size: 18px;
     color: ${(props) =>
-      props.href === router.asPath ? 'black' : props.theme.colors.gray};
+      props.href === router.asPath
+        ? props.theme.colors.black
+        : props.theme.colors.gray};
     font-weight: bold;
   `;
 

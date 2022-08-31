@@ -25,6 +25,7 @@ export interface LayoutProps {
   items: any[];
   setItems: Dispatch<SetStateAction<any[]>>;
   children: React.ReactNode;
+  title?: string;
 }
 
 const InfiniteScrollLayout = ({
@@ -32,6 +33,7 @@ const InfiniteScrollLayout = ({
   items,
   setItems,
   children,
+  title = '프로젝트',
 }: LayoutProps) => {
   const targetRef = useRef<HTMLDivElement>(null);
 
@@ -45,7 +47,7 @@ const InfiniteScrollLayout = ({
       if (!lastItem || isLast) return;
 
       const data = await api(
-        lastItem.projectNo || lastItem.no || lastItem.userNo
+        lastItem.projectNo || lastItem.userNo || lastItem.userNo
       );
 
       setIsLast(data.last);
@@ -80,6 +82,8 @@ const InfiniteScrollLayout = ({
     }
   });
 
+  // TODO: '이/가'를 정규표현식을 통해 정리
+
   return (
     <div>
       <div>{children}</div>
@@ -88,7 +92,7 @@ const InfiniteScrollLayout = ({
       ) : lastItem ? (
         <div>마지막 페이지입니다.</div>
       ) : (
-        <div>해당하는 프로젝트가 없습니다.</div>
+        <div>해당하는 {title}가(이) 없습니다.</div>
       )}
     </div>
   );
