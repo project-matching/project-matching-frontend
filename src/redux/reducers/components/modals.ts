@@ -6,6 +6,7 @@ interface ModalState {
   SignupEmailSentModal: boolean;
   SuccessPasswordChangeModal: boolean;
   SuccessDeleteUserModal: boolean;
+  PositionApplyModal: boolean;
   NotificationModal: boolean;
 }
 
@@ -17,6 +18,7 @@ const initialState: ModalState = {
   SignupEmailSentModal: false,
   SuccessPasswordChangeModal: false,
   SuccessDeleteUserModal: false,
+  PositionApplyModal: false,
   NotificationModal: false,
 };
 
