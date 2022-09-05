@@ -1,9 +1,15 @@
 import Title from '@/components/auth/Title';
 import PrimaryLayout from '@/components/Layouts/PrimaryLayout';
+import { Backdrop } from '@/components/Modals/Backdrop';
 import ConfirmModal from '@/components/Post/ConfirmModal';
 import styled from '@emotion/styled';
-import { useCallback, useEffect, useState } from 'react';
-import { useForm } from 'react-hook-form';
+import moment from 'moment';
+import { useRouter } from 'next/router';
+import { ChangeEvent, useCallback, useEffect, useState } from 'react';
+import { useAppSelector } from 'src/redux/hooks';
+import { ProjectService } from 'src/services/ProjectService';
+import { PositionService } from '../../services/PositionService';
+import { TechStackService } from '../../services/TechStackService';
 
 const Form = styled.form`
   width: 100%;
@@ -20,7 +26,7 @@ const Side = styled.div`
   position: fixed;
   right: 10%;
 `;
-const Introduction = styled.input`
+const Introduction = styled.textarea`
   width: 100%;
   height: 300px;
   margin-top: 10px;
@@ -28,7 +34,6 @@ const Introduction = styled.input`
 `;
 const SideTop = styled.div`
   background-color: #4242;
-  height: 150px;
   padding: 10px 50px;
 `;
 
@@ -64,136 +69,309 @@ const Mtitle = styled.span`
   padding-top: 20px;
   display: inline-block;
 `;
-const ProjectDetail = () => {
-  const { register } = useForm();
-  const [npm, setNpm] = useState(0);
-  const [NDesigner, setNDesigner] = useState(0);
-  const [NFrontend, setNFrontend] = useState(0);
-  const [NBackend, setNBackend] = useState(0);
-  const [NFullstack, setNFullstack] = useState(0);
 
-  const [PostTechList, setPostTechList] = useState<any>([]);
+const MainTitle = styled.div`
+  display: flex;
+  justify-content: center;
+  margin: 20px 0;
 
-  const selectList = [
-    'Pm',
-    'Designer',
-    'Frontend',
-    'Backend',
-    'Fullstack',
-  ] as any[];
-  const TechList = ['선택하세요', 'react', 'spring', 'node', 'vue'];
-  const NumberPos = [npm, NDesigner, NFrontend, NBackend, NFullstack];
+  input {
+    width: 300px;
+    height: 30px;
+    border: 0;
+    border-radius: 15px;
+    outline: none;
+    padding-left: 10px;
+    background-color: #4242;
+    text-align: center;
+  }
+`
 
-  const [Selected, setSelected] = useState('PM');
-  const [TechSelected, setTechSelected] = useState('');
+const PositionDetail = styled.div`
+  display: flex;
+  justify-content: space-between;
+  width: 30%;
 
-  const handleSelect = (e: any) => {
-    setSelected(e.target.value);
+  span {
+    margin: 0 5px;
+  }
+`
+
+const SidePositionSection = styled.section`
+  display: flex;
+  justify-content: space-between;
+  width: 50%;
+`
+
+interface positions {
+  [index: string]: number
+}
+
+interface position {
+  positionNo: number,
+  positionName: string,
+  count: number,
+}
+
+interface techStack {
+  technicalStackNo: number,
+  technicalStackName: string,
+  image: null | string,
+}
+
+const ProjectUpload = () => {
+  const [projectTitle, setProjectTitle] = useState<string>("");
+  const [positions, setPositions] = useState<position[]>([]);
+  const [teckStacks, setTechStacks] = useState<techStack[]>([]);
+  const [startDate, setStartDate] = useState(moment().format("YYYY-MM-DD"));
+  const [endDate, setEndDate] = useState(moment().format("YYYY-MM-DD"));
+  const [introduction, setIntroduction] = useState<string>("");
+  const [curSelectedTech, setCurSelectedTech] = useState<string>(teckStacks[0]?.technicalStackName);
+  const [selectedTechList, setSelectedTechList] = useState<techStack[]>([]);
+  const [myPosition, setMyPosition] = useState(positions[0]?.positionName);
+  const [onModal, setOnModal] = useState(false);
+  const [isReady, setIsReady] = useState(false);
+  const user = useAppSelector(state => state.user);
+  const router = useRouter();
+  
+  const handleTitle = (e: ChangeEvent<HTMLInputElement>) => {
+    setProjectTitle(e.target.value);
   };
 
-  const handleTech = (e: any) => {
-    setTechSelected(e.target.value);
+  const handlePositions = (e: React.BaseSyntheticEvent, selectedPosition: string) => {
+    const target = e.target.id;
+
+    if (target === "minus"){
+      setPositions(prev => {
+        return prev.map((position: position) => {
+          if (position.positionName === selectedPosition && position.count > 0) {
+            position.count--; 
+          }
+          return position;
+        });
+      });
+    }
+
+    if (target === "plus") {
+      setPositions(prev => {
+        return prev.map((position: position) => {
+          if (position.positionName === selectedPosition) {
+            position.count++;
+          }
+          return position;
+        });
+      });
+    }
   };
+
+  const handleSelect = (e: ChangeEvent<HTMLSelectElement>) => {
+    const curPosition = e.target.value;
+    setMyPosition(prevPosition => {
+      setPositions(positions => {
+        return positions.map(position => {
+          if (position.positionName === prevPosition) position.count--;
+          if (position.positionName === curPosition) position.count++;
+          return position;
+        });
+      });
+
+      return curPosition;
+    });
+  };
+
+  const handleTech = (e: ChangeEvent<HTMLSelectElement>) => {
+    const selectedTechStackName = e.target.value;
+    const selectedTechStack = teckStacks.find(techStack => techStack.technicalStackName === selectedTechStackName) as techStack;
+
+    setCurSelectedTech(selectedTechStackName);
+    setSelectedTechList((prev: techStack[]) => {
+      const newList = [...prev, selectedTechStack];
+      
+      return newList;
+    });
+  };
+
+  const handleDate = (e: ChangeEvent<HTMLInputElement>) => {
+    const date = e.target.value;
+    const id = e.target.id;
+
+    if (id === "startDate") {
+      setStartDate(date);
+    }
+    
+    if (id === "endDate") {
+      setEndDate(date);
+    }
+  }
+
+  const handleIntroduction = (e: ChangeEvent<HTMLTextAreaElement>) => {
+    setIntroduction(e.target.value);
+  }
+
+  const onCreate = useCallback(() => {
+    setOnModal(!onModal);
+    document.body.style.overflow = "hidden";
+  }, []);
 
   useEffect(() => {
-    if (PostTechList.includes(TechSelected) === false) {
-      setPostTechList([TechSelected, ...PostTechList]);
-    }
-  }, [TechSelected, PostTechList]);
+    (async () => {
+      const positions = await PositionService.getPositions();
+      const techStack = await TechStackService.getTechStacks();
 
-  let newObj = selectList.reduce((acc, cur, idx) => {
-    acc[cur] = NumberPos[idx];
-    return acc;
-  }, new Object());
-  newObj = Object.entries(newObj);
-  let sidePos = newObj.filter((v: any) => v[1] > 0);
+      setPositions(positions.map((position: position) => {
+        position["count"] = 0;
+        return position;
+      }));
 
-  const [onModal, setOnModal] = useState(false);
-  const [ok, setOk] = useState(false);
-
-  console.log(ok);
-  const onCreate = useCallback(() => {
-    setOnModal((cur) => !cur);
+      setTechStacks(techStack);
+    })();
   }, []);
+
+  useEffect(() => {
+    if (!isReady) return;
+    const projectTechnicalStackList = selectedTechList.map(tech => tech.technicalStackNo);
+    const projectPositionRegisterDtoList = positions.map(position => {
+      if (!position.count) return null;
+
+      const isMine = myPosition === position.positionName;
+      const information = isMine ? {userNo:  user.userInfo.no} : null;
+      const result = [];
+
+      for (let i = 0; i < position.count; i++) {
+        const positionInfo = {
+          positionNo: position.positionNo,
+          projectRegisterUserDto: !i ? information : null
+        }
+        result.push(positionInfo);
+      }
+
+      return result;
+    }).flat().filter(position => position);
+
+    (async () => {
+      const result = {
+        name: projectTitle,
+        projectPositionRegisterDtoList,
+        endDate,
+        startDate,
+        projectTechnicalStackList,
+        introduction,
+      };
+
+      try {
+        const register = await ProjectService.registerProject(result);
+
+        register.status === 200 && router.push("/");
+      } catch (err) {
+        console.log(err)
+      }
+    })();
+  }, [isReady]);
 
   return (
     <PrimaryLayout>
-      <Title title="Project Title" />
+      <MainTitle>
+        <label htmlFor="title">
+          <input type="text" value={projectTitle} onChange={handleTitle} placeholder="Project Title"/>
+        </label>
+      </MainTitle>
       <Form>
         <Main>
           <Title title="내 포지션" sm />
-          <select onChange={handleSelect} value={Selected}>
-            {selectList.map((item) => (
-              <option value={item} key={item}>
-                {item}
+          <select onChange={handleSelect} value={myPosition}>
+            {positions.map((position) => (
+              <option value={position.positionName} key={position.positionNo}>
+                {position.positionName}
               </option>
             ))}
           </select>
 
           <Title title="Positions" sm />
-          {newObj.map((v: any, i: number) => (
-            <div key={i}>
-            </div>
-          ))}
+          {positions.map((position: position) => {
+            return (
+              <>
+                <PositionDetail key={position.positionNo}>
+                  <span>{position.positionName}</span>
+                  <div onClick={(e) => {handlePositions(e, position.positionName)}}>
+                    <span id="minus">-</span>
+                    <span>{position.count}</span>
+                    <span id="plus">+</span>
+                  </div>
+                </PositionDetail>
+              </>
+            )
+          })}
 
           <Title title="Period" sm />
           <div>
             <input
+              id="startDate"
               type="date"
-              {...register('startDate', { required: '입력해주세요' })}
+              value={startDate}
+              onChange={handleDate}
+              min={moment().format("YYYY-MM-DD")}
+              max={endDate}
             />
             <span> ~ </span>
             <input
+              id="endDate"
               type="date"
-              {...register('endDate', { required: '입력해주세요' })}
+              value={endDate}
+              onChange={handleDate}
+              min={startDate}
             />
           </div>
 
           <Title title="Tech Stacks" sm />
-          <select onChange={handleTech} value={TechSelected}>
-            {TechList.map((item) => (
-              <option value={item} key={item}>
-                {item}
+          <select onChange={handleTech} value={curSelectedTech}>
+            {teckStacks.map((techStack) => (
+              <option value={techStack.technicalStackName} key={techStack.technicalStackNo}>
+                {techStack.technicalStackName}
               </option>
             ))}
           </select>
           <div>
-            {PostTechList.map((item: any, i: number) => (
-              <span key={i} style={{ marginRight: '10px' }}>
-                {item}
+            {selectedTechList.map((tech) => (
+              <span key={tech.technicalStackNo} style={{ marginRight: '10px' }}>
+                {tech.technicalStackName}
               </span>
             ))}
           </div>
 
           <Title title="Introduction" sm />
-
-          <Introduction
-            type="text"
-            {...register('introduction', { required: '입력해주세요' })}
-          />
+          <Introduction value={introduction} onChange={handleIntroduction}/>
         </Main>
 
         <Side>
           <SideTop>
             <Stitle>Project Details</Stitle>
             <Mtitle>Available Positions</Mtitle>
-            <div>
-              {sidePos.map((v: any, i: number) => (
-                <p key={i}>{v}</p>
-              ))}
-            </div>
+            {positions.map(position => {
+              if (!position.count) return;
+
+              return (
+                <>
+                  <SidePositionSection key={position.positionNo}>
+                    <span>{position.positionName}</span>
+                    <span>{position.count}</span>
+                  </SidePositionSection>
+                </>
+              )
+            })}
           </SideTop>
           <BtnWrapper>
             <input type="button" value="생성하기" onClick={onCreate} />
             <input type="button" value="취소" />
           </BtnWrapper>
         </Side>
-        {onModal ? (
-          <ConfirmModal title="정말 생성하시겠습니까?" setOk={setOk} />
-        ) : null}
+        {onModal &&
+          <Backdrop>
+            <ConfirmModal title="정말 생성하시겠습니까?" setOnModal={setOnModal} setIsReady={setIsReady} />
+          </Backdrop>
+        }
       </Form>
     </PrimaryLayout>
   );
 };
 
-export default ProjectDetail;
+export default ProjectUpload;
