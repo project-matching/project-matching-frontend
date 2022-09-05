@@ -31,7 +31,7 @@ export interface fetchedData<T> {
 }
 
 export interface LayoutProps {
-  api: (_no: number | null) => Promise<fetchedData<any>>;
+  api: (_no: number | undefined) => Promise<fetchedData<any>>;
   data: fetchedData<any>;
   setData: Dispatch<SetStateAction<fetchedData<any>>>;
   children: React.ReactNode;
