@@ -1,4 +1,6 @@
-import InfiniteScrollLayout from '@/components/Layouts/InfiniteScrollLayout';
+import InfiniteScrollLayout, {
+  fetchedData,
+} from '@/components/Layouts/InfiniteScrollLayout';
 import BookmarkProjectLayout from '@/components/Projects/BookmarkProjectLayout';
 import { useEffect, useState } from 'react';
 import PrimaryLayout from 'src/components/Layouts/PrimaryLayout';
@@ -8,9 +10,9 @@ import { ProjectType } from 'src/services/ProjectService';
 
 const Bookmark = () => {
   const token = useAppSelector((state) => state.auth.token);
-  const [bookmarkedProjects, setBookmarkedProjects] = useState<ProjectType[]>(
-    []
-  );
+  const [bookmarkedProjects, setBookmarkedProjects] = useState<
+    fetchedData<ProjectType>
+  >({ content: [], last: false });
 
   useEffect(() => {
     token &&
@@ -22,15 +24,15 @@ const Bookmark = () => {
 
   return (
     <PrimaryLayout>
-      {token && (
+      {token && bookmarkedProjects.content.length && (
         <InfiniteScrollLayout
           api={BookmarkService.getBookmarks}
-          items={bookmarkedProjects}
-          setItems={setBookmarkedProjects}
+          data={bookmarkedProjects}
+          setData={setBookmarkedProjects}
         >
           <BookmarkProjectLayout
             title="즐겨찾기한 프로젝트"
-            projectDtoList={bookmarkedProjects}
+            projectDtoList={bookmarkedProjects.content}
           />
         </InfiniteScrollLayout>
       )}

@@ -1,4 +1,6 @@
-import InfiniteScrollLayout from '@/components/Layouts/InfiniteScrollLayout';
+import InfiniteScrollLayout, {
+  fetchedData,
+} from '@/components/Layouts/InfiniteScrollLayout';
 import SecondaryProjectLayout from '@/components/Projects/SecondaryProjectLayout';
 import { useEffect, useState } from 'react';
 import PrimaryLayout from 'src/components/Layouts/PrimaryLayout';
@@ -6,7 +8,7 @@ import { useAppSelector } from 'src/redux/hooks';
 import { ProjectService, ProjectType } from 'src/services/ProjectService';
 
 interface PropTypes {
-  initProjects: ProjectType[];
+  initProjects: fetchedData<ProjectType>;
 }
 
 const Recruited = ({ initProjects }: PropTypes) => {
@@ -14,22 +16,21 @@ const Recruited = ({ initProjects }: PropTypes) => {
   const [recruitedProjects, setRecruitedProject] = useState(initProjects);
 
   useEffect(() => {
-    token &&
-      (async () => {
-        setRecruitedProject((await ProjectService.recruitedProject()).content);
-      })();
+    (async () => {
+      setRecruitedProject(await ProjectService.recruitedProject());
+    })();
   }, [token]);
 
   return (
     <PrimaryLayout>
       <InfiniteScrollLayout
         api={ProjectService.recruitedProject}
-        items={recruitedProjects}
-        setItems={setRecruitedProject}
+        data={recruitedProjects}
+        setData={setRecruitedProject}
       >
         <SecondaryProjectLayout
           title="모집 완료된 프로젝트"
-          projectDtoList={recruitedProjects}
+          projectDtoList={recruitedProjects.content}
         />
       </InfiniteScrollLayout>
     </PrimaryLayout>
@@ -44,7 +45,7 @@ export async function getStaticProps() {
 
     return {
       props: {
-        initProjects: recruitedProject.content,
+        initProjects: recruitedProject,
       },
       revalidate: 10,
     };
@@ -53,7 +54,10 @@ export async function getStaticProps() {
 
     return {
       props: {
-        initProjects: [],
+        initProjects: {
+          content: [],
+          last: false,
+        },
       },
     };
   }

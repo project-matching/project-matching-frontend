@@ -39,9 +39,8 @@ const LinkContainer = styled.div`
   }
 `;
 
-interface NotificationType {
+export interface NotificationType {
   notificationNo: number;
-  type: string;
   title: string;
   read: boolean;
   createDate: string;
@@ -112,10 +111,10 @@ const Notification = () => {
      * TODO:
      *
      * 로직
-     * 1. global notification 상태 만들기
-     * 2. 모달 창 열기
-     * 3. 모달 창에 상태 내용 넣기
-     * 4. 모달 창 닫을 때 notification 상태 null로 변경
+     * 1. global notification 상태 만들기 (O)
+     * 2. 모달 창 열기 (O)
+     * 3. 모달 창에 상태 내용 넣기 (O)
+     * 4. 모달 창 닫을 때 notification 상태 null로 변경 (O)
      * 5. 에러 핸들링
      */
     dispatch(notificationDetail(notification.notificationNo));

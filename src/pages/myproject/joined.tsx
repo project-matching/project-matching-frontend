@@ -1,4 +1,6 @@
-import InfiniteScrollLayout from '@/components/Layouts/InfiniteScrollLayout';
+import InfiniteScrollLayout, {
+  fetchedData,
+} from '@/components/Layouts/InfiniteScrollLayout';
 import SecondaryProjectLayout from '@/components/Projects/SecondaryProjectLayout';
 import { useEffect, useState } from 'react';
 import PrimaryLayout from 'src/components/Layouts/PrimaryLayout';
@@ -8,12 +10,15 @@ import { ProjectService, ProjectType } from 'src/services/ProjectService';
 const MyJoinedProject = () => {
   const token = useAppSelector((state) => state.auth.token);
 
-  const [joinedProject, setJoinedProject] = useState<ProjectType[]>([]);
+  const [joinedProject, setJoinedProject] = useState<fetchedData<ProjectType>>({
+    content: [],
+    last: false,
+  });
 
   useEffect(() => {
     token &&
       (async () => {
-        setJoinedProject((await ProjectService.joinedProject()).content);
+        setJoinedProject(await ProjectService.joinedProject());
       })();
   }, [token]);
 
@@ -22,12 +27,12 @@ const MyJoinedProject = () => {
       {token && (
         <InfiniteScrollLayout
           api={ProjectService.joinedProject}
-          items={joinedProject}
-          setItems={setJoinedProject}
+          data={joinedProject}
+          setData={setJoinedProject}
         >
           <SecondaryProjectLayout
             title="참여 중인 프로젝트"
-            projectDtoList={joinedProject}
+            projectDtoList={joinedProject.content}
           />
         </InfiniteScrollLayout>
       )}

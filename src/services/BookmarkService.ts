@@ -8,7 +8,7 @@ export class BookmarkService {
         size: 12,
       },
     });
-    return response.data.data.content;
+    return response.data.data;
   }
   public static async postBookmarks(projectNo: number) {
     await appApi.post(`/bookmark/${projectNo}`);
