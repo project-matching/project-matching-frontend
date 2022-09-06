@@ -20,10 +20,11 @@ const Home = ({ initRecruitingProjects, initRecruitedProjects }: PropTypes) => {
   );
 
   useEffect(() => {
-    (async () => {
-      setRecruitingProjects(await ProjectService.recruitingProjectPreview());
-      setRecruitedProjects(await ProjectService.recruitedProjectPreview());
-    })();
+    token &&
+      (async () => {
+        setRecruitingProjects(await ProjectService.recruitingProjectPreview());
+        setRecruitedProjects(await ProjectService.recruitedProjectPreview());
+      })();
   }, [token]);
 
   return (

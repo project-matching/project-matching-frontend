@@ -6,6 +6,7 @@ import React, {
   useRef,
   useState,
 } from 'react';
+import { useAppSelector } from 'src/redux/hooks';
 
 const LoadingDiv = styled.div`
   padding: 50px 0;
@@ -15,43 +16,55 @@ const LoadingDiv = styled.div`
   align-items: center;
 `;
 
-interface fetchedData {
-  content: any[];
+const Message = styled.div`
+  display: flex;
+  margin: 20px 0 40px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-size: ${(props) => props.theme.sizes.sm};
+`;
+
+export interface fetchedData<T> {
+  content: Array<T>;
   last: boolean;
 }
 
 export interface LayoutProps {
-  api: (_no: number) => Promise<fetchedData>;
-  items: any[];
-  setItems: Dispatch<SetStateAction<any[]>>;
+  api: (_no: number | undefined) => Promise<fetchedData<any>>;
+  data: fetchedData<any>;
+  setData: Dispatch<SetStateAction<fetchedData<any>>>;
   children: React.ReactNode;
   title?: string;
 }
 
 const InfiniteScrollLayout = ({
   api,
-  items,
-  setItems,
+  data,
+  setData,
   children,
   title = '프로젝트',
 }: LayoutProps) => {
   const targetRef = useRef<HTMLDivElement>(null);
+  const token = useAppSelector((state) => state.auth.token);
 
-  const [isLast, setIsLast] = useState(items.length ? false : true);
-  const [lastItem, setLastItem] = useState<any>(
-    items[items.length - 1] || null
-  );
+  const [isLast, setIsLast] = useState<boolean>(false);
+  const [lastItem, setLastItem] = useState<any>(null);
 
   const fetchMoreData = async () => {
     try {
       if (!lastItem || isLast) return;
 
-      const data = await api(
-        lastItem.projectNo || lastItem.userNo || lastItem.userNo
+      const newData = await api(
+        lastItem.projectNo || lastItem.notificationNo || lastItem.userNo
       );
 
-      setIsLast(data.last);
-      setItems([...items, ...data.content]);
+      setData({
+        ...newData,
+        content: [...data.content, ...newData.content],
+      });
+      setIsLast(newData.last);
+      setLastItem(newData.content[newData.content.length - 1]);
     } catch (error) {
       console.error(error);
     }
@@ -64,7 +77,6 @@ const InfiniteScrollLayout = ({
     entries.forEach(async (entry) => {
       if (entry.isIntersecting && !isLast) {
         await fetchMoreData();
-        items && setLastItem(items[items.length - 1]);
       }
       if (isLast) {
         observer.disconnect();
@@ -73,26 +85,38 @@ const InfiniteScrollLayout = ({
   };
 
   useEffect(() => {
+    let io: undefined | IntersectionObserver;
+
     if (targetRef) {
-      const io = new IntersectionObserver(callback, {
+      io = new IntersectionObserver(callback, {
         root: document,
         threshold: 0.1,
       });
       targetRef.current && io.observe(targetRef.current);
     }
+    return () => {
+      if (io) {
+        io.disconnect();
+      }
+    };
   });
 
-  // TODO: '이/가'를 정규표현식을 통해 정리
+  // 로그아웃/로그인 시 data 변경 (TODO: 최적화)
+  useEffect(() => {
+    setLastItem(data.content[data.content.length - 1]);
+    setIsLast(data.last);
+  }, [data, token, isLast]);
 
+  // TODO: '이/가'를 정규표현식을 통해 정리
   return (
     <div>
       <div>{children}</div>
       {!isLast && lastItem ? (
         <LoadingDiv ref={targetRef}>Loading...</LoadingDiv>
-      ) : lastItem ? (
-        <div>마지막 페이지입니다.</div>
+      ) : isLast && lastItem ? (
+        <Message>마지막 페이지입니다.</Message>
       ) : (
-        <div>해당하는 {title}가(이) 없습니다.</div>
+        <Message>해당하는 {title}이(가) 없습니다.</Message>
       )}
     </div>
   );

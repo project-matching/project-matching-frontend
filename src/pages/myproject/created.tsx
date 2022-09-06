@@ -1,4 +1,6 @@
-import InfiniteScrollLayout from '@/components/Layouts/InfiniteScrollLayout';
+import InfiniteScrollLayout, {
+  fetchedData,
+} from '@/components/Layouts/InfiniteScrollLayout';
 import SecondaryProjectLayout from '@/components/Projects/SecondaryProjectLayout';
 import { useEffect, useState } from 'react';
 import PrimaryLayout from 'src/components/Layouts/PrimaryLayout';
@@ -8,12 +10,17 @@ import { ProjectService, ProjectType } from 'src/services/ProjectService';
 const MyCreatedProject = () => {
   const token = useAppSelector((state) => state.auth.token);
 
-  const [createdProject, setCreatedProject] = useState<ProjectType[]>([]);
+  const [createdProject, setCreatedProject] = useState<
+    fetchedData<ProjectType>
+  >({
+    content: [],
+    last: false,
+  });
 
   useEffect(() => {
     token &&
       (async () => {
-        setCreatedProject((await ProjectService.createdProject()).content);
+        setCreatedProject(await ProjectService.createdProject());
       })();
   }, [token]);
 
@@ -22,12 +29,12 @@ const MyCreatedProject = () => {
       {token && (
         <InfiniteScrollLayout
           api={ProjectService.createdProject}
-          items={createdProject}
-          setItems={setCreatedProject}
+          data={createdProject}
+          setData={setCreatedProject}
         >
           <SecondaryProjectLayout
             title="내가 만든 프로젝트"
-            projectDtoList={createdProject}
+            projectDtoList={createdProject.content}
           />
         </InfiniteScrollLayout>
       )}

@@ -1,4 +1,6 @@
-import InfiniteScrollLayout from '@/components/Layouts/InfiniteScrollLayout';
+import InfiniteScrollLayout, {
+  fetchedData,
+} from '@/components/Layouts/InfiniteScrollLayout';
 import SecondaryProjectLayout from '@/components/Projects/SecondaryProjectLayout';
 import { useEffect, useState } from 'react';
 import PrimaryLayout from 'src/components/Layouts/PrimaryLayout';
@@ -6,7 +8,7 @@ import { useAppSelector } from 'src/redux/hooks';
 import { ProjectService, ProjectType } from 'src/services/ProjectService';
 
 interface PropTypes {
-  initProjects: ProjectType[];
+  initProjects: fetchedData<ProjectType>;
 }
 
 const Recruiting = ({ initProjects }: PropTypes) => {
@@ -14,24 +16,21 @@ const Recruiting = ({ initProjects }: PropTypes) => {
   const [recruitingProject, setRecruitingProject] = useState(initProjects);
 
   useEffect(() => {
-    token &&
-      (async () => {
-        setRecruitingProject(
-          (await ProjectService.recruitingProject()).content
-        );
-      })();
+    (async () => {
+      setRecruitingProject(await ProjectService.recruitingProject());
+    })();
   }, [token]);
 
   return (
     <PrimaryLayout>
       <InfiniteScrollLayout
         api={ProjectService.recruitingProject}
-        items={recruitingProject}
-        setItems={setRecruitingProject}
+        data={recruitingProject}
+        setData={setRecruitingProject}
       >
         <SecondaryProjectLayout
           title="모집 중인 프로젝트"
-          projectDtoList={recruitingProject}
+          projectDtoList={recruitingProject.content}
         />
       </InfiniteScrollLayout>
     </PrimaryLayout>
@@ -46,7 +45,7 @@ export async function getStaticProps() {
 
     return {
       props: {
-        initProjects: recruitingProject.content,
+        initProjects: recruitingProject,
       },
       revalidate: 10,
     };
@@ -55,7 +54,10 @@ export async function getStaticProps() {
 
     return {
       props: {
-        initProjects: [],
+        initProjects: {
+          content: [],
+          last: false,
+        },
       },
     };
   }

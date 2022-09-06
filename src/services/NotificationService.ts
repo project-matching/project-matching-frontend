@@ -17,7 +17,7 @@ export class NotificationService {
         size: 12,
       },
     });
-    return response.data.data.content;
+    return response.data.data;
   }
 
   public static async getNotificationDetail(projectNo?: number) {
