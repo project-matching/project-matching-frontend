@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { Dispatch, FC, SetStateAction, useCallback } from 'react';
+import { Dispatch, FC, SetStateAction } from 'react';
 
 const Box = styled.div`
   width: 300px;
@@ -31,23 +31,28 @@ interface Props {
   setOnModal: Dispatch<SetStateAction<boolean>>;
   setIsReady: Dispatch<SetStateAction<boolean>>;
 }
-const ConfirmModal: FC<Props> = ({ title, setOnModal, setIsReady }) => {
-  const useOk = useCallback(() => {
-    setIsReady(true);
-  }, [setIsReady]);
 
-  const useNo = useCallback(() => {
-    setIsReady(false);
-    setOnModal(false);
-    document.body.style.overflow = "auto";
-  }, [setIsReady]);
+const ConfirmModal: FC<Props> = ({ title, setOnModal, setIsReady }) => {
+  const handleClick = (e: React.BaseSyntheticEvent) => {
+    const target = e.target.id;
+    
+    if (target === "ok") {
+      setIsReady(true);
+    }
+    
+    if (target === "no") {
+      setIsReady(false);
+      setOnModal(false);
+      document.body.style.overflow = "auto";
+    }
+  }
 
   return (
     <Box>
       <h1>{title}</h1>
-      <BtnWrapper>
-        <Btn onClick={useOk} type="button">예</Btn>
-        <Btn onClick={useNo} type="button">아니요</Btn>
+      <BtnWrapper onClick={handleClick}>
+        <Btn type="button" id="ok">예</Btn>
+        <Btn type="button" id="no">아니요</Btn>
       </BtnWrapper>
     </Box>
   );

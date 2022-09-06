@@ -119,6 +119,13 @@ interface techStack {
   image: null | string,
 }
 
+interface positionInfo {
+  positionNo: number;
+  projectRegisterUserDto: {
+    userNo: number | null;
+  } | null;
+}
+
 const ProjectUpload = () => {
   const [projectTitle, setProjectTitle] = useState<string>("");
   const [positions, setPositions] = useState<position[]>([]);
@@ -165,18 +172,17 @@ const ProjectUpload = () => {
   };
 
   const handleSelect = (e: ChangeEvent<HTMLSelectElement>) => {
+    const prevPosition = myPosition;
     const curPosition = e.target.value;
-    setMyPosition(prevPosition => {
-      setPositions(positions => {
-        return positions.map(position => {
-          if (position.positionName === prevPosition) position.count--;
-          if (position.positionName === curPosition) position.count++;
-          return position;
-        });
-      });
 
-      return curPosition;
+    setPositions(positions => {
+      return positions.map(position => {
+        if (position.positionName === prevPosition) position.count--;
+        if (position.positionName === curPosition) position.count++;
+        return position;
+      });
     });
+    setMyPosition(curPosition);
   };
 
   const handleTech = (e: ChangeEvent<HTMLSelectElement>) => {
@@ -184,9 +190,14 @@ const ProjectUpload = () => {
     const selectedTechStack = teckStacks.find(techStack => techStack.technicalStackName === selectedTechStackName) as techStack;
 
     setCurSelectedTech(selectedTechStackName);
+
+    if (!selectedTechStack) return;
+
     setSelectedTechList((prev: techStack[]) => {
+      if (prev.includes(selectedTechStack)) return prev;
+
       const newList = [...prev, selectedTechStack];
-      
+
       return newList;
     });
   };
@@ -213,6 +224,28 @@ const ProjectUpload = () => {
     document.body.style.overflow = "hidden";
   }, []);
 
+  const makePositionDtoList = (positions: position[]) => {
+    const result: positionInfo[] = [];
+
+    positions.forEach((position: position) => {
+      if (!position.count) return;
+
+      const isMine = myPosition === position.positionName;
+      const information = isMine ? {userNo:  user.userInfo.no} : null;
+
+      for (let i = 0; i < position.count; i++) {
+        const positionInfo = {
+          positionNo: position.positionNo,
+          projectRegisterUserDto: !i ? information : null
+        }
+
+        result.push(positionInfo);
+      }
+    });
+
+    return result;
+  }
+
   useEffect(() => {
     (async () => {
       const positions = await PositionService.getPositions();
@@ -230,23 +263,7 @@ const ProjectUpload = () => {
   useEffect(() => {
     if (!isReady) return;
     const projectTechnicalStackList = selectedTechList.map(tech => tech.technicalStackNo);
-    const projectPositionRegisterDtoList = positions.map(position => {
-      if (!position.count) return null;
-
-      const isMine = myPosition === position.positionName;
-      const information = isMine ? {userNo:  user.userInfo.no} : null;
-      const result = [];
-
-      for (let i = 0; i < position.count; i++) {
-        const positionInfo = {
-          positionNo: position.positionNo,
-          projectRegisterUserDto: !i ? information : null
-        }
-        result.push(positionInfo);
-      }
-
-      return result;
-    }).flat().filter(position => position);
+    const projectPositionRegisterDtoList: positionInfo[] = makePositionDtoList(positions);
 
     (async () => {
       const result = {
@@ -279,6 +296,9 @@ const ProjectUpload = () => {
         <Main>
           <Title title="내 포지션" sm />
           <select onChange={handleSelect} value={myPosition}>
+            <option value={"선택해 주세요"} key={"init"}>
+              선택해주세요
+            </option>
             {positions.map((position) => (
               <option value={position.positionName} key={position.positionNo}>
                 {position.positionName}
@@ -324,6 +344,9 @@ const ProjectUpload = () => {
 
           <Title title="Tech Stacks" sm />
           <select onChange={handleTech} value={curSelectedTech}>
+            <option value={"선택해 주세요"} key={"init"}>
+              선택해주세요
+            </option>
             {teckStacks.map((techStack) => (
               <option value={techStack.technicalStackName} key={techStack.technicalStackNo}>
                 {techStack.technicalStackName}
