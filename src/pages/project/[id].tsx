@@ -222,12 +222,11 @@ const ProjectDetail = ({ project, comment } : Props) => {
   );
 };
 
-//ssr로 api /v1/project/params.id 로 project 정보 받아오면 됨
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const projectNo = context.query.id as string
   const projectData = await ProjectService.getProjectDetail(projectNo);
   const commentData = await CommentService.getComments(projectNo)
-console.log(commentData)
+
   return {
     props: {
       project: projectData.data,

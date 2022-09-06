@@ -43,6 +43,24 @@ interface ApplyRequestType {
   technicalStackList: string[]
 }
 
+interface dto {
+  userNo: number | null,
+}
+
+interface positionDto {
+  positionNo: number,
+  projectRegisterUserDto: dto | null,
+}
+
+interface RegisterProjectData {
+  startDate: string,
+  endDate: string,
+  introduction: string,
+  name: string,
+  projectPositionRegisterDtoList: (positionDto | null)[],
+  projectTechnicalStackList: number[],
+}
+
 export class ProjectService {
   public static async recruitingProjectPreview() {
     const response = await appApi.get('/project/recruitment', {
@@ -180,5 +198,11 @@ export class ProjectService {
     const response = await appApi.get(`/project/${projectNo}`);
 
     return response.data;
+  }
+
+  public static async registerProject(projectRegisterRequestDto: RegisterProjectData) {
+    const response = await appApi.post("/project", projectRegisterRequestDto);
+
+    return response;
   }
 }
