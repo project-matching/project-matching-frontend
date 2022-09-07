@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Image from 'next/image';
 import { useEffect } from 'react';
 import useBookmark from 'src/hooks/useBookmark';
+import { useAppSelector } from 'src/redux/hooks';
 import { ProjectType } from 'src/services/ProjectService';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -101,6 +102,7 @@ const SmallCard = ({ projectDto, update = false }: SmallCardProps) => {
 
   // TODO: 프레젠테이션 컴포넌트로 변경 가능한지 확인
   const { bookmark, setBookmark, toggleBookmark } = useBookmark();
+  const { role } = useAppSelector((state) => state.user.userInfo);
 
   const removeDulplicatePosition = (
     duplicateList: ProjectType['projectSimplePositionDtoList']
@@ -131,13 +133,15 @@ const SmallCard = ({ projectDto, update = false }: SmallCardProps) => {
           <Head>
             <Top>
               <Author>{register}</Author>
-              <i onClick={async () => await toggleBookmark(projectNo)}>
-                {bookmark ? (
-                  <FontAwesomeIcon icon={solid('bookmark')} />
-                ) : (
-                  <FontAwesomeIcon icon={regular('bookmark')} />
-                )}
-              </i>
+              {role !== 'ROLE_ADMIN' && (
+                <i onClick={async () => await toggleBookmark(projectNo)}>
+                  {bookmark ? (
+                    <FontAwesomeIcon icon={solid('bookmark')} />
+                  ) : (
+                    <FontAwesomeIcon icon={regular('bookmark')} />
+                  )}
+                </i>
+              )}
             </Top>
             <H3>{name}</H3>
           </Head>

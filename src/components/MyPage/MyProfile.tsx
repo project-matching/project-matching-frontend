@@ -108,8 +108,7 @@ const MyProfile = ({ myProfile }: MyProfileProps) => {
     <form onSubmit={submitProfile}>
       <ImageContainer>
         <Image
-          // src={image || DEFAULT_IMAGE}
-          src={DEFAULT_IMAGE} // TODO: 서버 수정 후 변경
+          src={image || DEFAULT_IMAGE}
           alt="profile_image"
           width="50px"
           height="50px"
