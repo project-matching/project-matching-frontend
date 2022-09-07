@@ -161,21 +161,22 @@ interface Props {
   project: data,
   comment: comment[],
 }
+
 const ProjectDetail = ({ project, comment } : Props) => {
   const token = useAppSelector(state => state.auth.token);
   const { userInfo, userProfile, } = useAppSelector(state => state.user);
   const [projectData, setProjectData] = useState<data>(project);
-  const [isParticipant, setIsParticipant] = useState<Boolean>(false);
-  const [isRegister, setIsRegister] = useState<Boolean>(false);
+  const [isParticipant, setIsParticipant] = useState<boolean>(false);
+  const [isRegister, setIsRegister] = useState<boolean>(false);
   const [comments, setComments] = useState<comment[]>(comment);
   const router = useRouter();
 
   useEffect(() => {
-    const positionDetailList = projectData?.projectPositionDetailDtoList;
-    const Participants: (number | null | undefined)[] = positionDetailList?.map(position => position.userDto?.no);
+    const positionDetailList = projectData.projectPositionDetailDtoList;
+    const Participants: (number | null | undefined)[] = positionDetailList.map(position => position.userDto?.no);
 
     setIsParticipant(Participants?.includes(userInfo.no));
-    positionDetailList?.forEach(position => {
+    positionDetailList.forEach(position => {
       const userDto = position.userDto;
 
       if (userDto?.no === userInfo.no) {
@@ -184,7 +185,7 @@ const ProjectDetail = ({ project, comment } : Props) => {
         if (userDto.register) setIsRegister(true);
       }
     });
-  }, []);
+  }, [userInfo]);
 
   return (
     <PrimaryLayout>
@@ -194,7 +195,7 @@ const ProjectDetail = ({ project, comment } : Props) => {
         <Left>
           <Main>
             <Title title="Positions" sm />
-            <Position positionList={projectData?.projectPositionDetailDtoList} projectName={projectData?.name} />
+            <Position positionList={projectData?.projectPositionDetailDtoList} projectName={projectData?.name} isRegister={isRegister} isParticipant={isParticipant} />
             <Title title="Introduction" sm />
             <Introduction>{projectData?.introduction}</Introduction>
           </Main>
@@ -216,7 +217,7 @@ const ProjectDetail = ({ project, comment } : Props) => {
             })}
           </CommentSection>
         </Left>
-        {projectData && <Side data={projectData}></Side>}
+        {projectData && <Side data={projectData} isRegister={isRegister} isParticipant={isParticipant}></Side>}
       </Wrapper>
     </PrimaryLayout>
   );

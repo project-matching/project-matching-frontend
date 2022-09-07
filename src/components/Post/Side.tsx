@@ -55,6 +55,30 @@ const TechRow = styled.div`
   margin: 10px 0;
 `;
 
+const ButtonRows = styled.div`
+  position: fixed;
+  width: 20%;
+  right: 5%;
+  bottom: 10%;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  button {
+    border: 0;
+    outline: 0;
+    padding: 5px;
+    margin: 5% 0;
+    cursor: pointer;
+    width: 100%;
+    &:hover {
+    background-color: gray;
+    }
+  }
+`;
+
 interface IUser {
   name: string;
   no: number;
@@ -83,10 +107,12 @@ interface Idata {
 }
 
 interface Props {
-  data: Idata;
+  data: Idata,
+  isRegister: boolean,
+  isParticipant: boolean,
 }
 
-const Side: FC<Props> = ({ data }) => {
+const Side: FC<Props> = ({ data, isRegister, isParticipant }) => {
   const { bookmark, toggleBookmark } = useBookmark();
 
   return (
@@ -118,6 +144,20 @@ const Side: FC<Props> = ({ data }) => {
         })}
       </TechRow>
       <button onClick={() => {toggleBookmark(data.projectNo)}} disabled={bookmark}>Bookmark</button>
+      <ButtonRows>
+        {isRegister ? 
+        <>
+          <button>모집완료</button>
+          <button>수정하기</button>
+          <button>신청자 관리</button>
+        </>
+        :
+        isParticipant ? 
+        <button>탈퇴하기</button>
+        : null
+        }
+        
+      </ButtonRows>
     </Wrapper>
   );
 };
