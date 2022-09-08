@@ -5,7 +5,6 @@ import { Divider, Wrapper } from 'src/styles/global';
 import Header from '../Common/Header';
 import AuthModal from '../Modals/AuthModal';
 import { Backdrop } from '../Modals/Backdrop';
-import { ModalContainer } from '../Modals/ModalContainer';
 import SignupEmailSentModal from '../Modals/SignupEmailSentModal';
 
 export interface LayoutProps {
@@ -24,13 +23,12 @@ const PrimaryLayout: React.FC<LayoutProps> = ({ children }) => {
         />
         <link rel="icon" href="/favicon.ico" />
       </Head>
+      {/* TODO: 중복 backdrop 수정하기 */}
       {Object.values(modal).some((v) => v) && (
-        <ModalContainer>
-          <Backdrop>
-            {modal.AuthModal && <AuthModal />}
-            {modal.SignupEmailSentModal && <SignupEmailSentModal />}
-          </Backdrop>
-        </ModalContainer>
+        <Backdrop>
+          {modal.AuthModal && <AuthModal />}
+          {modal.SignupEmailSentModal && <SignupEmailSentModal />}
+        </Backdrop>
       )}
 
       <Header />

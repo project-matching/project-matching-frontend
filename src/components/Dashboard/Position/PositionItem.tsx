@@ -1,5 +1,7 @@
 import styled from '@emotion/styled';
 import { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { putPosition } from 'src/redux/reducers/positions';
 
 const Item = styled.li`
   margin: 20px 0;
@@ -34,18 +36,28 @@ const Input = styled.input`
 
 interface PropsType {
   positionName: string;
+  positionNo: number;
 }
 
-const PositionItem = ({ positionName }: PropsType) => {
+const PositionItem = ({ positionName, positionNo }: PropsType) => {
   const [isEdit, setEdit] = useState(false);
   const [inputValue, setInputValue] = useState(positionName);
+  const dispatch = useDispatch();
 
-  const editPosition = () => {
+  const editPosition = async () => {
     /**
      * TODO:
      * confirm 모달 열기
      * 모달에서 확인 누르면 api call
      */
+
+    dispatch(
+      putPosition({
+        positionNo,
+        positionName: inputValue,
+      })
+    );
+    setEdit(false);
   };
 
   return (
