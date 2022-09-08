@@ -1,6 +1,8 @@
 import PrimaryButton from '@/components/Buttons/PrimaryButton';
 import DashboardLayout from '@/components/Dashboard/DashboardLayout';
 import styled from '@emotion/styled';
+import React from 'react';
+import { NotificationService } from 'src/services/NotificationService';
 
 const Form = styled.form`
   display: flex;
@@ -35,9 +37,25 @@ const Form = styled.form`
 `;
 
 const DashboardNotification = () => {
+  const submitNotification = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const target = e.target as typeof e.target & {
+      title: { value: string };
+      content: { value: string };
+    };
+
+    const title = target.title.value;
+    const content = target.content.value;
+
+    // TODO: 확인 모달 머지 후 모달 반영 열기
+    // 확인 버튼 클릭시 아래 메서드 실행
+    // 에러 처리
+    await NotificationService.postNotification({ title, content });
+  };
+
   return (
     <DashboardLayout>
-      <Form>
+      <Form onSubmit={submitNotification}>
         <div>
           <label htmlFor="title">제목</label>
           <input type="text" name="title" />
@@ -47,7 +65,7 @@ const DashboardNotification = () => {
           <textarea name="content" id="content" maxLength={200} />
         </div>
         <div>
-          <PrimaryButton>보내기</PrimaryButton>
+          <PrimaryButton type="submit">보내기</PrimaryButton>
         </div>
       </Form>
     </DashboardLayout>

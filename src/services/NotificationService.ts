@@ -1,5 +1,10 @@
 import { appApi } from './AppApi';
 
+export interface NotificationSendRequestType {
+  title: string;
+  content: string;
+}
+
 export class NotificationService {
   public static async getNotificationPreview() {
     const response = await appApi.get('/notification', {
@@ -23,5 +28,11 @@ export class NotificationService {
   public static async getNotificationDetail(projectNo?: number) {
     const response = await appApi.get(`/notification/${projectNo}`);
     return response.data.data;
+  }
+
+  public static async postNotification(
+    notificationSendRequestDto: NotificationSendRequestType
+  ) {
+    await appApi.post(`/notification`, notificationSendRequestDto);
   }
 }
