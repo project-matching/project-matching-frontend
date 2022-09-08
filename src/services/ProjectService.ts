@@ -205,4 +205,16 @@ export class ProjectService {
 
     return response;
   }
+
+  public static async getProjectApplicants(projectNo: string) {
+    const response = await appApi.get(`/participate/${projectNo}`);
+
+    return response.data.data;
+  }
+
+  public static async allowProjectApplicant(projectParticipateNo: number) {
+    const response = await appApi.post(`/participate/${projectParticipateNo}/permit`);
+
+    return response.data;
+  }
 }

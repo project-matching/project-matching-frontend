@@ -1,7 +1,10 @@
 import styled from '@emotion/styled';
-import { FC } from 'react';
+import { useRouter } from 'next/router';
+import { FC, useState } from 'react';
 import useBookmark from 'src/hooks/useBookmark';
+import { ProjectService } from '../../services/ProjectService';
 import Title from '../auth/Title';
+import { Backdrop } from '../Modals/Backdrop';
 
 const Wrapper = styled.div`
   width: 20%;
@@ -79,6 +82,68 @@ const ButtonRows = styled.div`
   }
 `;
 
+const ManagingPage = styled.main`
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  width: 70%;
+  height: 90%;
+  background-color: white;
+  overflow: auto;
+`
+
+const ApplicantBox = styled.article`
+  width: 90%;
+  height: 30%;
+  background-color: #4242;
+  margin: 2% 0;
+  padding: 2%;
+`
+
+const ApplicantInfoSection = styled.section`
+  display: flex;
+
+  aside {
+    margin-right: 5%;
+  }
+  main {
+    margin-right: 15%;
+  }
+`
+
+const ApplicantInfoItem = styled.div`
+  width: 100%;
+  margin-bottom: 10%;
+
+  .title {
+    font-weight: 900;
+    margin-right: 5%;
+  }
+`;
+
+const ApplicantMotive = styled.div`
+  span {
+    font-weight: 900;
+  }
+`
+
+const ApplicantButtonRow = styled.div`
+  display: flex;
+  justify-content: flex-end;
+
+  button {
+    margin: 0 2%;
+    border: 0;
+    outline: 0;
+    padding: 5px;
+    cursor: pointer;
+    &:hover {
+      background-color: gray;
+    }
+  }
+`
+
 interface IUser {
   name: string;
   no: number;
@@ -106,6 +171,14 @@ interface Idata {
   technicalStackList: string[]
 }
 
+interface applicant {
+  motive: string,
+  positionName: string,
+  projectParticipateNo: number,
+  technicalStackList: string[],
+  userName: string,
+}
+
 interface Props {
   data: Idata,
   isRegister: boolean,
@@ -114,7 +187,38 @@ interface Props {
 
 const Side: FC<Props> = ({ data, isRegister, isParticipant }) => {
   const { bookmark, toggleBookmark } = useBookmark();
+  const [onModal, setOnModal] = useState<boolean>(false);
+  const [applicants, setApplicants] = useState<applicant[]>([]);
+  const router = useRouter();
 
+  const clickHandler = async (e: React.BaseSyntheticEvent) => {
+    const id = e.target.id;
+
+    if (id === "manage") {
+      if (!applicants.length) {
+        const response = await ProjectService.getProjectApplicants(router.query.id as string);
+        setApplicants(response.content);
+      }
+      setOnModal(true);
+    }
+  }
+
+  const applicantButtonHandler = async (e: React.BaseSyntheticEvent, participantNo: number) => {
+    const id = e.target.id;
+
+    if (id === "allow") {
+      const response = await ProjectService.allowProjectApplicant(participantNo);
+      // 500 error?
+      console.log(response);
+    }
+
+    if (id === "reject") {
+      // use dispatch
+    }
+  }
+// 신청자 관리 페이지 만들기 모달
+// 추방 버튼 활성화
+// 수정 페이지 만들기
   return (
     <Wrapper>
       <Title title="Project Detail" />
@@ -131,6 +235,7 @@ const Side: FC<Props> = ({ data, isRegister, isParticipant }) => {
               <span>{member.positionName}</span>
               <span>{member.userDto.name} </span>
               {member.userDto.register && <span className="leader">(Leader)</span>}
+              {isRegister && !member.userDto.register && <button>추방</button>}
             </MemberDetail>
           )
         })}
@@ -144,20 +249,56 @@ const Side: FC<Props> = ({ data, isRegister, isParticipant }) => {
         })}
       </TechRow>
       <button onClick={() => {toggleBookmark(data.projectNo)}} disabled={bookmark}>Bookmark</button>
-      <ButtonRows>
+      <ButtonRows onClick={clickHandler}>
         {isRegister ? 
         <>
-          <button>모집완료</button>
-          <button>수정하기</button>
-          <button>신청자 관리</button>
+          <button id="complete">모집완료</button>
+          <button id="fix">수정하기</button>
+          <button id="manage">신청자 관리</button>
         </>
         :
         isParticipant ? 
-        <button>탈퇴하기</button>
+        <button id="quit">탈퇴하기</button>
         : null
         }
-        
       </ButtonRows>
+      {onModal && 
+        <Backdrop>
+          <ManagingPage>
+            {applicants.map(applicant => {
+              return(
+                <ApplicantBox key={applicant.projectParticipateNo}>
+                  <ApplicantInfoSection>
+                    <aside>{applicant.userName}</aside>
+                    <main className="info">
+                      <ApplicantInfoItem>
+                        <span className="title">포지션</span>
+                        <span>{applicant.positionName}</span>
+                      </ApplicantInfoItem>
+                      <ApplicantInfoItem>
+                        <span className="title">기술 스택</span> 
+                        <span>{applicant.technicalStackList}</span>
+                      </ApplicantInfoItem>
+                      <ApplicantInfoItem>
+                        <span className="title">깃허브 주소</span> 
+                        <span>not allowed</span>
+                      </ApplicantInfoItem>
+                    </main>
+                    <ApplicantMotive>
+                      <span>신청 동기</span>
+                      <div>{applicant.motive}</div>
+                    </ApplicantMotive>
+                  </ApplicantInfoSection>
+                  <ApplicantButtonRow onClick={(e) => applicantButtonHandler(e, applicant.projectParticipateNo)}>
+                    <button id="allow">수락하기</button>
+                    <button id="reject">거절하기</button>
+                  </ApplicantButtonRow>
+                </ApplicantBox>
+              )
+            })}
+          </ManagingPage>
+        </Backdrop>
+      }
     </Wrapper>
   );
 };

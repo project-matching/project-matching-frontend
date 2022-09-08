@@ -120,16 +120,18 @@ const PositionApplyModal: FC<Props> = ({projectName, position, positionNo}) => {
       technicalStackList: techStack,
     }
 
-    const result = await ProjectService.applyProject(request);
-    console.log(result);
-    //400 error?
-    dispatch(closeModal("PositionApplyModal"));
+    try {
+      const result = await ProjectService.applyProject(request);
+
+      result.status === 200 && dispatch(closeModal("PositionApplyModal"));
+    } catch(err) {
+      console.log(err);
+    }
   }
 
   useEffect(() => {
     (async () => {
       const response = await TechStackService.getTechStacks();
-      // 403 error ?
       setListedTechStack(response.map((data: data) => data.technicalStackName));
     })();
 
