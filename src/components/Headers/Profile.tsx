@@ -65,6 +65,7 @@ const Profile = () => {
     email,
     position,
     image,
+    role,
     technicalStackDtoList: techStacks,
   } = userInfo;
 
@@ -102,8 +103,7 @@ const Profile = () => {
     <Container>
       <ImageContainer onClick={toggleDropdown}>
         <Image
-          // src={image || DEFAULT_IMAGE}
-          src={DEFAULT_IMAGE} // TODO: api 수정 시 상단 값으로 변경
+          src={image || DEFAULT_IMAGE}
           alt="profile_image"
           width="40px"
           height="40px"
@@ -113,23 +113,35 @@ const Profile = () => {
         />
       </ImageContainer>
       <Dropdown ref={dropdownEl}>
-        <UserInfo>
-          <Title>내 정보</Title>
-          <Span>이름: {name ?? '없음'}</Span>
-          {/* <Span>{email ?? '없음'}</Span> */}
-          <Span>포지션: {position ?? '없음'}</Span>
-          <Span>기술스택: {techStacks?.length ? '있음' : '없음'}</Span>
-        </UserInfo>
+        {role !== 'ROLE_ADMIN' ? (
+          <>
+            <UserInfo>
+              <Title>내 정보</Title>
+              <Span>이름: {name ?? '없음'}</Span>
+              {/* <Span>{email ?? '없음'}</Span> */}
+              <Span>포지션: {position ?? '없음'}</Span>
+              <Span>기술스택: {techStacks?.length ? '있음' : '없음'}</Span>
+            </UserInfo>
+            <LinkContainer>
+              <Link href="/myproject">
+                <SmallButton>내 프로젝트</SmallButton>
+              </Link>
+              <Link href="/bookmark">
+                <SmallButton>즐겨찾기</SmallButton>
+              </Link>
+              <Link href="/mypage">
+                <SmallButton>내 프로필</SmallButton>
+              </Link>
+            </LinkContainer>
+          </>
+        ) : (
+          <UserInfo>
+            <Title>내 정보</Title>
+            <Span>이름: {name ?? '없음'}</Span>
+            {/* <Span>{email ?? '없음'}</Span> */}
+          </UserInfo>
+        )}
         <LinkContainer>
-          <Link href="/myproject">
-            <SmallButton>내 프로젝트</SmallButton>
-          </Link>
-          <Link href="/bookmark">
-            <SmallButton>즐겨찾기</SmallButton>
-          </Link>
-          <Link href="/mypage">
-            <SmallButton>내 프로필</SmallButton>
-          </Link>
           <SmallButton gray onClick={() => dispatch(signOut())}>
             Log Out
           </SmallButton>

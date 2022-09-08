@@ -139,7 +139,9 @@ const reset = css`
   a {
     text-decoration: none;
     cursor: pointer;
+    color: #212121;
   }
+
   i {
     cursor: pointer;
     width: 15px;

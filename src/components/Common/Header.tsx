@@ -17,19 +17,20 @@ export const Flex = styled.div`
   align-items: center;
 `;
 
+const Nav = styled.nav`
+  margin-left: 30px;
+`;
+
 const Header: React.FC = () => {
   const router = useRouter();
 
   const Header = styled.header`
     display: flex;
+    height: 55px;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
     user-select: none;
-  `;
-
-  const Nav = styled.nav`
-    margin-left: 30px;
   `;
 
   const A = styled.a`
@@ -43,6 +44,7 @@ const Header: React.FC = () => {
   `;
 
   const { token } = useAppSelector((state) => state.auth);
+  const { role } = useAppSelector((state) => state.user.userInfo);
   const dispatch = useDispatch();
 
   const openRecruitModal = () => {
@@ -69,14 +71,21 @@ const Header: React.FC = () => {
               <Link href="/recruited" passHref>
                 <A>Recruited</A>
               </Link>
+              {role === 'ROLE_ADMIN' && (
+                <Link href="/dashboard" passHref>
+                  <A>Dashboard</A>
+                </Link>
+              )}
             </Nav>
           </Flex>
           <Flex>
             {router.asPath !== '/' && <HeaderSearchBar />}
-            <PrimaryButton onClick={openRecruitModal}>Recruit</PrimaryButton>
+            {role !== 'ROLE_ADMIN' && (
+              <PrimaryButton onClick={openRecruitModal}>Recruit</PrimaryButton>
+            )}
             {token ? (
               <>
-                <Notification />
+                {role !== 'ROLE_ADMIN' && <Notification />}
                 <Profile />
               </>
             ) : (

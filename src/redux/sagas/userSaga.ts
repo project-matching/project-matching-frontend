@@ -51,6 +51,10 @@ function* getUserInfoSaga() {
 function* getUserProfileSaga() {
   try {
     yield put(userPendingUserProfile());
+    const token = TokenService.get();
+    if (!token) {
+      throw new Error('NO_TOKEN');
+    }
     const userProfile: UserProfileType = yield call(UserService.getUserProfile);
     yield put(userSuccressUserProfile(userProfile));
   } catch (error: any) {
