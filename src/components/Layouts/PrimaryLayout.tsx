@@ -12,7 +12,10 @@ export interface LayoutProps {
 }
 
 const PrimaryLayout: React.FC<LayoutProps> = ({ children }) => {
-  const { modal } = useAppSelector((state) => state);
+  const authModal = useAppSelector((state) => state.modal.AuthModal);
+  const signupEmailSentModal = useAppSelector(
+    (state) => state.modal.SignupEmailSentModal
+  );
   return (
     <>
       <Head>
@@ -23,11 +26,16 @@ const PrimaryLayout: React.FC<LayoutProps> = ({ children }) => {
         />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      {/* TODO: 중복 backdrop 수정하기 */}
-      {Object.values(modal).some((v) => v) && (
+
+      {authModal && (
         <Backdrop>
-          {modal.AuthModal && <AuthModal />}
-          {modal.SignupEmailSentModal && <SignupEmailSentModal />}
+          <AuthModal />
+        </Backdrop>
+      )}
+
+      {signupEmailSentModal && (
+        <Backdrop>
+          <SignupEmailSentModal />
         </Backdrop>
       )}
 
