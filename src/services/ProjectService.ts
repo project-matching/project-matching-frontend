@@ -37,10 +37,10 @@ export interface ProjectType {
 }
 
 interface ApplyRequestType {
-  gitHub: string,
-  motive: string,
-  projectPositionNo: number | null,
-  technicalStackList: string[]
+  gitHub: string;
+  motive: string;
+  projectPositionNo: number | null;
+  technicalStackList: string[];
 }
 
 export class ProjectService {
@@ -83,7 +83,7 @@ export class ProjectService {
   }
 
   public static async searchedRecruitingProject(
-    searchContent: string,
+    searchContent: string | null,
     projectNo: number | null = null
   ) {
     const response = await appApi.get('/project/recruitment', {
@@ -97,7 +97,7 @@ export class ProjectService {
   }
 
   public static async searchedRecruitedProject(
-    searchContent: string,
+    searchContent: string | null,
     projectNo: number | null = null
   ) {
     const response = await appApi.get('/project/recruitment/complete', {

@@ -1,30 +1,43 @@
+import { fetchedData } from '@/components/Layouts/InfiniteScrollLayout';
 import { PayloadAction } from '@reduxjs/toolkit';
 import { call, put, takeLatest } from 'redux-saga/effects';
 import { authFail, authSuccess } from 'src/redux/reducers/auth';
 import { openModal } from 'src/redux/reducers/components/modals';
 import {
   deleteUser,
+  getUserList,
   patchPassword,
   patchUserProfile,
   updateUserInfo,
   userFailPassword,
   userFailUserDelete,
   userFailUserInfo,
+  userFailUserList,
   userFailUserProfile,
+  userFailUserSearchKeyword,
   UserInfoType,
+  UserListType,
   userPendingPassword,
   userPendingUserDelete,
   userPendingUserInfo,
+  userPendingUserList,
   userPendingUserProfile,
+  userPendingUserSearchKeyword,
   UserProfileType,
   userSuccessPassword,
   userSuccessUserDelete,
   userSuccessUserInfo,
+  userSuccessUserList,
+  userSuccessUserSearchKeyword,
   userSuccressUserProfile,
 } from 'src/redux/reducers/users';
 import { appApi } from 'src/services/AppApi';
 import { TokenService } from 'src/services/TokenService';
-import { patchProfileType, UserService } from 'src/services/UserService';
+import {
+  getUserListType,
+  patchProfileType,
+  UserService,
+} from 'src/services/UserService';
 import { patchPasswordType } from './../../services/UserService';
 
 function* getUserInfoSaga() {
@@ -119,10 +132,34 @@ function* deleteUserSaga() {
   }
 }
 
+function* getUserListSaga({ payload }: PayloadAction<getUserListType>) {
+  try {
+    yield put(userPendingUserList());
+    if (payload.content) {
+      yield put(userPendingUserSearchKeyword());
+      yield put(userSuccessUserSearchKeyword(payload.content));
+    }
+    const userList: fetchedData<UserListType> = yield call(
+      UserService.getUserList,
+      payload
+    );
+    yield put(userSuccessUserList(userList));
+    // yield put(openModal(''));
+  } catch (error: any) {
+    yield put(
+      userFailUserList(
+        new Error(error?.response?.data?.error || 'UNKNOWN_ERROR')
+      )
+    );
+    yield put(userFailUserSearchKeyword());
+  }
+}
+
 export function* userSaga() {
   yield takeLatest(updateUserInfo.type, getUserInfoSaga);
   yield takeLatest(updateUserInfo.type, getUserProfileSaga);
   yield takeLatest(patchUserProfile.type, updateUserProfileSaga);
   yield takeLatest(patchPassword.type, updatePasswordSaga);
   yield takeLatest(deleteUser.type, deleteUserSaga);
+  yield takeLatest(getUserList.type, getUserListSaga);
 }

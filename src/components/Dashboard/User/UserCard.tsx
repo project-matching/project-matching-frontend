@@ -2,12 +2,12 @@ import PrimaryButton from '@/components/Buttons/PrimaryButton';
 import { DEFAULT_IMAGE } from '@/components/Headers/Profile';
 import styled from '@emotion/styled';
 import Image from 'next/image';
-import { useState } from 'react';
+import { UserListType } from 'src/redux/reducers/users';
 
 const Card = styled.div`
   margin: 20px 0;
   width: 100%;
-  padding: 20px 40px 10px;
+  padding: 40px 40px 10px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -18,13 +18,17 @@ const Card = styled.div`
 
 const UserContainer = styled.div`
   width: 100%;
-  display: flex;
-  flex-direction: row;
+  display: grid;
+  grid-template-columns: 1fr 6fr;
+  gap: 30px;
   align-items: center;
 `;
 
+const ImageContainer = styled.div`
+  width: 60px;
+`;
+
 const UserInfo = styled.div`
-  margin: 20px 0 0 30px;
   display: flex;
   flex-direction: column;
 
@@ -33,9 +37,15 @@ const UserInfo = styled.div`
     flex-direction: row;
     margin-bottom: 20px;
 
-    > span:first-of-type {
-      font-weight: bold;
-      margin-right: 30px;
+    > span {
+      overflow: hidden;
+      overflow-wrap: break-word;
+      line-height: 1.5;
+
+      &:first-of-type {
+        font-weight: bold;
+        width: 70px;
+      }
     }
   }
 `;
@@ -47,29 +57,30 @@ const UserBlock = styled.div`
 `;
 
 interface PropType {
-  userInfo: {
-    email: string;
-    image: string | null;
-    name: string;
-  };
+  userInfo: UserListType;
 }
 
 const UserCard = ({ userInfo }: PropType) => {
-  const { email, image, name } = userInfo;
-  const [isBlock, setBlock] = useState(false); // TODO: 추후 기본값 변경
+  const { email, image, name, block, userNo } = userInfo;
+
+  const blockUser = () => {};
+
+  const unblockUser = () => {};
 
   return (
     <Card>
       <UserContainer>
-        <Image
-          src={image || DEFAULT_IMAGE}
-          alt="user_image"
-          width="60px"
-          height="60px"
-          style={{
-            borderRadius: '50%',
-          }}
-        />
+        <ImageContainer>
+          <Image
+            src={image || DEFAULT_IMAGE}
+            alt="user_image"
+            width="60px"
+            height="60px"
+            style={{
+              borderRadius: '50%',
+            }}
+          />
+        </ImageContainer>
         <UserInfo>
           <div>
             <span>이름</span>
@@ -82,7 +93,9 @@ const UserCard = ({ userInfo }: PropType) => {
         </UserInfo>
       </UserContainer>
       <UserBlock>
-        <PrimaryButton>{isBlock ? '차단 해제' : '차단'}</PrimaryButton>
+        <PrimaryButton onClick={block ? unblockUser : blockUser}>
+          {block ? '차단 해제' : '차단'}
+        </PrimaryButton>
       </UserBlock>
     </Card>
   );

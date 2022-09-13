@@ -1,6 +1,5 @@
-import InfiniteScrollLayout, {
-  fetchedData,
-} from '@/components/Layouts/InfiniteScrollLayout';
+import { fetchedData } from '@/components/Layouts/InfiniteScrollLayout';
+import SearchInfiniteScrollLayout from '@/components/Layouts/SearchInfiniteScrollLayout';
 import SecondaryProjectLayout from '@/components/Projects/SecondaryProjectLayout';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
@@ -37,10 +36,15 @@ const SearchResult = () => {
 
   return (
     <PrimaryLayout>
-      <InfiniteScrollLayout
-        api={ProjectService.appliedProject}
+      <SearchInfiniteScrollLayout
+        api={
+          projectState
+            ? ProjectService.searchedRecruitedProject
+            : ProjectService.searchedRecruitingProject
+        }
         data={projectState ? recruitedProjects : recruitingProjects}
         setData={projectState ? setRecruitedProject : setRecruitingProject}
+        content={searchKeyword}
       >
         <SecondaryProjectLayout
           title={`${
@@ -52,7 +56,7 @@ const SearchResult = () => {
               : recruitingProjects.content
           }
         />
-      </InfiniteScrollLayout>
+      </SearchInfiniteScrollLayout>
     </PrimaryLayout>
   );
 };
