@@ -1,10 +1,12 @@
 import styled from '@emotion/styled';
 import { useRouter } from 'next/router';
 import { FC, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import useBookmark from 'src/hooks/useBookmark';
 import { ProjectService } from '../../services/ProjectService';
 import Title from '../auth/Title';
 import { Backdrop } from '../Modals/Backdrop';
+import RejectModal from '../Modals/RejectModal';
 
 const Wrapper = styled.div`
   width: 20%;
@@ -189,8 +191,10 @@ const Side: FC<Props> = ({ data, isRegister, isParticipant }) => {
   const { bookmark, toggleBookmark } = useBookmark();
   const [onModal, setOnModal] = useState<boolean>(false);
   const [applicants, setApplicants] = useState<applicant[]>([]);
+  const dispatch = useDispatch();
   const router = useRouter();
-
+  //const isRejected = useAppSelector(state => state.modal.RejectModal);
+  const [isRejected, setIsRejected] = useState<boolean>(false);
   const clickHandler = async (e: React.BaseSyntheticEvent) => {
     const id = e.target.id;
 
@@ -200,6 +204,10 @@ const Side: FC<Props> = ({ data, isRegister, isParticipant }) => {
         setApplicants(response.content);
       }
       setOnModal(true);
+    }
+
+    if (id === "fix") {
+      console.log("handle fixing mode")
     }
   }
 
@@ -213,6 +221,8 @@ const Side: FC<Props> = ({ data, isRegister, isParticipant }) => {
     }
 
     if (id === "reject") {
+      //dispatch(openModal("RejectModal"));
+      setIsRejected(true);
       // use dispatch
     }
   }
@@ -264,8 +274,10 @@ const Side: FC<Props> = ({ data, isRegister, isParticipant }) => {
       </ButtonRows>
       {onModal && 
         <Backdrop>
+          {!isRejected ?
           <ManagingPage>
             {applicants.map(applicant => {
+              console.log(applicant);
               return(
                 <ApplicantBox key={applicant.projectParticipateNo}>
                   <ApplicantInfoSection>
@@ -294,9 +306,12 @@ const Side: FC<Props> = ({ data, isRegister, isParticipant }) => {
                     <button id="reject">거절하기</button>
                   </ApplicantButtonRow>
                 </ApplicantBox>
-              )
+              );
             })}
           </ManagingPage>
+          :
+          <RejectModal title="프로젝트 참가 신청 거절" onReject={() => {console.log("hi")}} onCancel={() => {setIsRejected(false)}}/>
+          }
         </Backdrop>
       }
     </Wrapper>

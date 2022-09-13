@@ -61,6 +61,10 @@ interface RegisterProjectData {
   projectTechnicalStackList: number[],
 }
 
+interface projectParticipateRefusalRequestDto {
+  reason: string,
+}
+
 export class ProjectService {
   public static async recruitingProjectPreview() {
     const response = await appApi.get('/project/recruitment', {
@@ -214,6 +218,12 @@ export class ProjectService {
 
   public static async allowProjectApplicant(projectParticipateNo: number) {
     const response = await appApi.post(`/participate/${projectParticipateNo}/permit`);
+
+    return response.data;
+  }
+
+  public static async rejectProjectApplicant(projectParticipateNo: number, reqData: projectParticipateRefusalRequestDto) {
+    const response = await appApi.post(`/participate/${projectParticipateNo}/refusal`, reqData);
 
     return response.data;
   }
