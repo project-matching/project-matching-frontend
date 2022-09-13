@@ -86,10 +86,7 @@ const Notification = () => {
     line-height: 1.2;
 
     &:visited {
-      ${(props) =>
-        `color: ${
-          props.read ? props.theme.colors.gray : props.theme.colors.black
-        };`}
+      ${(props) => `color: ${props.theme.colors.gray};`}
     }
   `;
 
