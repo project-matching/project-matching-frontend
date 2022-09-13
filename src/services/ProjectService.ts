@@ -13,7 +13,7 @@ export interface ProjectRequestType {
 }
 
 export interface ProjectType {
-  bookMark: true;
+  bookMark: boolean;
   currentPeople: number;
   maxPeople: number;
   name: string;

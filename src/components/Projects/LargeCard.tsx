@@ -12,8 +12,7 @@ import { DEFAULT_IMAGE } from '../Headers/Profile';
 
 const CardContainer = styled.div`
   margin: 10px 0;
-  height: 290px;
-  width: 204px;
+  height: 282px;
   border: 1px solid #d4d4d4;
   border-radius: 3px;
   padding: 20px;
@@ -42,6 +41,10 @@ const Author = styled.span`
   font-size: ${(props) => props.theme.sizes.sm};
 `;
 
+/**
+ * TODO:
+ * - 지원 포지션 hidden으로 숨기고 mouse hover로 표시
+ */
 const H3 = styled.div`
   font-size: ${(props) => props.theme.sizes.lg};
   font-weight: bold;
@@ -84,17 +87,9 @@ const HoverBox = styled.div`
   }
 `;
 
-const ReqTitle = styled.div`
-  color: ${(props) => props.theme.colors.primary};
-  font-weight: bold;
-  line-height: 1.5;
-`;
-
 const Req = styled.div`
   position: relative;
   margin-bottom: 20px;
-  font-size: ${(props) => props.theme.sizes.sm};
-
   span {
     overflow: hidden;
     text-overflow: ellipsis;
@@ -125,12 +120,12 @@ const View = styled.div`
   }
 `;
 
-interface SmallCardProps {
+interface LargeCardProps {
   projectDto: ProjectType;
   update?: boolean;
 }
 
-const SmallCard = ({ projectDto, update = false }: SmallCardProps) => {
+const LargeCard = ({ projectDto, update = false }: LargeCardProps) => {
   const {
     bookMark: initBookmark,
     projectNo,
@@ -220,16 +215,14 @@ const SmallCard = ({ projectDto, update = false }: SmallCardProps) => {
             </IconWrapper>
           </Req>
           <Req>
-            <ReqTitle>남은 포지션 {'>'} </ReqTitle>
-            {removeDulplicatePosition(projectSimplePositionDtoList)
-              .slice(0, 2)
-              .map((positionDto) => (
+            <span>남은 포지션 &gt; </span>
+            {removeDulplicatePosition(projectSimplePositionDtoList).map(
+              (positionDto) => (
                 <span key={positionDto.positionNo}>
                   {positionDto.positionName}
                 </span>
-              ))}
-            {removeDulplicatePosition(projectSimplePositionDtoList).length >
-              2 && <span>...</span>}
+              )
+            )}
             <HoverBox>
               {removeDulplicatePosition(projectSimplePositionDtoList).map(
                 (positionDto) => (
@@ -312,4 +305,4 @@ const SmallCard = ({ projectDto, update = false }: SmallCardProps) => {
   );
 };
 
-export default SmallCard;
+export default LargeCard;
