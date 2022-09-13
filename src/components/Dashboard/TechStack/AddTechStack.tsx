@@ -4,8 +4,10 @@ import { solid } from '@fortawesome/fontawesome-svg-core/import.macro';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Image from 'next/image';
 import { useRef, useState } from 'react';
+import { useDispatch } from 'react-redux';
 
 import React from 'react';
+import { postTechStack } from 'src/redux/reducers/techstacks';
 
 const ImageContainer = styled.div`
   position: relative;
@@ -63,15 +65,19 @@ const Input = styled.input`
 `;
 
 const AddTechStack = () => {
+  const dispatch = useDispatch();
+  const [imageFile, setImageFile] = useState<File | null>(null);
   const [image, setImage] = useState<string | null>(null);
 
   const ImageInputEl = useRef<HTMLInputElement>(null);
+  const InputEl = useRef<HTMLInputElement>(null);
 
   const handleProfileImage = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
 
     if (files && files.length > 0) {
       const uploadedImage = files[0];
+      setImageFile(uploadedImage);
       const imageURL = uploadedImage && URL.createObjectURL(uploadedImage);
       if (imageURL) {
         setImage(imageURL);
@@ -85,6 +91,15 @@ const AddTechStack = () => {
      * confirm 모달 열기
      * 모달에서 확인 누르면 api call
      */
+
+    const inputValue = InputEl?.current?.value;
+    if (!imageFile || !inputValue) return;
+
+    const formData = new FormData();
+    formData.set('image', imageFile);
+    formData.set('technicalStackName', inputValue);
+
+    dispatch(postTechStack(formData));
   };
 
   return (
@@ -115,7 +130,7 @@ const AddTechStack = () => {
             id="tech-upload-image"
           ></input>
         </ImageContainer>
-        <Input />
+        <Input ref={InputEl} />
         <a onClick={addTechStack}>추가</a>
       </InputContainer>
     </Container>

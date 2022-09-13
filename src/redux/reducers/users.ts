@@ -1,5 +1,10 @@
+import { fetchedData } from '@/components/Layouts/InfiniteScrollLayout';
 import { createAction, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { patchPasswordType, patchProfileType } from 'src/services/UserService';
+import {
+  getUserListType,
+  patchPasswordType,
+  patchProfileType,
+} from 'src/services/UserService';
 
 export type UserInfoType = {
   no: number | null;
@@ -22,6 +27,14 @@ export type UserProfileType = {
   technicalStackList: string[];
 };
 
+export interface UserListType {
+  email: string;
+  image: string | null;
+  name: string;
+  userNo: number;
+  block: boolean;
+}
+
 interface UserState {
   loadingUserInfo: boolean;
   errorUserInfo: any;
@@ -31,8 +44,14 @@ interface UserState {
   errorUserPassword: any;
   loadingUserDelete: boolean;
   errorUserDelete: any;
+  loadingUserList: boolean;
+  errorUserList: any;
+  loadingUserSearchKeyword: boolean;
+  errorUserSearchKeyword: any;
   userInfo: UserInfoType;
   userProfile: UserProfileType;
+  userList: fetchedData<UserListType> | null;
+  userSearchKeyword: string | null;
 }
 
 export const initUserInfo = {
@@ -65,8 +84,14 @@ const initialState: UserState = {
   errorUserPassword: null,
   loadingUserDelete: false,
   errorUserDelete: null,
+  loadingUserList: false,
+  errorUserList: null,
+  loadingUserSearchKeyword: false,
+  errorUserSearchKeyword: null,
   userInfo: initUserInfo,
   userProfile: initUserProfile,
+  userList: null,
+  userSearchKeyword: null,
 };
 
 const userState = 'user';
@@ -166,6 +191,53 @@ const userSlice = createSlice({
         errorUserDelete: null,
       };
     },
+    pendingUserList(state) {
+      return {
+        ...state,
+        loadingUserList: true,
+        errorUserList: null,
+      };
+    },
+    failUserList(state, action: PayloadAction<UserState['errorUserList']>) {
+      return {
+        ...state,
+        loadingUserList: false,
+        errorUserList: action.payload,
+      };
+    },
+    successUserList(state, action: PayloadAction<UserState['userList']>) {
+      return {
+        ...state,
+        loadingUserList: false,
+        errorUserList: null,
+        userList: action.payload,
+      };
+    },
+    pendingUserSearchKeyword(state) {
+      return {
+        ...state,
+        loadingUserSearchKeyword: true,
+        errorUserSearchKeyword: null,
+      };
+    },
+    failUserSearchKeyword(state) {
+      return {
+        ...state,
+        loadingUserSearchKeyword: false,
+        errorUserSearchKeyword: 'Failed to get user search keyword',
+      };
+    },
+    successUserSearchKeyword(
+      state,
+      action: PayloadAction<UserState['userSearchKeyword']>
+    ) {
+      return {
+        ...state,
+        loadingUserSearchKeyword: false,
+        errorUserSearchKeyword: null,
+        userSearchKeyword: action.payload,
+      };
+    },
   },
 });
 
@@ -182,6 +254,12 @@ export const {
   pendingUserDelete: userPendingUserDelete,
   failUserDelete: userFailUserDelete,
   successUserDelete: userSuccessUserDelete,
+  pendingUserList: userPendingUserList,
+  failUserList: userFailUserList,
+  successUserList: userSuccessUserList,
+  pendingUserSearchKeyword: userPendingUserSearchKeyword,
+  failUserSearchKeyword: userFailUserSearchKeyword,
+  successUserSearchKeyword: userSuccessUserSearchKeyword,
 } = userSlice.actions;
 
 export const updateUserInfo = createAction(`${userState}/updateUserInfo`);
@@ -192,5 +270,9 @@ export const patchPassword = createAction<patchPasswordType>(
   `${userState}/patchPassword`
 );
 export const deleteUser = createAction(`${userState}/deleteUser`);
+
+export const getUserList = createAction<getUserListType>(
+  `${userState}/getUserList`
+);
 
 export default userSlice.reducer;

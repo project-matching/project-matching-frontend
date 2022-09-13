@@ -1,4 +1,9 @@
-import { UserInfoType, UserProfileType } from 'src/redux/reducers/users';
+import { fetchedData } from '@/components/Layouts/InfiniteScrollLayout';
+import {
+  UserInfoType,
+  UserListType,
+  UserProfileType,
+} from 'src/redux/reducers/users';
 import { SigninReqType, SignupReqType } from 'src/redux/sagas/authSaga';
 import { appApi } from './AppApi';
 
@@ -24,6 +29,11 @@ export interface patchProfileType {
 export interface patchPasswordType {
   oldPassword: string;
   newPassword: string;
+}
+
+export interface getUserListType {
+  content?: string;
+  size?: number;
 }
 
 export class UserService {
@@ -88,5 +98,41 @@ export class UserService {
 
   public static async deleteUser(): Promise<void> {
     await appApi.delete(`/user`);
+  }
+
+  public static async getUserList({
+    size,
+    content,
+  }: getUserListType): Promise<fetchedData<UserListType>> {
+    const response = await appApi.get(`/user/list`, {
+      params: {
+        content,
+        size,
+      },
+    });
+
+    return response.data.data;
+  }
+
+  public static async getMoreUserList(
+    content: string | null,
+    userNo: number | null
+  ): Promise<fetchedData<UserListType>> {
+    const response = await appApi.get(`/user/list`, {
+      params: {
+        userNo,
+        content,
+      },
+    });
+
+    return response.data.data;
+  }
+
+  public static async blockUser(userNo: number): Promise<void> {
+    await appApi.delete(`/user/block/${userNo}`);
+  }
+
+  public static async unblockUser(userNo: number): Promise<void> {
+    await appApi.delete(`/user/unblock/${userNo}`);
   }
 }

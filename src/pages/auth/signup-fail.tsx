@@ -1,7 +1,6 @@
 import PrimaryButton from '@/components/Buttons/PrimaryButton';
 import SecondaryButton from '@/components/Buttons/SecondaryButton';
 import { Backdrop } from '@/components/Modals/Backdrop';
-import { ModalContainer } from '@/components/Modals/ModalContainer';
 import SignupEmailSentModal from '@/components/Modals/SignupEmailSentModal';
 import styled from '@emotion/styled';
 import Link from 'next/link';
@@ -53,11 +52,9 @@ const Fail = () => {
   return (
     <>
       {isOpen && (
-        <ModalContainer>
-          <Backdrop>
-            <SignupEmailSentModal />
-          </Backdrop>
-        </ModalContainer>
+        <Backdrop>
+          <SignupEmailSentModal />
+        </Backdrop>
       )}
       <Wrapper>
         <Heading>이메일 인증 유효기간이 만료되었습니다.</Heading>

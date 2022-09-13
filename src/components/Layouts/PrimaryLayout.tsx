@@ -5,7 +5,6 @@ import { Divider, Wrapper } from 'src/styles/global';
 import Header from '../Common/Header';
 import AuthModal from '../Modals/AuthModal';
 import { Backdrop } from '../Modals/Backdrop';
-import { ModalContainer } from '../Modals/ModalContainer';
 import SignupEmailSentModal from '../Modals/SignupEmailSentModal';
 
 export interface LayoutProps {
@@ -13,7 +12,10 @@ export interface LayoutProps {
 }
 
 const PrimaryLayout: React.FC<LayoutProps> = ({ children }) => {
-  const { modal } = useAppSelector((state) => state);
+  const authModal = useAppSelector((state) => state.modal.AuthModal);
+  const signupEmailSentModal = useAppSelector(
+    (state) => state.modal.SignupEmailSentModal
+  );
   return (
     <>
       <Head>
@@ -24,13 +26,17 @@ const PrimaryLayout: React.FC<LayoutProps> = ({ children }) => {
         />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      {Object.values(modal).some((v) => v) && (
-        <ModalContainer>
-          <Backdrop>
-            {modal.AuthModal && <AuthModal />}
-            {modal.SignupEmailSentModal && <SignupEmailSentModal />}
-          </Backdrop>
-        </ModalContainer>
+
+      {authModal && (
+        <Backdrop>
+          <AuthModal />
+        </Backdrop>
+      )}
+
+      {signupEmailSentModal && (
+        <Backdrop>
+          <SignupEmailSentModal />
+        </Backdrop>
       )}
 
       <Header />

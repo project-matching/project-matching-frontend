@@ -85,7 +85,7 @@ const Header: React.FC = () => {
             )}
             {token ? (
               <>
-                {role !== 'ROLE_ADMIN' && <Notification />}
+                <Notification />
                 <Profile />
               </>
             ) : (

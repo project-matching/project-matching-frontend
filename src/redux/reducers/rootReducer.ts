@@ -3,7 +3,9 @@ import auth from './auth';
 import modal from './components/modals';
 import validation from './components/validation';
 import notification from './notification';
+import position from './positions';
 import post from './post/post';
+import techStack from './techstacks';
 import user from './users';
 
 export default combineReducers({
@@ -13,4 +15,6 @@ export default combineReducers({
   validation,
   post,
   notification,
+  position,
+  techStack,
 });
