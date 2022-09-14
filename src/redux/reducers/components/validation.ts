@@ -4,12 +4,14 @@ interface SigninErrorMsgType {
   email: string;
   password: string;
   auth: string;
+  blocked: string;
 }
 
 const signinErrorMsgs: SigninErrorMsgType = {
   email: 'Enter your email',
   password: 'Enter you password',
   auth: 'Wrong email address or password',
+  blocked: 'This is a blocked User ID',
 };
 
 interface ValidationState {

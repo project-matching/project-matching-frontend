@@ -43,6 +43,10 @@ function* signinSaga({ payload }: PayloadAction<SigninReqType>) {
     yield put(
       authFail(new Error(error?.response?.data?.error || 'UNKNOWN_ERROR'))
     );
+    if (error?.response?.data?.error.code === 'BLOCKED_EXCEPTION') {
+      yield put(setSigninErrorMsg('blocked'));
+      return;
+    }
     yield put(setSigninErrorMsg('auth')); // validation
   }
 }
