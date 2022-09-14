@@ -36,6 +36,16 @@ export interface getUserListType {
   size?: number;
 }
 
+export interface reissueReqType {
+  access: string;
+  refresh: string;
+}
+
+export interface reissuedType {
+  access: string;
+  access_exp: number;
+}
+
 export class UserService {
   public static async signup(reqData: SignupReqType) {
     await appApi.post(`/user`, reqData);
@@ -74,6 +84,13 @@ export class UserService {
 
   public static async signOut(): Promise<void> {
     await appApi.get(`/common/logout`);
+  }
+
+  public static async reissueToken(
+    reqData: reissueReqType
+  ): Promise<reissuedType> {
+    const response = await appApi.post(`/common/token/reissue`, reqData);
+    return response.data.data;
   }
 
   public static async getUserInfo(): Promise<UserInfoType> {

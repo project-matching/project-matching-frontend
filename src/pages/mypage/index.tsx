@@ -1,7 +1,10 @@
 import PrimaryLayout from '@/components/Layouts/PrimaryLayout';
 import MyPageLayout from '@/components/MyPage/MyPageLayout';
 import MyProfile from '@/components/MyPage/MyProfile';
+import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import { useAppSelector } from 'src/redux/hooks';
+import { getUserProfile } from 'src/redux/reducers/users';
 
 /**
  * TODO:
@@ -11,6 +14,11 @@ import { useAppSelector } from 'src/redux/hooks';
 
 const MyPage = () => {
   const userProfile = useAppSelector((state) => state.user.userProfile);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getUserProfile());
+  }, [dispatch]);
 
   return (
     <PrimaryLayout>

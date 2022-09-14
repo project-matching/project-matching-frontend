@@ -262,7 +262,8 @@ export const {
   successUserSearchKeyword: userSuccessUserSearchKeyword,
 } = userSlice.actions;
 
-export const updateUserInfo = createAction(`${userState}/updateUserInfo`);
+export const getUserInfo = createAction(`${userState}/getUserInfo`);
+export const getUserProfile = createAction(`${userState}/getUserProfile`);
 export const patchUserProfile = createAction<patchProfileType>(
   `${userState}/patchUserProfile`
 );

@@ -1,14 +1,15 @@
 import { fetchedData } from '@/components/Layouts/InfiniteScrollLayout';
 import { PayloadAction } from '@reduxjs/toolkit';
 import { call, put, takeLatest } from 'redux-saga/effects';
-import { authFail, authSuccess } from 'src/redux/reducers/auth';
+import { authFail, authSuccess, reissueToken } from 'src/redux/reducers/auth';
 import { openModal } from 'src/redux/reducers/components/modals';
 import {
   deleteUser,
+  getUserInfo,
   getUserList,
+  getUserProfile,
   patchPassword,
   patchUserProfile,
-  updateUserInfo,
   userFailPassword,
   userFailUserDelete,
   userFailUserInfo,
@@ -43,10 +44,16 @@ import { patchPasswordType } from './../../services/UserService';
 function* getUserInfoSaga() {
   try {
     yield put(userPendingUserInfo());
+    const exp = TokenService.getExp();
+    if (exp && +exp - Math.floor(new Date().getTime() / 1000) < 30) {
+      const access = TokenService.get();
+      const refresh = TokenService.getRefresh();
+      yield put(reissueToken({ access, refresh }));
+    }
     const token = TokenService.get();
     appApi.defaults.headers.common['Authorization'] = `Bearer ${token}`;
     const userInfo: UserInfoType = yield call(UserService.getUserInfo);
-    yield put(authSuccess({ access: token, refresh: null }));
+    yield put(authSuccess(token));
     yield put(userSuccessUserInfo(userInfo));
   } catch (error: any) {
     yield put(
@@ -156,8 +163,8 @@ function* getUserListSaga({ payload }: PayloadAction<getUserListType>) {
 }
 
 export function* userSaga() {
-  yield takeLatest(updateUserInfo.type, getUserInfoSaga);
-  yield takeLatest(updateUserInfo.type, getUserProfileSaga);
+  yield takeLatest(getUserInfo.type, getUserInfoSaga);
+  yield takeLatest(getUserProfile.type, getUserProfileSaga);
   yield takeLatest(patchUserProfile.type, updateUserProfileSaga);
   yield takeLatest(patchPassword.type, updatePasswordSaga);
   yield takeLatest(deleteUser.type, deleteUserSaga);
