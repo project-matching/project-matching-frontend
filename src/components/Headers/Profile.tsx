@@ -1,18 +1,14 @@
 import styled from '@emotion/styled';
-import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useAppSelector } from 'src/redux/hooks';
 import { signOut } from 'src/redux/reducers/auth';
 import SmallButton from '../Buttons/SmallButton';
+import ImageToggle from './ToggleDropdown/ImageToggle';
 
 // TODO: 후추 저작권 없는 이미지로 변경
 export const DEFAULT_IMAGE: string = '/default_profile.png';
-
-const ImageContainer = styled.div`
-  cursor: pointer;
-`;
 
 const Dropdown = styled.div`
   position: absolute;
@@ -81,38 +77,37 @@ const Profile = () => {
   `;
 
   const handleCloseDropdown = (e: Event) => {
-    if (isOpen && !dropdownEl.current?.contains(e.target as Element)) {
+    if (
+      isOpen &&
+      dropdownEl.current &&
+      !dropdownEl.current.contains(e.target as Element)
+    ) {
       setOpen(false);
     }
   };
 
-  const toggleDropdown = (e: React.MouseEvent<HTMLDivElement>) => {
-    e.nativeEvent.stopImmediatePropagation();
-    isOpen ? setOpen(false) : setOpen(true);
+  const toggleDropdown = () => {
+    // e.nativeEvent.stopPropagation();
+    setOpen(!isOpen);
   };
 
   useEffect(() => {
-    window.addEventListener('click', handleCloseDropdown);
+    window.addEventListener('mousedown', handleCloseDropdown);
 
     return () => {
-      window.removeEventListener('click', handleCloseDropdown);
+      window.removeEventListener('mousedown', handleCloseDropdown);
     };
   });
 
   return (
-    <Container>
-      <ImageContainer onClick={toggleDropdown}>
-        <Image
-          src={image || DEFAULT_IMAGE}
-          alt="profile_image"
-          width="40px"
-          height="40px"
-          style={{
-            borderRadius: '50%',
-          }}
-        />
-      </ImageContainer>
-      <Dropdown ref={dropdownEl}>
+    <Container ref={dropdownEl}>
+      <ImageToggle
+        image={image}
+        alt="profile_image"
+        borderRadius={true}
+        toggleDropdown={toggleDropdown}
+      />
+      <Dropdown>
         {role !== 'ROLE_ADMIN' ? (
           <>
             <UserInfo>
