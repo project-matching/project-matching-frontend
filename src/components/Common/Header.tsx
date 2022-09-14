@@ -8,6 +8,8 @@ import { Wrapper } from 'src/styles/global';
 import PrimaryButton from '../Buttons/PrimaryButton';
 import Notification from '../Headers/Notification';
 import Profile from '../Headers/Profile';
+import AuthModal from '../Modals/AuthModal';
+import SignupEmailSentModal from '../Modals/SignupEmailSentModal';
 import HeaderSearchBar from '../SearchBar/HeaderSearchBar';
 import Logo from './Logo';
 
@@ -45,6 +47,10 @@ const Header: React.FC = () => {
 
   const { token } = useAppSelector((state) => state.auth);
   const { role } = useAppSelector((state) => state.user.userInfo);
+  const authModal = useAppSelector((state) => state.modal.AuthModal);
+  const signupEmailSentModal = useAppSelector(
+    (state) => state.modal.SignupEmailSentModal
+  );
   const dispatch = useDispatch();
 
   const openRecruitModal = () => {
@@ -94,6 +100,9 @@ const Header: React.FC = () => {
           </Flex>
         </Header>
       </Wrapper>
+
+      {authModal && <AuthModal />}
+      {signupEmailSentModal && <SignupEmailSentModal />}
     </>
   );
 };

@@ -1,5 +1,4 @@
 import PrimaryLayout from '@/components/Layouts/PrimaryLayout';
-import { Backdrop } from '@/components/Modals/Backdrop';
 import SuccessDeleteUserModal from '@/components/Modals/SuccessDeleteUserModal';
 import DeleteAccount from '@/components/MyPage/DeleteAccount';
 import MyPageLayout from '@/components/MyPage/MyPageLayout';
@@ -12,11 +11,7 @@ const MyPageDeleteAccount = () => {
   return (
     <PrimaryLayout>
       <MyPageLayout>
-        {successDeleteUserModal && (
-          <Backdrop>
-            <SuccessDeleteUserModal />
-          </Backdrop>
-        )}
+        {successDeleteUserModal && <SuccessDeleteUserModal />}
         <DeleteAccount />
       </MyPageLayout>
     </PrimaryLayout>
