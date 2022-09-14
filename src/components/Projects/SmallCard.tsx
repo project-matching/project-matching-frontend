@@ -170,8 +170,7 @@ const SmallCard = ({ projectDto, update = false }: SmallCardProps) => {
 
   const handleCardClick = (e: React.MouseEvent) => {
     if (bookmarkRef?.current?.contains(e.target as Element)) return;
-
-    router.push(`/project/${projectNo}}`);
+    router.push(`/project/${projectNo}`);
   };
 
   useEffect(() => {
