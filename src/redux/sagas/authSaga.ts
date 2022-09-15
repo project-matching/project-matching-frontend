@@ -79,7 +79,9 @@ function* oAuthSaga({ payload }: PayloadAction<TokenType>) {
   try {
     yield put(authPending());
     const tokens: TokenType = payload;
-    tokens.access && TokenService.set(tokens.access);
+    TokenService.set(tokens.access);
+    TokenService.setRefresh(tokens.refresh);
+    TokenService.setExp(tokens.access_exp);
     yield put(authSuccess(null));
     yield put(getUserInfo());
     yield put(removeSigninErrorMsg());

@@ -2,7 +2,7 @@ import styled from '@emotion/styled';
 import React, { HTMLInputTypeAttribute } from 'react';
 import { useDispatch } from 'react-redux';
 import { useAppSelector } from 'src/redux/hooks';
-import { signin } from 'src/redux/reducers/auth';
+import { signin, signinOAuth, TokenType } from 'src/redux/reducers/auth';
 import { setSigninErrorMsg } from 'src/redux/reducers/components/validation';
 import { Divider, Flex } from 'src/styles/global';
 import OAuthButton from '../Buttons/OAuthButton';
@@ -162,6 +162,10 @@ const SigninForm = ({ setAuthForm }: SigninFormProps) => {
       title,
       `width=${width},height=${height},left=${left},top=${top}`
     );
+
+    window.parentCallback = ({ access, refresh, access_exp }: TokenType) => {
+      dispatch(signinOAuth({ access, refresh, access_exp: +access_exp }));
+    };
   };
 
   return (
