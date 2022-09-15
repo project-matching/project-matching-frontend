@@ -1,8 +1,11 @@
 import PrimaryButton from '@/components/Buttons/PrimaryButton';
 import { DEFAULT_IMAGE } from '@/components/Headers/Profile';
+import UserBlockModal from '@/components/Modals/UserBlockModal';
 import styled from '@emotion/styled';
 import Image from 'next/image';
+import { useState } from 'react';
 import { UserListType } from 'src/redux/reducers/users';
+import { UserService } from 'src/services/UserService';
 
 const Card = styled.div`
   margin: 20px 0;
@@ -61,11 +64,22 @@ interface PropType {
 }
 
 const UserCard = ({ userInfo }: PropType) => {
-  const { email, image, name, block, userNo } = userInfo;
+  const { email, image, name, block: initBlock, userNo } = userInfo;
+  const [open, setOpen] = useState(false);
+  const [block, setBlock] = useState(initBlock);
 
-  const blockUser = () => {};
+  const blockUser = async () => {
+    setOpen(true);
+  };
 
-  const unblockUser = () => {};
+  const unblockUser = async () => {
+    try {
+      await UserService.unblockUser(userNo);
+      setBlock((prev) => !prev);
+    } catch (error: any) {
+      console.log(new Error(error?.response?.data?.error || 'UNKNWON_ERROR'));
+    }
+  };
 
   return (
     <Card>
@@ -97,6 +111,15 @@ const UserCard = ({ userInfo }: PropType) => {
           {block ? '차단 해제' : '차단'}
         </PrimaryButton>
       </UserBlock>
+      {open && (
+        <UserBlockModal
+          userNo={userNo}
+          name={name}
+          image={image}
+          onClose={setOpen}
+          onBlock={setBlock}
+        />
+      )}
     </Card>
   );
 };

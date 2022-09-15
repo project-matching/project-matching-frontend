@@ -128,11 +128,16 @@ export class UserService {
     return response.data.data;
   }
 
-  public static async blockUser(userNo: number): Promise<void> {
-    await appApi.delete(`/user/block/${userNo}`);
+  public static async blockUser(
+    userNo: number,
+    userBlockRequestDto: {
+      blockReason: string;
+    }
+  ): Promise<void> {
+    await appApi.patch(`/user/block/${userNo}`, userBlockRequestDto);
   }
 
   public static async unblockUser(userNo: number): Promise<void> {
-    await appApi.delete(`/user/unblock/${userNo}`);
+    await appApi.patch(`/user/unblock/${userNo}`);
   }
 }
