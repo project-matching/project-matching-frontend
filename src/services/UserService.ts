@@ -136,12 +136,14 @@ export class UserService {
 
   public static async getMoreUserList(
     content: string | null,
-    userNo: number | null
+    userNo: number | null,
+    userFilter?: 'EMAIL' | 'NAME'
   ): Promise<fetchedData<UserListType>> {
     const response = await appApi.get(`/user/list`, {
       params: {
         userNo,
         content,
+        userFilter,
       },
     });
 

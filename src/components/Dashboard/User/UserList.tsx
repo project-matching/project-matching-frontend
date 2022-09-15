@@ -42,7 +42,8 @@ const UserList = () => {
           api={UserService.getMoreUserList}
           data={data}
           setData={setData}
-          content={userSearchKeyword}
+          content={userSearchKeyword!?.content}
+          filter={userSearchKeyword!?.userFilter}
           title="유저"
         >
           <Title>유저 리스트</Title>
