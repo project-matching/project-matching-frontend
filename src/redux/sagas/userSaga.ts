@@ -142,16 +142,20 @@ function* deleteUserSaga() {
 function* getUserListSaga({ payload }: PayloadAction<getUserListType>) {
   try {
     yield put(userPendingUserList());
-    if (payload.content) {
+    if (payload.content && payload.userFilter) {
       yield put(userPendingUserSearchKeyword());
-      yield put(userSuccessUserSearchKeyword(payload.content));
+      yield put(
+        userSuccessUserSearchKeyword({
+          content: payload.content,
+          userFilter: payload.userFilter,
+        })
+      );
     }
     const userList: fetchedData<UserListType> = yield call(
       UserService.getUserList,
       payload
     );
     yield put(userSuccessUserList(userList));
-    // yield put(openModal(''));
   } catch (error: any) {
     yield put(
       userFailUserList(

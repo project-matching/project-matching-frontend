@@ -33,6 +33,7 @@ export interface patchPasswordType {
 
 export interface getUserListType {
   content?: string;
+  userFilter?: 'NAME' | 'EMAIL';
   size?: number;
 }
 
@@ -120,11 +121,13 @@ export class UserService {
   public static async getUserList({
     size,
     content,
+    userFilter,
   }: getUserListType): Promise<fetchedData<UserListType>> {
     const response = await appApi.get(`/user/list`, {
       params: {
         content,
         size,
+        userFilter,
       },
     });
 

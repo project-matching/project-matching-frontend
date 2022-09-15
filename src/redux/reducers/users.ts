@@ -51,7 +51,10 @@ interface UserState {
   userInfo: UserInfoType;
   userProfile: UserProfileType;
   userList: fetchedData<UserListType> | null;
-  userSearchKeyword: string | null;
+  userSearchKeyword: {
+    content: string;
+    userFilter: 'EMAIL' | 'NAME';
+  } | null;
 }
 
 export const initUserInfo = {
