@@ -1,5 +1,4 @@
 import styled from '@emotion/styled';
-import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
@@ -9,12 +8,9 @@ import { notificationDetail } from 'src/redux/reducers/notification';
 import { NotificationService } from 'src/services/NotificationService';
 import { Backdrop } from '../Modals/Backdrop';
 import NotificationModal from '../Modals/NotificationModal';
+import ImageToggle from './ToggleDropdown/ImageToggle';
 
 const DEFAULT_NOTIFICATION_IMAGE: string = `/notification.png`;
-
-const ImageContainer = styled.div`
-  cursor: pointer;
-`;
 
 const Dropdown = styled.div`
   position: absolute;
@@ -86,24 +82,24 @@ const Notification = () => {
     line-height: 1.2;
 
     &:visited {
-      ${(props) =>
-        `color: ${
-          props.read ? props.theme.colors.gray : props.theme.colors.black
-        };`}
+      ${(props) => `color: ${props.theme.colors.gray};`}
     }
   `;
 
   const dropdownEl = useRef<HTMLDivElement>(null);
 
   const handleCloseDropdown = (e: Event) => {
-    if (isOpen && !dropdownEl.current?.contains(e.target as Element)) {
+    if (
+      isOpen &&
+      dropdownEl.current &&
+      !dropdownEl.current.contains(e.target as Element)
+    ) {
       setOpen(false);
     }
   };
 
-  const toggleDropdown = (e: React.MouseEvent<HTMLDivElement>) => {
-    e.nativeEvent.stopImmediatePropagation();
-    isOpen ? setOpen(false) : setOpen(true);
+  const toggleDropdown = () => {
+    setOpen(!isOpen);
   };
 
   const openNotificationModal = (notification: NotificationType) => {
@@ -122,10 +118,10 @@ const Notification = () => {
   };
 
   useEffect(() => {
-    window.addEventListener('click', handleCloseDropdown);
+    window.addEventListener('mousedown', handleCloseDropdown);
 
     return () => {
-      window.removeEventListener('click', handleCloseDropdown);
+      window.removeEventListener('mousedown', handleCloseDropdown);
     };
   });
 
@@ -139,16 +135,13 @@ const Notification = () => {
   }, [token, isOpen]);
 
   return (
-    <Container>
-      <ImageContainer onClick={toggleDropdown}>
-        <Image
-          src={DEFAULT_NOTIFICATION_IMAGE}
-          alt="profile_image"
-          width="40px"
-          height="40px"
-        />
-      </ImageContainer>
-      <Dropdown ref={dropdownEl}>
+    <Container ref={dropdownEl}>
+      <ImageToggle
+        image={DEFAULT_NOTIFICATION_IMAGE}
+        alt="notification_image"
+        toggleDropdown={toggleDropdown}
+      />
+      <Dropdown>
         <LinkContainer>
           {notificationPreview &&
             notificationPreview.map((notification) => (

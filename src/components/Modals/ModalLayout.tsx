@@ -6,6 +6,7 @@ import {
 } from 'src/redux/reducers/components/modals';
 import { removeSigninErrorMsg } from 'src/redux/reducers/components/validation';
 import Logo from '../Common/Logo';
+import { Backdrop } from './Backdrop';
 
 const Container = styled.div`
   width: 350px;
@@ -41,15 +42,17 @@ const ModalLayout = ({ modalContent, children }: ModalLayoutProps) => {
   };
 
   return (
-    <Container>
-      <Head>
-        <div>
-          <Logo />
-        </div>
-        <A onClick={closeModalLayout}>X</A>
-      </Head>
-      <Body>{children}</Body>
-    </Container>
+    <Backdrop>
+      <Container>
+        <Head>
+          <div>
+            <Logo />
+          </div>
+          <A onClick={closeModalLayout}>X</A>
+        </Head>
+        <Body>{children}</Body>
+      </Container>
+    </Backdrop>
   );
 };
 

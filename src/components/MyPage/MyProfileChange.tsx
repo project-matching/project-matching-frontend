@@ -1,4 +1,6 @@
 import styled from '@emotion/styled';
+import { solid } from '@fortawesome/fontawesome-svg-core/import.macro';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Image from 'next/image';
 import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
@@ -12,10 +14,25 @@ import { DEFAULT_IMAGE } from '../Headers/Profile';
 
 const ImageContainer = styled.div`
   margin-bottom: 50px;
+  position: relative;
 
   input#profile-image {
-    padding: 0;
-    border: 0;
+    display: none;
+  }
+
+  label {
+    position: absolute;
+    padding: 2px 4px;
+    top: 35px;
+    left: 35px;
+    background-color: ${(props) => props.theme.colors.darkGray};
+    border-radius: 50%;
+    color: white;
+    cursor: pointer;
+
+    svg {
+      width: 10px;
+    }
   }
 `;
 
@@ -145,6 +162,7 @@ const MyProfileChange = ({ myProfile }: MyProfileProps) => {
   } = myProfile;
 
   const [image, setImage] = useState(initImage);
+  const [imageFile, setImageFile] = useState<File | null>(null);
   const [name, setName] = useState(initName || '');
   const [sex, setSex] = useState(decodeSex(initSex || 'N'));
   const [position, setPosition] = useState(initPosition || '없음');
@@ -161,6 +179,7 @@ const MyProfileChange = ({ myProfile }: MyProfileProps) => {
 
     if (files && files.length > 0) {
       const uploadedImage = files[0];
+      setImageFile(uploadedImage);
       const imageURL = uploadedImage && URL.createObjectURL(uploadedImage);
       if (imageURL) {
         setImage(imageURL);
@@ -196,6 +215,7 @@ const MyProfileChange = ({ myProfile }: MyProfileProps) => {
       selfIntroduction,
       sex: encodeSex(sex),
       technicalStackList: techStacks,
+      image: imageFile,
     };
 
     // TODO: 수정 제출
@@ -237,8 +257,7 @@ const MyProfileChange = ({ myProfile }: MyProfileProps) => {
     <form onSubmit={submitProfile}>
       <ImageContainer>
         <Image
-          // src={image || DEFAULT_IMAGE}
-          src={DEFAULT_IMAGE} // TODO: URL 변경 시 수정
+          src={image || DEFAULT_IMAGE}
           alt="profile_image"
           width="50px"
           height="50px"
@@ -246,6 +265,9 @@ const MyProfileChange = ({ myProfile }: MyProfileProps) => {
             borderRadius: '50%',
           }}
         />
+        <label htmlFor="profile-image">
+          <FontAwesomeIcon icon={solid('plus')} />
+        </label>
         <input
           ref={ImageInputEl}
           onChange={handleProfileImage}
