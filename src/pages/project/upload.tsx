@@ -85,7 +85,7 @@ const MainTitle = styled.div`
     background-color: #4242;
     text-align: center;
   }
-`
+`;
 
 const PositionDetail = styled.div`
   display: flex;

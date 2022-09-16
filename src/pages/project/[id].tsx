@@ -10,6 +10,7 @@ import { useAppSelector } from 'src/redux/hooks';
 import { ProjectService } from 'src/services/ProjectService';
 import Comment from '../../components/Post/Comment';
 import { CommentService } from '../../services/CommentService';
+
 const State = styled.h3`
   text-align: center;
 `;
@@ -134,7 +135,7 @@ interface positionList {
   userDto: userDto | null
 }
 
-interface data {
+export interface data {
   applicationStatus: boolean;
   bookmark: boolean;
   currentPeople: number;

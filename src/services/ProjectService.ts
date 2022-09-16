@@ -65,6 +65,21 @@ interface projectParticipateRefusalRequestDto {
   reason: string,
 }
 
+interface addPosition {
+  count: number,
+  positionNumber: number,
+}
+
+interface modifiedProject {
+  endDate: string,
+  introduction: string,
+  name: string,
+  projectPositionAddDtoList: addPosition[],
+  projectPositionDeleteDtoList: {projectPositionNo: number}[],
+  projectTechnicalStackNoList: number[],
+  startDate: string
+}
+
 export class ProjectService {
   public static async recruitingProjectPreview() {
     const response = await appApi.get('/project/recruitment', {
@@ -224,6 +239,12 @@ export class ProjectService {
 
   public static async rejectProjectApplicant(projectParticipateNo: number, reqData: projectParticipateRefusalRequestDto) {
     const response = await appApi.post(`/participate/${projectParticipateNo}/refusal`, reqData);
+
+    return response.data;
+  }
+
+  public static async modifyProject(projectNo: string, projectUpdateRequestDto: modifiedProject) {
+    const response = await appApi.patch(`/project/${projectNo}`, projectUpdateRequestDto);
 
     return response.data;
   }

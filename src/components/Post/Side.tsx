@@ -7,7 +7,6 @@ import { ProjectService } from '../../services/ProjectService';
 import Title from '../auth/Title';
 import { Backdrop } from '../Modals/Backdrop';
 import RejectModal from '../Modals/RejectModal';
-
 const Wrapper = styled.div`
   width: 20%;
   position: fixed;
@@ -41,7 +40,6 @@ const MemberRow = styled.div`
   display: flex;
   flex-direction: column;
 
-  
   span {
     width: 90%;
   }
@@ -64,7 +62,7 @@ const ButtonRows = styled.div`
   position: fixed;
   width: 20%;
   right: 5%;
-  bottom: 10%;
+  bottom: 7%;
 
   display: flex;
   flex-direction: column;
@@ -206,8 +204,10 @@ const Side: FC<Props> = ({ data, isRegister, isParticipant }) => {
       setOnModal(true);
     }
 
-    if (id === "fix") {
-      console.log("handle fixing mode")
+    if (id === "modification") {
+      const { id } = router.query;
+      router.push(`${id}/modification`);
+      //console.log("handle fixing mode")
     }
   }
 
@@ -263,7 +263,7 @@ const Side: FC<Props> = ({ data, isRegister, isParticipant }) => {
         {isRegister ? 
         <>
           <button id="complete">모집완료</button>
-          <button id="fix">수정하기</button>
+          <button id="modification">수정하기</button>
           <button id="manage">신청자 관리</button>
         </>
         :
