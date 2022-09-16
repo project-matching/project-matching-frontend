@@ -62,6 +62,8 @@ function* getUserInfoSaga() {
       )
     );
     TokenService.remove();
+    TokenService.removeRefresh();
+    TokenService.removeExp();
     yield put(
       authFail(new Error(error?.response?.data?.error || 'UNKNOWN_ERROR'))
     );

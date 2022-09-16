@@ -132,13 +132,16 @@ const ChangePassword = () => {
 
         const password = target.password.value;
 
-        const token = await UserService.confirmPassword({
-          authToken,
-          email,
-          password,
-        });
+        const { access, refresh, access_exp } =
+          await UserService.confirmPassword({
+            authToken,
+            email,
+            password,
+          });
 
-        TokenService.set(token);
+        TokenService.set(access);
+        TokenService.setRefresh(refresh);
+        TokenService.setExp(access_exp);
 
         // TODO: 변경 완료 시 어디로 이동...???
         router.push('/');

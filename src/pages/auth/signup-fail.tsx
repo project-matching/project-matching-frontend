@@ -4,6 +4,7 @@ import SignupEmailSentModal from '@/components/Modals/SignupEmailSentModal';
 import styled from '@emotion/styled';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useAppSelector } from 'src/redux/hooks';
 import { openModal } from 'src/redux/reducers/components/modals';
@@ -31,11 +32,18 @@ const ButtonContainer = styled.div`
   flex-direction: row;
 `;
 
+const ErrorMsg = styled.span`
+  margin-top: 20px;
+  color: ${(props) => props.theme.colors.error};
+  font-size: ${(props) => props.theme.sizes.sm};
+`;
+
 const Fail = () => {
   const router = useRouter();
   const { email } = router.query;
   const isOpen = useAppSelector((state) => state.modal.SignupEmailSentModal);
   const dispatch = useDispatch();
+  const [ErrMsg, setErrMsg] = useState('');
 
   const reissueEmail = async () => {
     try {
@@ -44,7 +52,12 @@ const Fail = () => {
         isEmailSent && dispatch(openModal('SignupEmailSentModal'));
       }
     } catch (error: any) {
-      // router.push('/');
+      if (
+        error?.response?.data?.error?.code ===
+        'ALREADY_AUTHENTICATED_AUTH_TOKEN_EXCEPTION'
+      ) {
+        setErrMsg('이미 회원가입한 이메일 주소입니다.');
+      }
     }
   };
 
@@ -62,6 +75,7 @@ const Fail = () => {
             <SecondaryButton>메인 화면으로 이동하기</SecondaryButton>
           </Link>
         </ButtonContainer>
+        {ErrMsg && <ErrorMsg>{ErrMsg}</ErrorMsg>}
       </Wrapper>
     </>
   );

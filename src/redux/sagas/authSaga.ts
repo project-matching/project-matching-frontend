@@ -70,6 +70,8 @@ function* signOutSaga() {
     );
   } finally {
     TokenService.remove();
+    TokenService.removeRefresh();
+    TokenService.removeExp();
     yield put(authSuccess(null));
     yield put(getUserInfo());
   }

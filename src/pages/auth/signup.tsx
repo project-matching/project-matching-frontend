@@ -1,5 +1,6 @@
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
+import { TokenType } from 'src/redux/reducers/auth';
 import { TokenService } from 'src/services/TokenService';
 import { confirmEmailType, UserService } from 'src/services/UserService';
 
@@ -9,16 +10,19 @@ const Signup = () => {
 
   const emailSignin = async ({ email, authToken }: confirmEmailType) => {
     try {
-      const token: string = await UserService.confirmEmail({
-        email,
-        authToken,
-      });
+      const { access, refresh, access_exp }: TokenType =
+        await UserService.confirmEmail({
+          email,
+          authToken,
+        });
 
-      if (!token) {
+      if (!access) {
         return;
       }
 
-      TokenService.set(token);
+      TokenService.set(access);
+      TokenService.setRefresh(refresh);
+      TokenService.setExp(access_exp);
       router.push('/welcome');
     } catch (error: any) {
       router.push({
