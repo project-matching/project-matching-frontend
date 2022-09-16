@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import { ProjectType } from 'src/services/ProjectService';
-import SmallCard from './SmallCard';
+import LargeCard from './LargeCard';
 
 const Title = styled.h2`
   margin: 30px 0;
@@ -36,7 +36,7 @@ const BookmarkProjectLayout = ({
       <Title>{title}</Title>
       <Grid>
         {projectDtoList.map(({ projectNo, ...projectDto }) => (
-          <SmallCard
+          <LargeCard
             key={projectNo}
             projectDto={{ projectNo, ...projectDto }}
             update={true}

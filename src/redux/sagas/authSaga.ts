@@ -5,9 +5,9 @@ import {
   removeSigninErrorMsg,
   setSigninErrorMsg,
 } from 'src/redux/reducers/components/validation';
-import { updateUserInfo } from 'src/redux/reducers/users';
+import { getUserInfo } from 'src/redux/reducers/users';
 import { TokenService } from 'src/services/TokenService';
-import { UserService } from 'src/services/UserService';
+import { reissuedType, UserService } from 'src/services/UserService';
 import {
   authFail,
   authPending,
@@ -18,6 +18,8 @@ import {
   signup,
   TokenType,
 } from '../reducers/auth';
+import { reissueReqType } from './../../services/UserService';
+import { reissueToken } from './../reducers/auth';
 
 export type SigninReqType = {
   email: string;
@@ -33,10 +35,15 @@ export type SignupReqType = {
 function* signinSaga({ payload }: PayloadAction<SigninReqType>) {
   try {
     yield put(authPending());
-    const tokens: TokenType = yield call(UserService.signin, payload);
-    tokens.access && TokenService.set(tokens.access);
-    yield put(authSuccess(tokens));
-    yield put(updateUserInfo());
+    const { access, refresh, access_exp }: TokenType = yield call(
+      UserService.signin,
+      payload
+    );
+    TokenService.set(access);
+    TokenService.setRefresh(refresh);
+    TokenService.setExp(access_exp);
+    yield put(authSuccess(access));
+    yield put(getUserInfo());
     yield put(removeSigninErrorMsg());
     yield put(closeModal('AuthModal'));
   } catch (error: any) {
@@ -63,8 +70,8 @@ function* signOutSaga() {
     );
   } finally {
     TokenService.remove();
-    yield put(authSuccess({ access: null, refresh: null }));
-    yield put(updateUserInfo());
+    yield put(authSuccess(null));
+    yield put(getUserInfo());
   }
 }
 
@@ -72,9 +79,11 @@ function* oAuthSaga({ payload }: PayloadAction<TokenType>) {
   try {
     yield put(authPending());
     const tokens: TokenType = payload;
-    tokens.access && TokenService.set(tokens.access);
-    yield put(authSuccess({ access: null, refresh: null }));
-    yield put(updateUserInfo());
+    TokenService.set(tokens.access);
+    TokenService.setRefresh(tokens.refresh);
+    TokenService.setExp(tokens.access_exp);
+    yield put(authSuccess(null));
+    yield put(getUserInfo());
     yield put(removeSigninErrorMsg());
     yield put(closeModal('AuthModal'));
   } catch (error: any) {
@@ -89,7 +98,7 @@ function* signupSaga({ payload }: PayloadAction<SignupReqType>) {
   try {
     yield put(authPending());
     yield call(UserService.signup, payload);
-    yield put(authSuccess({ access: null, refresh: null }));
+    yield put(authSuccess(null));
     yield put(openModal('SignupEmailSentModal'));
     yield put(closeModal('AuthModal'));
   } catch (error: any) {
@@ -100,9 +109,27 @@ function* signupSaga({ payload }: PayloadAction<SignupReqType>) {
   }
 }
 
+function* reissueTokenSaga({ payload }: PayloadAction<reissueReqType>) {
+  try {
+    yield put(authPending());
+    const { access, access_exp }: reissuedType = yield call(
+      UserService.reissueToken,
+      payload
+    );
+    yield TokenService.set(access);
+    TokenService.setExp(access_exp);
+    yield put(authSuccess(access));
+  } catch (error: any) {
+    yield put(
+      authFail(new Error(error?.response?.data?.error || 'UNKNOWN_ERROR'))
+    );
+  }
+}
+
 export function* authSaga() {
   yield takeLatest(signin.type, signinSaga);
   yield takeLatest(signOut.type, signOutSaga);
   yield takeLatest(signinOAuth.type, oAuthSaga);
   yield takeLatest(signup.type, signupSaga);
+  yield takeLatest(reissueToken.type, reissueTokenSaga);
 }

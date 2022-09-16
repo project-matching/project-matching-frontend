@@ -33,9 +33,11 @@ export interface fetchedData<T> {
 export interface LayoutProps {
   api: (
     _content: string | null,
-    _no: number | null
+    _no: number | null,
+    _filter?: 'EMAIL' | 'NAME'
   ) => Promise<fetchedData<any>>;
   content: string | null;
+  filter?: 'EMAIL' | 'NAME';
   data: fetchedData<any>;
   setData: Dispatch<SetStateAction<fetchedData<any>>>;
   children: React.ReactNode;
@@ -49,6 +51,7 @@ const SearchInfiniteScrollLayout = ({
   content,
   children,
   title = '프로젝트',
+  filter,
 }: LayoutProps) => {
   const targetRef = useRef<HTMLDivElement>(null);
   const token = useAppSelector((state) => state.auth.token);
@@ -62,7 +65,8 @@ const SearchInfiniteScrollLayout = ({
 
       const newData = await api(
         content,
-        lastItem.projectNo || lastItem.notificationNo || lastItem.userNo
+        lastItem.projectNo || lastItem.notificationNo || lastItem.userNo,
+        filter
       );
 
       setData({

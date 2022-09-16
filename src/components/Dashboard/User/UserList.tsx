@@ -12,53 +12,6 @@ const Title = styled.div`
   margin-bottom: 10px;
 `;
 
-const data = {
-  content: [
-    {
-      userNo: 1014,
-      image: null,
-      name: '김윤건',
-      email: 'ungun96@gmail.com',
-      block: false,
-    },
-    {
-      userNo: 1007,
-      image: null,
-      name: 'test user',
-      email: 'project.matching.test.longeremail.this.longer@gmail.com',
-      block: false,
-    },
-    {
-      userNo: 1005,
-      image: null,
-      name: '이동연',
-      email: 'project.matching.test.longeremail@gmail.com',
-      block: false,
-    },
-    {
-      userNo: 943,
-      image: null,
-      name: '김윤건',
-      email: 'ungun96@naver.com',
-      block: false,
-    },
-    {
-      userNo: 615,
-      image: null,
-      name: 'admin',
-      email: 'admin@test.com',
-      block: false,
-    },
-  ],
-  last: true,
-};
-
-/**
- * TODO:
- * 전역변수 User 추가
- * User 리스트 불러오기
- */
-
 const UserList = () => {
   const dispatch = useDispatch();
   const userList = useAppSelector((state) => state.user.userList);
@@ -89,7 +42,8 @@ const UserList = () => {
           api={UserService.getMoreUserList}
           data={data}
           setData={setData}
-          content={userSearchKeyword}
+          content={userSearchKeyword!?.content}
+          filter={userSearchKeyword!?.userFilter}
           title="유저"
         >
           <Title>유저 리스트</Title>

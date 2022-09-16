@@ -1,21 +1,21 @@
 import { createAction, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { SigninReqType, SignupReqType } from 'src/redux/sagas/authSaga';
+import { reissueReqType } from './../../services/UserService';
 
 interface AuthState {
   token: string | null;
-  refresh: string | null;
   loading: boolean;
   error: any;
 }
 
 export interface TokenType {
-  access: string | null;
-  refresh: string | null;
+  access: string;
+  refresh: string;
+  access_exp: number;
 }
 
 const initialState: AuthState = {
   token: null,
-  refresh: null,
   loading: false,
   error: null,
 };
@@ -33,12 +33,11 @@ const authSlice = createSlice({
         error: null,
       };
     },
-    success(state, action: PayloadAction<TokenType>) {
+    success(state, action: PayloadAction<string | null>) {
       return {
         ...state,
         loading: false,
-        token: action.payload.access,
-        refresh: action.payload.refresh,
+        token: action.payload,
         error: null,
       };
     },
@@ -63,5 +62,8 @@ export const signin = createAction<SigninReqType>(`${authState}/signin`);
 export const signup = createAction<SignupReqType>(`${authState}/signup`);
 export const signinOAuth = createAction<TokenType>(`${authState}/signinOAuth`);
 export const signOut = createAction(`${authState}/signOut`);
+export const reissueToken = createAction<reissueReqType>(
+  `${authState}/reissueToken`
+);
 
 export default authSlice.reducer;

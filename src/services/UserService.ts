@@ -33,7 +33,18 @@ export interface patchPasswordType {
 
 export interface getUserListType {
   content?: string;
+  userFilter?: 'NAME' | 'EMAIL';
   size?: number;
+}
+
+export interface reissueReqType {
+  access: string;
+  refresh: string;
+}
+
+export interface reissuedType {
+  access: string;
+  access_exp: number;
 }
 
 export class UserService {
@@ -76,6 +87,13 @@ export class UserService {
     await appApi.get(`/common/logout`);
   }
 
+  public static async reissueToken(
+    reqData: reissueReqType
+  ): Promise<reissuedType> {
+    const response = await appApi.post(`/common/token/reissue`, reqData);
+    return response.data.data;
+  }
+
   public static async getUserInfo(): Promise<UserInfoType> {
     const response = await appApi.get(`/user/info`);
     return response.data.data ?? null;
@@ -103,11 +121,13 @@ export class UserService {
   public static async getUserList({
     size,
     content,
+    userFilter,
   }: getUserListType): Promise<fetchedData<UserListType>> {
     const response = await appApi.get(`/user/list`, {
       params: {
         content,
         size,
+        userFilter,
       },
     });
 
@@ -116,12 +136,14 @@ export class UserService {
 
   public static async getMoreUserList(
     content: string | null,
-    userNo: number | null
+    userNo: number | null,
+    userFilter?: 'EMAIL' | 'NAME'
   ): Promise<fetchedData<UserListType>> {
     const response = await appApi.get(`/user/list`, {
       params: {
         userNo,
         content,
+        userFilter,
       },
     });
 

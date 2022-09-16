@@ -1,26 +1,18 @@
 import { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
-import { useAppSelector } from 'src/redux/hooks';
-import { signinOAuth } from 'src/redux/reducers/auth';
 
 const Success = () => {
-  const token = useAppSelector((state) => state.auth.token);
-  const dispatch = useDispatch();
-
   useEffect(() => {
-    if (token) {
-      window.opener.location.reload();
-      window.close();
-    }
     const currentUrl = window.location.href;
     const searchParams = new URL(currentUrl).searchParams;
     const access = searchParams.get('access');
     const refresh = searchParams.get('refresh');
+    const access_exp = searchParams.get('access_exp');
 
-    if (access && refresh) {
-      dispatch(signinOAuth({ access, refresh }));
+    if (access && refresh && access_exp) {
+      window.opener.parentCallback({ access, refresh, access_exp });
     }
-  }, [token, dispatch]);
+    window.close();
+  });
 
   return <div>OAuth login</div>;
 };
