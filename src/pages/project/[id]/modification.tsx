@@ -7,6 +7,7 @@ import { useRouter } from 'next/router';
 import { ChangeEvent, useEffect, useState } from 'react';
 import { PositionType } from 'src/services/PositionService';
 import { ProjectService } from 'src/services/ProjectService';
+import { TechStackService } from 'src/services/TechStackService';
 import { PositionService } from '../../../services/PositionService';
 import { data } from '../[id]';
 
@@ -291,7 +292,7 @@ const ProjectModification = ({ project }: Props) => {
 
   useEffect(() => {
     (async() => {
-      //const techStack = await TechStackService.getTechStacks();
+      const techStack = await TechStackService.getTechStacks();
       let positions: PositionType[] | filteredPosition[] = await PositionService.getPositions();
       positions = positions.map((position: any) => {
         position["count"] = project.positions[position.positionName] ? project.positions[position.positionName].length : 0;
@@ -299,7 +300,7 @@ const ProjectModification = ({ project }: Props) => {
         return position;
       });
 
-      //setTechStacks(techStack);
+      setTechStacks(techStack);
       setPositions(positions as filteredPosition[]);
     })();
 
