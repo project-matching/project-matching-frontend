@@ -5,6 +5,7 @@ import moment from 'moment';
 import { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
 import { ChangeEvent, useEffect, useState } from 'react';
+import { PositionType } from 'src/services/PositionService';
 import { ProjectService } from 'src/services/ProjectService';
 import { PositionService } from '../../../services/PositionService';
 import { TechStackService } from '../../../services/TechStackService';
@@ -292,7 +293,7 @@ const ProjectModification = ({ project }: Props) => {
   useEffect(() => {
     (async() => {
       const techStack = await TechStackService.getTechStacks();
-      let positions = await PositionService.getPositions();
+      let positions: PositionType[] | filteredPosition[] = await PositionService.getPositions();
       positions = positions.map((position: any) => {
         position["count"] = project.positions[position.positionName] ? project.positions[position.positionName].length : 0;
 
@@ -300,7 +301,7 @@ const ProjectModification = ({ project }: Props) => {
       });
 
       setTechStacks(techStack);
-      setPositions(positions);
+      setPositions(positions as filteredPosition[]);
     })();
 
   }, []);
