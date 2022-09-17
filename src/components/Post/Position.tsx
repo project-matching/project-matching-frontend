@@ -42,13 +42,15 @@ interface PositionList {
 interface Props {
   positionList: PositionList[],
   projectName: string,
+  isRegister: boolean,
+  isParticipant: boolean,
 }
 
 interface list {
   [positionName: string]: (UserDto | null)[],
 }
 
-const Position: FC<Props> = ({ positionList, projectName}) => {
+const Position: FC<Props> = ({ positionList, projectName, isRegister, isParticipant}) => {
   const token = useAppSelector(state => state.auth.token);
   const isClicked = useAppSelector(state => state.modal.PositionApplyModal);
   const [positions, setPositionList] = useState<list>({});
@@ -90,7 +92,7 @@ const Position: FC<Props> = ({ positionList, projectName}) => {
             <PositionItem key={positionName}>
               <div>{positionName}</div>
               <div>{currentApplicants} / {totalApplicants}</div>
-              <ApplyButton disabled={state} onClick={() => {openApplyModal(positionName)}}>{state ? "Done" : "Apply"}</ApplyButton>
+              {!isParticipant && !isRegister && <ApplyButton disabled={state} onClick={() => {openApplyModal(positionName)}}>{state ? "Done" : "Apply"}</ApplyButton>}
             </PositionItem>
           )
         })}

@@ -85,7 +85,7 @@ const MainTitle = styled.div`
     background-color: #4242;
     text-align: center;
   }
-`
+`;
 
 const PositionDetail = styled.div`
   display: flex;
@@ -251,10 +251,11 @@ const ProjectUpload = () => {
       const positions = await PositionService.getPositions();
       const techStack = await TechStackService.getTechStacks();
 
-      setPositions(positions.map((position: position) => {
+      const updatedPositions: position[] = positions.map((position: any) => {
         position["count"] = 0;
-        return position;
-      }));
+        return position as position;
+      })
+      setPositions(updatedPositions);
 
       setTechStacks(techStack);
     })();
