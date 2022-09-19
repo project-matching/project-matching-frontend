@@ -1,16 +1,9 @@
 import styled from '@emotion/styled';
 import { ChangeEvent, FC, useState } from 'react';
-
-const RejectBox = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: flex-start;
-  width: 60%;
-  height: 60%;
-  background-color: #bfbfbf;
-  padding: 5%;
-`;
+import { useDispatch } from 'react-redux';
+import { closeModal } from 'src/redux/reducers/components/modals';
+import { ProjectService } from 'src/services/ProjectService';
+import ModalLayout from './ModalLayout';
 
 const Header = styled.header`
   font-weight: 900;
@@ -41,22 +34,32 @@ const ButtonsRow = styled.div`
   justify-content: space-evenly;
   width: 100%;
   margin: 5% 0;
-`
+`;
 
 interface Props {
   title: string,
-  onReject: any,
-  onCancel: any
+  participateNo: number,
 }
 
-export const RejectModal: FC<Props> = ({title, onReject, onCancel}) => {
+export const RejectModal: FC<Props> = ({ title, participateNo }) => {
   const [reason, setReason] = useState<string>("");
+  const dispatch = useDispatch();
+
   const handleTextArea = (e: ChangeEvent<HTMLTextAreaElement>) => {
     setReason(e.target.value);
   }
-// participantNo 받아오기 이후 reject projectService.rejectProjectApplicant
+
+  const clickCancelBtn = () => {
+    dispatch(closeModal("RejectModal"));
+  }
+
+  const clickRejectBtn = async () => {
+    const response = await ProjectService.rejectProjectApplicant(participateNo, {reason});
+    // 500 error
+  }
+
   return (
-    <RejectBox>
+    <ModalLayout modalContent="RejectModal">
       <Header>
         {title}
       </Header>
@@ -68,10 +71,10 @@ export const RejectModal: FC<Props> = ({title, onReject, onCancel}) => {
         <ReasonTextArea rows={15} value={reason} onChange={handleTextArea}/>
       </Main>
       <ButtonsRow>
-        <button>거절하기</button>
-        <button onClick={onCancel}>취소</button>
+        <button onClick={clickRejectBtn}>거절하기</button>
+        <button onClick={clickCancelBtn}>취소</button>
       </ButtonsRow>
-    </RejectBox>
+    </ModalLayout>
   )
 }
 

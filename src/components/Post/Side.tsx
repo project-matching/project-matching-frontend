@@ -3,10 +3,13 @@ import { useRouter } from 'next/router';
 import { FC, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import useBookmark from 'src/hooks/useBookmark';
+import { useAppSelector } from 'src/redux/hooks';
+import { openModal } from 'src/redux/reducers/components/modals';
 import { ProjectService } from '../../services/ProjectService';
 import Title from '../auth/Title';
 import { Backdrop } from '../Modals/Backdrop';
 import RejectModal from '../Modals/RejectModal';
+
 const Wrapper = styled.div`
   width: 20%;
   position: fixed;
@@ -91,6 +94,15 @@ const ManagingPage = styled.main`
   height: 90%;
   background-color: white;
   overflow: auto;
+
+  header {
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
+    padding: 5px 10px;
+    font-weight: bold;
+    cursor: pointer;
+  }
 `
 
 const ApplicantBox = styled.article`
@@ -189,10 +201,10 @@ const Side: FC<Props> = ({ data, isRegister, isParticipant }) => {
   const { bookmark, toggleBookmark } = useBookmark();
   const [onModal, setOnModal] = useState<boolean>(false);
   const [applicants, setApplicants] = useState<applicant[]>([]);
+  const rejectModal = useAppSelector(state => state.modal.RejectModal);
   const dispatch = useDispatch();
   const router = useRouter();
-  //const isRejected = useAppSelector(state => state.modal.RejectModal);
-  const [isRejected, setIsRejected] = useState<boolean>(false);
+
   const clickHandler = async (e: React.BaseSyntheticEvent) => {
     const id = e.target.id;
 
@@ -207,7 +219,6 @@ const Side: FC<Props> = ({ data, isRegister, isParticipant }) => {
     if (id === "modification") {
       const { id } = router.query;
       router.push(`${id}/modification`);
-      //console.log("handle fixing mode")
     }
   }
 
@@ -221,14 +232,10 @@ const Side: FC<Props> = ({ data, isRegister, isParticipant }) => {
     }
 
     if (id === "reject") {
-      //dispatch(openModal("RejectModal"));
-      setIsRejected(true);
-      // use dispatch
+      dispatch(openModal("RejectModal"));
     }
   }
-// 신청자 관리 페이지 만들기 모달
 // 추방 버튼 활성화
-// 수정 페이지 만들기
   return (
     <Wrapper>
       <Title title="Project Detail" />
@@ -274,44 +281,44 @@ const Side: FC<Props> = ({ data, isRegister, isParticipant }) => {
       </ButtonRows>
       {onModal && 
         <Backdrop>
-          {!isRejected ?
           <ManagingPage>
+            <header onClick={() => {setOnModal(false)}}>X</header>
             {applicants.map(applicant => {
-              console.log(applicant);
               return(
-                <ApplicantBox key={applicant.projectParticipateNo}>
-                  <ApplicantInfoSection>
-                    <aside>{applicant.userName}</aside>
-                    <main className="info">
-                      <ApplicantInfoItem>
-                        <span className="title">포지션</span>
-                        <span>{applicant.positionName}</span>
-                      </ApplicantInfoItem>
-                      <ApplicantInfoItem>
-                        <span className="title">기술 스택</span> 
-                        <span>{applicant.technicalStackList}</span>
-                      </ApplicantInfoItem>
-                      <ApplicantInfoItem>
-                        <span className="title">깃허브 주소</span> 
-                        <span>not allowed</span>
-                      </ApplicantInfoItem>
-                    </main>
-                    <ApplicantMotive>
-                      <span>신청 동기</span>
-                      <div>{applicant.motive}</div>
-                    </ApplicantMotive>
-                  </ApplicantInfoSection>
-                  <ApplicantButtonRow onClick={(e) => applicantButtonHandler(e, applicant.projectParticipateNo)}>
-                    <button id="allow">수락하기</button>
-                    <button id="reject">거절하기</button>
-                  </ApplicantButtonRow>
-                </ApplicantBox>
+                <>
+                  <ApplicantBox key={applicant.projectParticipateNo}>
+                    <ApplicantInfoSection >
+                      <aside>{applicant.userName}</aside>
+                      <main className="info">
+                        <ApplicantInfoItem>
+                          <span className="title">포지션</span>
+                          <span>{applicant.positionName}</span>
+                        </ApplicantInfoItem>
+                        <ApplicantInfoItem>
+                          <span className="title">기술 스택</span> 
+                          <span>{applicant.technicalStackList}</span>
+                        </ApplicantInfoItem>
+                        <ApplicantInfoItem>
+                          <span className="title">깃허브 주소</span> 
+                          <span>not allowed</span>
+                        </ApplicantInfoItem>
+                      </main>
+                      <ApplicantMotive>
+                        <span>신청 동기</span>
+                        <div>{applicant.motive}</div>
+                      </ApplicantMotive>
+                    </ApplicantInfoSection>
+                    <ApplicantButtonRow onClick={(e) => applicantButtonHandler(e, applicant.projectParticipateNo)}>
+                      <button id="allow">수락하기</button>
+                      <button id="reject">거절하기</button>
+                    </ApplicantButtonRow>
+                  </ApplicantBox>
+                  {rejectModal && 
+                    <RejectModal title="프로젝트 참가 신청 거절" participateNo={applicant.projectParticipateNo}/> }
+                </>
               );
             })}
           </ManagingPage>
-          :
-          <RejectModal title="프로젝트 참가 신청 거절" onReject={() => {console.log("hi")}} onCancel={() => {setIsRejected(false)}}/>
-          }
         </Backdrop>
       }
     </Wrapper>
