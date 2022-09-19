@@ -2,7 +2,7 @@ import styled from '@emotion/styled';
 import { solid } from '@fortawesome/fontawesome-svg-core/import.macro';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Image from 'next/image';
-import defaultProfileImage from 'public/default_image.png';
+import defaultProfileImage from 'public/default_profile.png';
 import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { patchUserProfile, UserProfileType } from 'src/redux/reducers/users';
@@ -238,7 +238,6 @@ const MyProfileChange = ({ myProfile }: MyProfileProps) => {
     );
 
     image && URL.revokeObjectURL(image);
-    setImage(defaultProfileImage);
   };
 
   useEffect(() => {
