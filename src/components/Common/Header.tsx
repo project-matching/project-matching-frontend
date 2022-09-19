@@ -1,13 +1,13 @@
 import styled from '@emotion/styled';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+import Profile from 'public/default_image.png';
 import { useDispatch } from 'react-redux';
 import { useAppSelector } from 'src/redux/hooks';
 import { openModal } from 'src/redux/reducers/components/modals';
 import { Wrapper } from 'src/styles/global';
 import PrimaryButton from '../Buttons/PrimaryButton';
 import Notification from '../Headers/Notification';
-import Profile from '../Headers/Profile';
 import AuthModal from '../Modals/AuthModal';
 import SignupEmailSentModal from '../Modals/SignupEmailSentModal';
 import HeaderSearchBar from '../SearchBar/HeaderSearchBar';

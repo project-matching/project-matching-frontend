@@ -1,8 +1,8 @@
 import styled from '@emotion/styled';
 import Image from 'next/image';
+import defaultProfileImage from 'public/default_image.png';
 import { UserProfileType } from 'src/redux/reducers/users';
 import { v4 as uuidv4 } from 'uuid';
-import { defaultProfileImage } from '../Headers/Profile';
 import { decodeSex } from './MyProfileChange';
 
 const ImageContainer = styled.div`

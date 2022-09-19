@@ -2,6 +2,7 @@ import styled from '@emotion/styled';
 import { solid } from '@fortawesome/fontawesome-svg-core/import.macro';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Image from 'next/image';
+import defaultProfileImage from 'public/default_image.png';
 import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { patchUserProfile, UserProfileType } from 'src/redux/reducers/users';
@@ -10,7 +11,6 @@ import { TechStackService } from 'src/services/TechStackService';
 import PrimaryButton from '../Buttons/PrimaryButton';
 import MultiSelectDropdown from '../Dropdowns/MultiSelectDropdown';
 import UniSelectDropdown from '../Dropdowns/UniSelectDropdown';
-import { defaultProfileImage } from '../Headers/Profile';
 
 const ImageContainer = styled.div`
   margin-bottom: 50px;
