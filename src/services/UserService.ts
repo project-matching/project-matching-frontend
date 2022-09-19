@@ -1,4 +1,5 @@
 import { fetchedData } from '@/components/Layouts/InfiniteScrollLayout';
+import { TokenType } from 'src/redux/reducers/auth';
 import {
   UserInfoType,
   UserListType,
@@ -52,7 +53,9 @@ export class UserService {
     await appApi.post(`/user`, reqData);
   }
 
-  public static async confirmEmail(reqData: confirmEmailType): Promise<string> {
+  public static async confirmEmail(
+    reqData: confirmEmailType
+  ): Promise<TokenType> {
     const response = await appApi.post(`/user/confirm`, reqData);
     return response.data.data; // jwt
   }
@@ -73,7 +76,7 @@ export class UserService {
 
   public static async confirmPassword(
     reqData: confirmPasswordType
-  ): Promise<string> {
+  ): Promise<TokenType> {
     const response = await appApi.patch(`/common/password/confirm`, reqData);
     return response.data.data; // jwt
   }

@@ -1,7 +1,10 @@
 import PrimaryButton from '@/components/Buttons/PrimaryButton';
 import styled from '@emotion/styled';
 import Link from 'next/link';
+import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import { useAppSelector } from 'src/redux/hooks';
+import { getUserInfo } from 'src/redux/reducers/users';
 
 const Wrapper = styled.div`
   height: 100vh;
@@ -35,6 +38,11 @@ const Welcome = () => {
    */
 
   const userInfo = useAppSelector((state) => state.user.userInfo);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getUserInfo());
+  });
 
   return (
     <Wrapper>
