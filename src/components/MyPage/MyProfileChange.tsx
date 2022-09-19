@@ -10,7 +10,7 @@ import { TechStackService } from 'src/services/TechStackService';
 import PrimaryButton from '../Buttons/PrimaryButton';
 import MultiSelectDropdown from '../Dropdowns/MultiSelectDropdown';
 import UniSelectDropdown from '../Dropdowns/UniSelectDropdown';
-import { DEFAULT_IMAGE } from '../Headers/Profile';
+import { defaultProfileImage } from '../Headers/Profile';
 
 const ImageContainer = styled.div`
   margin-bottom: 50px;
@@ -238,7 +238,7 @@ const MyProfileChange = ({ myProfile }: MyProfileProps) => {
     );
 
     image && URL.revokeObjectURL(image);
-    setImage(DEFAULT_IMAGE);
+    setImage(defaultProfileImage);
   };
 
   useEffect(() => {
@@ -257,7 +257,7 @@ const MyProfileChange = ({ myProfile }: MyProfileProps) => {
     <form onSubmit={submitProfile}>
       <ImageContainer>
         <Image
-          src={image || DEFAULT_IMAGE}
+          src={image || defaultProfileImage}
           alt="profile_image"
           width="50px"
           height="50px"

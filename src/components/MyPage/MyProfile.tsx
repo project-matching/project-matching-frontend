@@ -2,7 +2,7 @@ import styled from '@emotion/styled';
 import Image from 'next/image';
 import { UserProfileType } from 'src/redux/reducers/users';
 import { v4 as uuidv4 } from 'uuid';
-import { DEFAULT_IMAGE } from '../Headers/Profile';
+import { defaultProfileImage } from '../Headers/Profile';
 import { decodeSex } from './MyProfileChange';
 
 const ImageContainer = styled.div`
@@ -108,7 +108,7 @@ const MyProfile = ({ myProfile }: MyProfileProps) => {
     <form onSubmit={submitProfile}>
       <ImageContainer>
         <Image
-          src={image || DEFAULT_IMAGE}
+          src={image || defaultProfileImage}
           alt="profile_image"
           width="50px"
           height="50px"

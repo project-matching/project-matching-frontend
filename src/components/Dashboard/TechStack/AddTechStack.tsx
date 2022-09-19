@@ -1,12 +1,10 @@
-import { DEFAULT_IMAGE } from '@/components/Headers/Profile';
 import styled from '@emotion/styled';
 import { solid } from '@fortawesome/fontawesome-svg-core/import.macro';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Image from 'next/image';
-import { useRef, useState } from 'react';
+import defaultProfileImage from 'public/default_profile.png';
+import React, { useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
-
-import React from 'react';
 import { postTechStack } from 'src/redux/reducers/techstacks';
 
 const ImageContainer = styled.div`
@@ -111,7 +109,7 @@ const AddTechStack = () => {
       <InputContainer>
         <ImageContainer>
           <Image
-            src={image || DEFAULT_IMAGE}
+            src={image || defaultProfileImage}
             alt="add_techstack_image"
             width="30px"
             height="30px"

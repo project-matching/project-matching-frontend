@@ -7,9 +7,6 @@ import { signOut } from 'src/redux/reducers/auth';
 import SmallButton from '../Buttons/SmallButton';
 import ImageToggle from './ToggleDropdown/ImageToggle';
 
-// TODO: 후추 저작권 없는 이미지로 변경
-export const DEFAULT_IMAGE: string = '/default_profile.png';
-
 const Dropdown = styled.div`
   position: absolute;
   top: 45px;

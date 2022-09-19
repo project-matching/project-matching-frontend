@@ -1,7 +1,6 @@
 import styled from '@emotion/styled';
 import Image from 'next/image';
-
-export const DEFAULT_IMAGE: string = '/default_profile.png';
+import defaultProfileImage from 'public/default_profile.png';
 
 const ImageContainer = styled.div`
   cursor: pointer;
@@ -25,7 +24,7 @@ const ImageToggle = ({
   return (
     <ImageContainer onClick={toggleDropdown}>
       <Image
-        src={image || DEFAULT_IMAGE}
+        src={image || defaultProfileImage}
         alt={alt}
         width={size}
         height={size}

@@ -1,8 +1,8 @@
 import PrimaryButton from '@/components/Buttons/PrimaryButton';
-import { DEFAULT_IMAGE } from '@/components/Headers/Profile';
 import UserBlockModal from '@/components/Modals/UserBlockModal';
 import styled from '@emotion/styled';
 import Image from 'next/image';
+import defaultProfileImage from 'public/default_profile.png';
 import { useState } from 'react';
 import { UserListType } from 'src/redux/reducers/users';
 import { UserService } from 'src/services/UserService';
@@ -86,7 +86,7 @@ const UserCard = ({ userInfo }: PropType) => {
       <UserContainer>
         <ImageContainer>
           <Image
-            src={image || DEFAULT_IMAGE}
+            src={image || defaultProfileImage}
             alt="user_image"
             width="60px"
             height="60px"
