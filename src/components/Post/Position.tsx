@@ -34,47 +34,58 @@ interface UserDto {
 }
 
 interface PositionList {
-  positionName: string,
-  projectPositionNo: number,
-  userDto: UserDto | null,
+  positionName: string;
+  projectPositionNo: number;
+  userDto: UserDto | null;
 }
 
 interface Props {
-  positionList: PositionList[],
-  projectName: string,
-  isRegister: boolean,
-  isParticipant: boolean,
+  positionList: PositionList[];
+  projectName: string;
+  isRegister: boolean;
+  isParticipant: boolean;
+  isApplicant: boolean;
 }
 
 interface list {
-  [positionName: string]: (UserDto | null)[],
+  [positionName: string]: (UserDto | null)[];
 }
 
-const Position: FC<Props> = ({ positionList, projectName, isRegister, isParticipant}) => {
-  const token = useAppSelector(state => state.auth.token);
-  const isClicked = useAppSelector(state => state.modal.PositionApplyModal);
+const Position: FC<Props> = ({
+  positionList,
+  projectName,
+  isRegister,
+  isParticipant,
+  isApplicant,
+}) => {
+  const token = useAppSelector((state) => state.auth.token);
+  const isClicked = useAppSelector((state) => state.modal.PositionApplyModal);
   const [positions, setPositionList] = useState<list>({});
   const [appliedPosition, setAppliedPosition] = useState<string | null>(null);
-  const [appliedPositionNo, setAppliedPositionNo] = useState<number | null>(null);
+  const [appliedPositionNo, setAppliedPositionNo] = useState<number | null>(
+    null
+  );
   const dispatch = useDispatch();
 
   const openApplyModal = (applyPosition: string) => {
-    if (!token) return dispatch(openModal("AuthModal"));
+    if (!token) return dispatch(openModal('AuthModal'));
 
-    const position = positionList?.filter(position => position.positionName === applyPosition);
+    const position = positionList?.filter(
+      (position) => position.positionName === applyPosition
+    );
 
     dispatch(openModal('PositionApplyModal'));
     setAppliedPosition(applyPosition);
-    setAppliedPositionNo(position[0].projectPositionNo)
+    setAppliedPositionNo(position[0].projectPositionNo);
   };
 
   useEffect(() => {
     const filteredPosition: list = {};
 
     positionList?.forEach((position) => {
-      filteredPosition[position.positionName] ?
-      filteredPosition[position.positionName].push(position.userDto) :
-      filteredPosition[position.positionName] = [position.userDto];
+      filteredPosition[position.positionName]
+        ? filteredPosition[position.positionName].push(position.userDto)
+        : (filteredPosition[position.positionName] = [position.userDto]);
     });
 
     setPositionList(filteredPosition);
@@ -85,23 +96,40 @@ const Position: FC<Props> = ({ positionList, projectName, isRegister, isParticip
       <PositionContainer>
         {Object.keys(positions).map((positionName) => {
           const totalApplicants = positions[positionName].length;
-          const currentApplicants = positions[positionName].filter(userDto => userDto).length;
+          const currentApplicants = positions[positionName].filter(
+            (userDto) => userDto
+          ).length;
           const state = currentApplicants === totalApplicants;
 
           return (
             <PositionItem key={positionName}>
               <div>{positionName}</div>
-              <div>{currentApplicants} / {totalApplicants}</div>
-              {!isParticipant && !isRegister && <ApplyButton disabled={state} onClick={() => {openApplyModal(positionName)}}>{state ? "Done" : "Apply"}</ApplyButton>}
+              <div>
+                {currentApplicants} / {totalApplicants}
+              </div>
+              {!isParticipant && !isRegister && (
+                <ApplyButton
+                  disabled={state}
+                  onClick={() => {
+                    openApplyModal(positionName);
+                  }}
+                >
+                  {state || isApplicant ? 'Done' : 'Apply'}
+                </ApplyButton>
+              )}
             </PositionItem>
-          )
+          );
         })}
       </PositionContainer>
-      {isClicked && 
-        (<Backdrop>
-          <PositionApplyModal projectName={projectName} position={appliedPosition} positionNo={appliedPositionNo} />
-        </Backdrop>)
-      }
+      {isClicked && (
+        <Backdrop>
+          <PositionApplyModal
+            projectName={projectName}
+            position={appliedPosition}
+            positionNo={appliedPositionNo}
+          />
+        </Backdrop>
+      )}
     </>
   );
 };

@@ -165,6 +165,7 @@ const ProjectDetail = ({ project, comment }: Props) => {
   const { userInfo, userProfile } = useAppSelector((state) => state.user);
   const [projectData, setProjectData] = useState<data>(project);
   const [isParticipant, setIsParticipant] = useState<boolean>(false);
+  const [isApplicant, setIsApplicant] = useState<boolean>(false);
   const [isRegister, setIsRegister] = useState<boolean>(false);
   const [comments, setComments] = useState<comment[]>(comment);
   const router = useRouter();
@@ -187,6 +188,16 @@ const ProjectDetail = ({ project, comment }: Props) => {
     });
   }, [userInfo]);
 
+  useEffect(() => {
+    token &&
+      (async () => {
+        const { applicationStatus } = await ProjectService.getProjectDetail(
+          projectData.projectNo
+        );
+        setIsApplicant(applicationStatus);
+      })();
+  }, [token]);
+
   return (
     <PrimaryLayout>
       <Title title={projectData?.name} />
@@ -200,6 +211,7 @@ const ProjectDetail = ({ project, comment }: Props) => {
               projectName={projectData?.name}
               isRegister={isRegister}
               isParticipant={isParticipant}
+              isApplicant={isApplicant}
             />
             <Title title="Introduction" sm />
             <Introduction>{projectData?.introduction}</Introduction>
