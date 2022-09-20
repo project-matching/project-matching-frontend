@@ -23,17 +23,17 @@ const Nav = styled.nav`
   margin-left: 30px;
 `;
 
+const HeaderContainer = styled.header`
+  display: flex;
+  height: 55px;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  user-select: none;
+`;
+
 const Header: React.FC = () => {
   const router = useRouter();
-
-  const Header = styled.header`
-    display: flex;
-    height: 55px;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    user-select: none;
-  `;
 
   const A = styled.a`
     margin: 10px;
@@ -54,7 +54,12 @@ const Header: React.FC = () => {
   const dispatch = useDispatch();
 
   const openRecruitModal = () => {
-    dispatch(openModal('RecruitModal'));
+    if (!token) {
+      dispatch(openModal('AuthModal'));
+      return;
+    }
+
+    router.push('/project/upload');
   };
 
   const openAuthModal = () => {
@@ -64,7 +69,7 @@ const Header: React.FC = () => {
   return (
     <>
       <Wrapper>
-        <Header>
+        <HeaderContainer>
           <Flex>
             <Logo />
             <Nav>
@@ -98,7 +103,7 @@ const Header: React.FC = () => {
               <PrimaryButton onClick={openAuthModal}>Log In</PrimaryButton>
             )}
           </Flex>
-        </Header>
+        </HeaderContainer>
       </Wrapper>
 
       {authModal && <AuthModal />}
