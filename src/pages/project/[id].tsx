@@ -231,7 +231,7 @@ const ProjectDetail = ({ project, comment }: Props) => {
                   <CommentBox>
                     <h3>{comment.registrant}</h3>
                     <Comment
-                      contentNo={comment.content}
+                      contentNo={comment.commentNo}
                       content={comment.content}
                       isRegistrant={isRegistrant}
                     />

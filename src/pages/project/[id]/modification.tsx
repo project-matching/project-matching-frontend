@@ -70,7 +70,7 @@ const Side = styled.div`
     padding: 5px;
     cursor: pointer;
     &:hover {
-    background-color: gray;
+      background-color: gray;
     }
   }
 `;
@@ -111,7 +111,7 @@ const ButtonRows = styled.div`
     cursor: pointer;
     width: 100%;
     &:hover {
-    background-color: gray;
+      background-color: gray;
     }
   }
 `;
@@ -134,32 +134,32 @@ const MainTitle = styled.div`
 `;
 
 interface addPosition {
-  count: number,
-  positionNumber: number,
+  count: number;
+  positionNumber: number;
 }
 
 interface userDto {
-  name: string,
-  no: number,
-  register: boolean
+  name: string;
+  no: number;
+  register: boolean;
 }
 
 interface position {
-  projectpositionNo: number,
-  positionName: string,
-  userDto: userDto | null
+  projectpositionNo: number;
+  positionName: string;
+  userDto: userDto | null;
 }
 
 interface filteredPosition {
-  positionNo: number,
-  positionName: string,
-  count: number,
+  positionNo: number;
+  positionName: string;
+  count: number;
 }
 
 interface techStack {
-  technicalStackNo: number,
-  technicalStackName: string,
-  image: null | string,
+  technicalStackNo: number;
+  technicalStackName: string;
+  image: null | string;
 }
 
 interface project extends data {
@@ -167,17 +167,19 @@ interface project extends data {
 }
 
 interface Props {
-  project: project,
+  project: project;
 }
 
 const ProjectModification = ({ project }: Props) => {
   const [projectTitle, setProjectTitle] = useState<string>(project.name);
   const [positions, setPositions] = useState<filteredPosition[]>([]);
-  const [startDate, setStartDate] = useState(moment().format("YYYY-MM-DD"));
-  const [endDate, setEndDate] = useState(moment().format("YYYY-MM-DD"));
-  const [introduction, setIntroduction] = useState<string>("");
+  const [startDate, setStartDate] = useState(moment().format('YYYY-MM-DD'));
+  const [endDate, setEndDate] = useState(moment().format('YYYY-MM-DD'));
+  const [introduction, setIntroduction] = useState<string>('');
   const [teckStacks, setTechStacks] = useState<techStack[]>([]);
-  const [curSelectedTech, setCurSelectedTech] = useState<string>(teckStacks[0]?.technicalStackName);
+  const [curSelectedTech, setCurSelectedTech] = useState<string>(
+    teckStacks[0]?.technicalStackName
+  );
   const [selectedTechList, setSelectedTechList] = useState<techStack[]>([]);
   const router = useRouter();
   const { id } = router.query;
@@ -186,22 +188,28 @@ const ProjectModification = ({ project }: Props) => {
     setProjectTitle(e.target.value);
   };
 
-  const handlePositions = (e: React.BaseSyntheticEvent, selectedPosition: string) => {
+  const handlePositions = (
+    e: React.BaseSyntheticEvent,
+    selectedPosition: string
+  ) => {
     const target = e.target.id;
 
-    if (target === "minus") {
-      setPositions(prev => {
+    if (target === 'minus') {
+      setPositions((prev) => {
         return prev.map((position: filteredPosition) => {
-          if (position.positionName === selectedPosition && position.count > 0) {
-            position.count--; 
+          if (
+            position.positionName === selectedPosition &&
+            position.count > 0
+          ) {
+            position.count--;
           }
           return position;
         });
       });
     }
 
-    if (target === "plus") {
-      setPositions(prev => {
+    if (target === 'plus') {
+      setPositions((prev) => {
         return prev.map((position: filteredPosition) => {
           if (position.positionName === selectedPosition) {
             position.count++;
@@ -216,14 +224,14 @@ const ProjectModification = ({ project }: Props) => {
     const date = e.target.value;
     const id = e.target.id;
 
-    if (id === "startDate") {
+    if (id === 'startDate') {
       setStartDate(date);
     }
-    
-    if (id === "endDate") {
+
+    if (id === 'endDate') {
       setEndDate(date);
     }
-  }
+  };
 
   const handleIntroduction = (e: ChangeEvent<HTMLTextAreaElement>) => {
     setIntroduction(e.target.value);
@@ -231,7 +239,9 @@ const ProjectModification = ({ project }: Props) => {
 
   const handleTech = (e: ChangeEvent<HTMLSelectElement>) => {
     const selectedTechStackName = e.target.value;
-    const selectedTechStack = teckStacks.find(techStack => techStack.technicalStackName === selectedTechStackName) as techStack;
+    const selectedTechStack = teckStacks.find(
+      (techStack) => techStack.technicalStackName === selectedTechStackName
+    ) as techStack;
 
     setCurSelectedTech(selectedTechStackName);
 
@@ -249,9 +259,9 @@ const ProjectModification = ({ project }: Props) => {
   const handleButtons = (e: React.BaseSyntheticEvent) => {
     const target = e.target.id;
 
-    if (target === "modification") {
+    if (target === 'modification') {
       const projectPositionAddDtoList: addPosition[] = [];
-      const projectPositionDeleteDtoList: {projectPositionNo: number}[] = [];
+      const projectPositionDeleteDtoList: { projectPositionNo: number }[] = [];
       const projectTechnicalStackNoList: number[] = [];
 
       positions.forEach((position: filteredPosition) => {
@@ -260,14 +270,25 @@ const ProjectModification = ({ project }: Props) => {
         if (origin) {
           const count = position.count - origin.length;
 
-          count > 0 && projectPositionAddDtoList.push({positionNumber: position.positionNo, count});
-          count < 0 && projectPositionDeleteDtoList.push({projectPositionNo: position.positionNo});
+          count > 0 &&
+            projectPositionAddDtoList.push({
+              positionNumber: position.positionNo,
+              count,
+            });
+          count < 0 &&
+            projectPositionDeleteDtoList.push({
+              projectPositionNo: position.positionNo,
+            });
         } else {
-          position.count > 0 && projectPositionAddDtoList.push({positionNumber: position.positionNo, count: position.count});
+          position.count > 0 &&
+            projectPositionAddDtoList.push({
+              positionNumber: position.positionNo,
+              count: position.count,
+            });
         }
       });
 
-      selectedTechList.forEach(tech => {
+      selectedTechList.forEach((tech) => {
         projectTechnicalStackNoList.push(tech.technicalStackNo);
       });
 
@@ -278,24 +299,28 @@ const ProjectModification = ({ project }: Props) => {
         startDate,
         projectPositionAddDtoList,
         projectPositionDeleteDtoList,
-        projectTechnicalStackNoList
+        projectTechnicalStackNoList,
       };
 
       (async () => {
-        const response = await ProjectService.modifyProject(id as string, modifiedProject);
+        const response = await ProjectService.modifyProject(
+          id as string,
+          modifiedProject
+        );
         // 500 error
       })();
     }
-
-    
-  }
+  };
 
   useEffect(() => {
-    (async() => {
+    (async () => {
       const techStack = await TechStackService.getTechStacks();
-      let positions: PositionType[] | filteredPosition[] = await PositionService.getPositions();
+      let positions: PositionType[] | filteredPosition[] =
+        await PositionService.getPositions();
       positions = positions.map((position: any) => {
-        position["count"] = project.positions[position.positionName] ? project.positions[position.positionName].length : 0;
+        position['count'] = project.positions[position.positionName]
+          ? project.positions[position.positionName].length
+          : 0;
 
         return position;
       });
@@ -303,7 +328,6 @@ const ProjectModification = ({ project }: Props) => {
       setTechStacks(techStack);
       setPositions(positions as filteredPosition[]);
     })();
-
   }, []);
 
   return (
@@ -318,20 +342,24 @@ const ProjectModification = ({ project }: Props) => {
         <Left>
           <Main>
             <Title title="Positions" sm />
-              {positions.map((position: filteredPosition) => {
-                  return (
-                    <>
-                      <PositionDetail key={position.positionNo}>
-                        <span>{position.positionName}</span>
-                        <div onClick={(e) => {handlePositions(e, position.positionName)}}>
-                          <span id="minus">-</span>
-                          <span>{position.count}</span>
-                          <span id="plus">+</span>
-                        </div>
-                      </PositionDetail>
-                    </>
-                  )
-                })}
+            {positions.map((position: filteredPosition) => {
+              return (
+                <>
+                  <PositionDetail key={position.positionNo}>
+                    <span>{position.positionName}</span>
+                    <div
+                      onClick={(e) => {
+                        handlePositions(e, position.positionName);
+                      }}
+                    >
+                      <span id="minus">-</span>
+                      <span>{position.count}</span>
+                      <span id="plus">+</span>
+                    </div>
+                  </PositionDetail>
+                </>
+              );
+            })}
             <Title title="Period" sm />
             <div>
               <input
@@ -339,7 +367,7 @@ const ProjectModification = ({ project }: Props) => {
                 type="date"
                 value={startDate}
                 onChange={handleDate}
-                min={moment().format("YYYY-MM-DD")}
+                min={moment().format('YYYY-MM-DD')}
                 max={endDate}
               />
               <span> ~ </span>
@@ -353,76 +381,85 @@ const ProjectModification = ({ project }: Props) => {
             </div>
             <Title title="Tech Stack" sm />
             <select onChange={handleTech} value={curSelectedTech}>
-            <option value={"선택해 주세요"} key={"init"}>
-              선택해주세요
-            </option>
-            {teckStacks.map((techStack) => (
-              <option value={techStack.technicalStackName} key={techStack.technicalStackNo}>
-                {techStack.technicalStackName}
+              <option value={'선택해 주세요'} key={'init'}>
+                선택해주세요
               </option>
-            ))}
-          </select>
-          <div>
-            {selectedTechList.map((tech) => (
-              <span key={tech.technicalStackNo} style={{ marginRight: '10px' }}>
-                {tech.technicalStackName}
-              </span>
-            ))}
-          </div>
+              {teckStacks.map((techStack) => (
+                <option
+                  value={techStack.technicalStackName}
+                  key={techStack.technicalStackNo}
+                >
+                  {techStack.technicalStackName}
+                </option>
+              ))}
+            </select>
+            <div>
+              {selectedTechList.map((tech) => (
+                <span
+                  key={tech.technicalStackNo}
+                  style={{ marginRight: '10px' }}
+                >
+                  {tech.technicalStackName}
+                </span>
+              ))}
+            </div>
             <Title title="Introduction" sm />
-            <Introduction value={introduction} onChange={handleIntroduction}/>
+            <Introduction value={introduction} onChange={handleIntroduction} />
           </Main>
         </Left>
         <Side>
-          <Title title="Project Detail" sm/>
-            <MemberRow>
-              <h1>Current Members</h1>
-              {project.projectPositionDetailDtoList.map(member => {
-                if (!member.userDto) return null;
+          <Title title="Project Detail" sm />
+          <MemberRow>
+            <h1>Current Members</h1>
+            {project.projectPositionDetailDtoList.map((member) => {
+              if (!member.userDto) return null;
 
-                return (
-                  <MemberDetail key={member.userDto.name}>
-                    <span>{member.positionName}</span>
-                    <span>{member.userDto.name} </span>
-                  </MemberDetail>
-                )
-              })}
-            </MemberRow>
-            <ButtonRows onClick={handleButtons}>
-              <button id="modification">수정하기</button>
-              <button id="delete">삭제하기</button>
-            </ButtonRows>
+              return (
+                <MemberDetail key={member.userDto.name}>
+                  <span>{member.positionName}</span>
+                  <span>{member.userDto.name} </span>
+                </MemberDetail>
+              );
+            })}
+          </MemberRow>
+          <ButtonRows onClick={handleButtons}>
+            <button id="modification">수정하기</button>
+            <button id="delete">삭제하기</button>
+          </ButtonRows>
         </Side>
       </Wrapper>
     </PrimaryLayout>
-  )
-}
+  );
+};
 
 interface positions {
-  [index: string]: Array<userDto>
+  [index: string]: Array<userDto>;
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const projectNo = context.query.id as string;
+  const projectNo = +(context.query.id || '');
   const projectData = await ProjectService.getProjectDetail(projectNo);
   const positions: positions = {};
 
-  projectData.data.projectPositionDetailDtoList.forEach((position: position) => {
-    if (positions[position.positionName]) {
-      position.userDto && positions[position.positionName].push(position.userDto as userDto)
-    } else {
-      position.userDto ?
-      positions[position.positionName] = [position.userDto as userDto] :
-      positions[position.positionName] = [];
+  projectData.data.projectPositionDetailDtoList.forEach(
+    (position: position) => {
+      if (positions[position.positionName]) {
+        position.userDto &&
+          positions[position.positionName].push(position.userDto as userDto);
+      } else {
+        position.userDto
+          ? (positions[position.positionName] = [position.userDto as userDto])
+          : (positions[position.positionName] = []);
+      }
     }
-  });
+  );
 
-  projectData.data["positions"] = positions;
+  projectData.data['positions'] = positions;
   return {
     props: {
       project: projectData.data,
-    }
-  }
-}
+    },
+  };
+};
 
 export default ProjectModification;
