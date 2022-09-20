@@ -44,40 +44,40 @@ interface ApplyRequestType {
 }
 
 interface dto {
-  userNo: number | null,
+  userNo: number | null;
 }
 
 interface positionDto {
-  positionNo: number,
-  projectRegisterUserDto: dto | null,
+  positionNo: number;
+  projectRegisterUserDto: dto | null;
 }
 
 interface RegisterProjectData {
-  startDate: string,
-  endDate: string,
-  introduction: string,
-  name: string,
-  projectPositionRegisterDtoList: (positionDto | null)[],
-  projectTechnicalStackList: number[],
+  startDate: string;
+  endDate: string;
+  introduction: string;
+  name: string;
+  projectPositionRegisterDtoList: (positionDto | null)[];
+  projectTechnicalStackList: number[];
 }
 
 interface projectParticipateRefusalRequestDto {
-  reason: string,
+  reason: string;
 }
 
 interface addPosition {
-  count: number,
-  positionNumber: number,
+  count: number;
+  positionNumber: number;
 }
 
 interface modifiedProject {
-  endDate: string,
-  introduction: string,
-  name: string,
-  projectPositionAddDtoList: addPosition[],
-  projectPositionDeleteDtoList: {projectPositionNo: number}[],
-  projectTechnicalStackNoList: number[],
-  startDate: string
+  endDate: string;
+  introduction: string;
+  name: string;
+  projectPositionAddDtoList: addPosition[];
+  projectPositionDeleteDtoList: { projectPositionNo: number }[];
+  projectTechnicalStackNoList: number[];
+  startDate: string;
 }
 
 export class ProjectService {
@@ -213,14 +213,16 @@ export class ProjectService {
     return response;
   }
 
-  public static async getProjectDetail(projectNo: string) {
+  public static async getProjectDetail(projectNo: number) {
     const response = await appApi.get(`/project/${projectNo}`);
 
     return response.data;
   }
 
-  public static async registerProject(projectRegisterRequestDto: RegisterProjectData) {
-    const response = await appApi.post("/project", projectRegisterRequestDto);
+  public static async registerProject(
+    projectRegisterRequestDto: RegisterProjectData
+  ) {
+    const response = await appApi.post('/project', projectRegisterRequestDto);
 
     return response;
   }
@@ -232,19 +234,33 @@ export class ProjectService {
   }
 
   public static async allowProjectApplicant(projectParticipateNo: number) {
-    const response = await appApi.post(`/participate/${projectParticipateNo}/permit`);
+    const response = await appApi.post(
+      `/participate/${projectParticipateNo}/permit`
+    );
 
     return response.data;
   }
 
-  public static async rejectProjectApplicant(projectParticipateNo: number, reqData: projectParticipateRefusalRequestDto) {
-    const response = await appApi.post(`/participate/${projectParticipateNo}/refusal`, reqData);
+  public static async rejectProjectApplicant(
+    projectParticipateNo: number,
+    reqData: projectParticipateRefusalRequestDto
+  ) {
+    const response = await appApi.post(
+      `/participate/${projectParticipateNo}/refusal`,
+      reqData
+    );
 
     return response.data;
   }
 
-  public static async modifyProject(projectNo: string, projectUpdateRequestDto: modifiedProject) {
-    const response = await appApi.patch(`/project/${projectNo}`, projectUpdateRequestDto);
+  public static async modifyProject(
+    projectNo: string,
+    projectUpdateRequestDto: modifiedProject
+  ) {
+    const response = await appApi.patch(
+      `/project/${projectNo}`,
+      projectUpdateRequestDto
+    );
 
     return response.data;
   }
