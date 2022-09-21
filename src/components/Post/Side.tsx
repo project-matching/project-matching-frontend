@@ -235,6 +235,11 @@ const Side: FC<Props> = ({ data, isRegister, isParticipant }) => {
       dispatch(openModal("RejectModal"));
     }
   }
+
+  const clickBanishmentBtn = () => {
+    dispatch(openModal("RejectModal"));
+    // rejectModal에서 상황ㅇ에 맞게 나누면 됨
+  }
 // 추방 버튼 활성화
   return (
     <Wrapper>
@@ -252,7 +257,9 @@ const Side: FC<Props> = ({ data, isRegister, isParticipant }) => {
               <span>{member.positionName}</span>
               <span>{member.userDto.name} </span>
               {member.userDto.register && <span className="leader">(Leader)</span>}
-              {isRegister && !member.userDto.register && <button>추방</button>}
+              {isRegister && !member.userDto.register && <button onClick={clickBanishmentBtn}>추방</button>}
+              {rejectModal && 
+                    <RejectModal title="프로젝트 추방" participateNo={member.userDto.no}/> }
             </MemberDetail>
           )
         })}
@@ -284,6 +291,7 @@ const Side: FC<Props> = ({ data, isRegister, isParticipant }) => {
           <ManagingPage>
             <header onClick={() => {setOnModal(false)}}>X</header>
             {applicants.map(applicant => {
+              console.log(applicant.projectParticipateNo);
               return(
                 <>
                   <ApplicantBox key={applicant.projectParticipateNo}>
