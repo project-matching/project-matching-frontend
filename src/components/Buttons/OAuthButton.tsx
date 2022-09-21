@@ -1,4 +1,7 @@
 import styled from '@emotion/styled';
+import Image from 'next/image';
+import githubLogo from 'public/github_logo.png';
+import googleLogo from 'public/google_logo.png';
 import React from 'react';
 
 const Container = styled.div`
@@ -16,18 +19,13 @@ const Container = styled.div`
   }
 `;
 
-const LogoImg = styled.img`
-  width: 18px;
-  height: 18px;
-  margin-right: 24px;
-`;
-
 const Text = styled.div`
   font-size: ${(props) => props.theme.sizes.m};
   color: #888;
   font-weight: bold;
   font-family: Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue',
     sans-serif;
+  margin-left: 24px;
 `;
 
 interface OAuthButtonType {
@@ -43,9 +41,11 @@ const OAuthButton = ({
 }: OAuthButtonType) => {
   return (
     <Container onClick={onClick}>
-      <LogoImg
-        src={`/${serviceProvider}_logo.png`}
-        alt={`${serviceProvider}_logo`}
+      <Image
+        src={serviceProvider === 'google' ? googleLogo : githubLogo}
+        alt={serviceProvider === 'google' ? 'google_logo' : 'github_logo'}
+        width="18px"
+        height="18px"
       />
       <Text>{content}</Text>
     </Container>

@@ -3,12 +3,12 @@ import { regular, solid } from '@fortawesome/fontawesome-svg-core/import.macro';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
+import defaultProfileImage from 'public/default_profile.png';
 import { useEffect, useRef } from 'react';
 import useBookmark from 'src/hooks/useBookmark';
 import { useAppSelector } from 'src/redux/hooks';
 import { ProjectType } from 'src/services/ProjectService';
 import { v4 as uuidv4 } from 'uuid';
-import { DEFAULT_IMAGE } from '../Headers/Profile';
 
 const CardContainer = styled.div`
   margin: 10px 0;
@@ -206,7 +206,7 @@ const SmallCard = ({ projectDto, update = false }: SmallCardProps) => {
               {projectSimpleTechnicalStackDtoList?.map((techStackDto) => (
                 <div key={uuidv4()}>
                   <Image
-                    src={techStackDto.image || DEFAULT_IMAGE}
+                    src={techStackDto.image || defaultProfileImage}
                     alt={techStackDto.technicalStackName}
                     width="30px"
                     height="30px"

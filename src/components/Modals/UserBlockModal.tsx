@@ -1,10 +1,10 @@
 import styled from '@emotion/styled';
 import Image from 'next/image';
+import defaultProfileImage from 'public/default_profile.png';
 import { Dispatch, SetStateAction, useState } from 'react';
 import { UserService } from 'src/services/UserService';
 import PrimaryButton from '../Buttons/PrimaryButton';
 import SecondaryButton from '../Buttons/SecondaryButton';
-import { DEFAULT_IMAGE } from '../Headers/ToggleDropdown/ImageToggle';
 import LocalModalLayout from './LocalModalLayout';
 
 const Title = styled.div`
@@ -85,7 +85,7 @@ const UserBlockModal = ({
         <Title>유저 차단</Title>
         <UserInfo>
           <Image
-            src={image || DEFAULT_IMAGE}
+            src={image || defaultProfileImage}
             alt={`${name}-profile`}
             width="40px"
             height="40px"
