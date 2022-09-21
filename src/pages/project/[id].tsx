@@ -191,10 +191,10 @@ const ProjectDetail = ({ project, comment }: Props) => {
   useEffect(() => {
     token &&
       (async () => {
-        const { applicationStatus } = await ProjectService.getProjectDetail(
+        const data = await ProjectService.getProjectDetail(
           projectData.projectNo
         );
-        setIsApplicant(applicationStatus);
+        setIsApplicant(data.data.applicationStatus);
       })();
   }, [token]);
 
