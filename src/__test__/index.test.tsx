@@ -5,7 +5,6 @@ import { login } from 'mocks/handlers';
 import { server } from 'mocks/server';
 import { act } from 'react-dom/test-utils';
 import Header from 'src/components/Common/Header';
-import Home from 'src/pages/index';
 import { fireEvent, render, screen } from './test-utils';
 
 describe('Header and navigations', () => {
@@ -26,8 +25,8 @@ describe('Header and navigations', () => {
   });
 
   it('renders header buttons', async () => {
-    expect(screen.getByText('Recruit')).toBeInTheDocument();
-    expect(screen.getByText('Log In')).toBeInTheDocument();
+    expect(screen.getByText('새 프로젝트')).toBeInTheDocument();
+    expect(screen.getByText('로그인')).toBeInTheDocument();
   });
 
   it('navigates to Recruiting page when "Recruiting" is clicked', () => {
@@ -46,9 +45,9 @@ describe('Header and navigations', () => {
 
 describe('Login modal', () => {
   beforeEach(() => {
-    render(<Home />);
+    render(<Header />);
     act(() => {
-      screen.getByText('Log In').click();
+      screen.getAllByText('로그인')[0].click();
     });
   });
 
@@ -56,7 +55,9 @@ describe('Login modal', () => {
     expect(screen.getByPlaceholderText('Email')).toBeInTheDocument();
     expect(screen.getByPlaceholderText('Password')).toBeInTheDocument();
 
-    expect(screen.getByRole('button', { name: '로그인' })).toBeInTheDocument();
+    expect(
+      screen.getAllByRole('button', { name: '로그인' })[1]
+    ).toBeInTheDocument();
 
     expect(screen.getByText('OR')).toBeInTheDocument();
 
@@ -81,13 +82,15 @@ describe('Login modal', () => {
     expect(screen.getByText('계정이 있나요?')).toBeInTheDocument();
 
     act(() => {
-      fireEvent.click(screen.getByText('로그인'));
+      fireEvent.click(screen.getAllByText('로그인')[1]);
     });
 
     expect(screen.getByPlaceholderText('Email')).toBeInTheDocument();
     expect(screen.getByPlaceholderText('Password')).toBeInTheDocument();
 
-    expect(screen.getByRole('button', { name: '로그인' })).toBeInTheDocument();
+    expect(
+      screen.getAllByRole('button', { name: '로그인' })[1]
+    ).toBeInTheDocument();
 
     expect(screen.getByText('OR')).toBeInTheDocument();
 

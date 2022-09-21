@@ -11,7 +11,7 @@ import Profile from '../Headers/Profile';
 import AuthModal from '../Modals/AuthModal';
 import SignupEmailSentModal from '../Modals/SignupEmailSentModal';
 import HeaderSearchBar from '../SearchBar/HeaderSearchBar';
-import Logo from './Logo';
+import LogoLink from './LogoLink';
 
 export const Flex = styled.div`
   display: flex;
@@ -71,7 +71,7 @@ const Header: React.FC = () => {
       <Wrapper>
         <HeaderContainer>
           <Flex>
-            <Logo />
+            <LogoLink />
             <Nav>
               <Link href="/" passHref>
                 <A>Home</A>
@@ -92,7 +92,9 @@ const Header: React.FC = () => {
           <Flex>
             {router.asPath !== '/' && <HeaderSearchBar />}
             {role !== 'ROLE_ADMIN' && (
-              <PrimaryButton onClick={openRecruitModal}>Recruit</PrimaryButton>
+              <PrimaryButton onClick={openRecruitModal}>
+                새 프로젝트
+              </PrimaryButton>
             )}
             {token ? (
               <>
@@ -100,7 +102,7 @@ const Header: React.FC = () => {
                 <Profile />
               </>
             ) : (
-              <PrimaryButton onClick={openAuthModal}>Log In</PrimaryButton>
+              <PrimaryButton onClick={openAuthModal}>로그인</PrimaryButton>
             )}
           </Flex>
         </HeaderContainer>
