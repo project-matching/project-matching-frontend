@@ -1,4 +1,5 @@
 import Title from '@/components/auth/Title';
+import CommentInput from '@/components/Inputs/CommentInput';
 import PrimaryLayout from '@/components/Layouts/PrimaryLayout';
 import Position from '@/components/Post/Position';
 import Side from '@/components/Post/Side';
@@ -65,64 +66,60 @@ const CommentBox = styled.article`
     display: flex;
     justify-content: flex-end;
   }
-`
+`;
 
 const fakeData = {
-  "applicationStatus": true,
-  "bookmark": true,
-  "currentPeople": 3,
-  "endDate": "22-09-02",
-  "introduction": "와인을 추천",
-  "maxPeople": 5,
-  "name": "와인 추천 웹 사이트",
-  "projectNo": 0,
-  "projectPositionDetailDtoList": [
+  applicationStatus: true,
+  bookmark: true,
+  currentPeople: 3,
+  endDate: '22-09-02',
+  introduction: '와인을 추천',
+  maxPeople: 5,
+  name: '와인 추천 웹 사이트',
+  projectNo: 0,
+  projectPositionDetailDtoList: [
     {
-      "positionName": "PM",
-      "projectPositionNo": 0,
-      "userDto": {
-        "name": "steve",
-        "no": 0,
-        "register": false,
-      }
-    },
-    {
-      "positionName": "Designer",
-      "projectPositionNo": 1,
-      "userDto": {
-        "name": "chong",
-        "no": 1,
-        "register": true,
-      }
-    },
-    {
-      "positionName": "FE",
-      "projectPositionNo": 3,
-      "userDto": null,
-    },
-    {
-      "positionName": "FE",
-      "projectPositionNo": 3,
-      "userDto": {
-        "name": "waz",
-        "no": 2,
-        "register": false
+      positionName: 'PM',
+      projectPositionNo: 0,
+      userDto: {
+        name: 'steve',
+        no: 0,
+        register: false,
       },
     },
     {
-      "positionName": "BE",
-      "projectPositionNo": 4,
-      "userDto": null,
-    }
+      positionName: 'Designer',
+      projectPositionNo: 1,
+      userDto: {
+        name: 'chong',
+        no: 1,
+        register: true,
+      },
+    },
+    {
+      positionName: 'FE',
+      projectPositionNo: 3,
+      userDto: null,
+    },
+    {
+      positionName: 'FE',
+      projectPositionNo: 3,
+      userDto: {
+        name: 'waz',
+        no: 2,
+        register: false,
+      },
+    },
+    {
+      positionName: 'BE',
+      projectPositionNo: 4,
+      userDto: null,
+    },
   ],
-  "startDate": "22-08-21",
-  "state": true,
-  "technicalStackList": [
-    "typescript",
-    "next.js",
-    "redux"
-  ]
-}
+  startDate: '22-08-21',
+  state: true,
+  technicalStackList: ['typescript', 'next.js', 'redux'],
+};
 interface userDto {
   name: string;
   no: number;
@@ -130,9 +127,9 @@ interface userDto {
 }
 
 interface positionList {
-  positionName: string,
-  projectPositionNo: number,
-  userDto: userDto | null
+  positionName: string;
+  projectPositionNo: number;
+  userDto: userDto | null;
 }
 
 export interface data {
@@ -144,40 +141,43 @@ export interface data {
   maxPeople: number;
   name: string;
   projectNo: number;
-  projectPositionDetailDtoList: positionList[],
-  startDate: string,
-  state: boolean,
-  technicalStackList: string[]
+  projectPositionDetailDtoList: positionList[];
+  startDate: string;
+  state: boolean;
+  technicalStackList: string[];
 }
 
 interface comment {
-  commentNo: number,
-  content: string,
-  createDate: string
-  registrant: string,
-  userNo: number,
+  commentNo: number;
+  content: string;
+  createDate: string;
+  registrant: string;
+  userNo: number;
 }
 
 interface Props {
-  project: data,
-  comment: comment[],
+  project: data;
+  comment: comment[];
 }
 
-const ProjectDetail = ({ project, comment } : Props) => {
-  const token = useAppSelector(state => state.auth.token);
-  const { userInfo, userProfile, } = useAppSelector(state => state.user);
+const ProjectDetail = ({ project, comment }: Props) => {
+  const token = useAppSelector((state) => state.auth.token);
+  const { userInfo, userProfile } = useAppSelector((state) => state.user);
   const [projectData, setProjectData] = useState<data>(project);
   const [isParticipant, setIsParticipant] = useState<boolean>(false);
+  const [isApplicant, setIsApplicant] = useState<boolean>(false);
   const [isRegister, setIsRegister] = useState<boolean>(false);
   const [comments, setComments] = useState<comment[]>(comment);
   const router = useRouter();
 
   useEffect(() => {
     const positionDetailList = projectData.projectPositionDetailDtoList;
-    const Participants: (number | null | undefined)[] = positionDetailList.map(position => position.userDto?.no);
+    const Participants: (number | null | undefined)[] = positionDetailList.map(
+      (position) => position.userDto?.no
+    );
 
     setIsParticipant(Participants?.includes(userInfo.no));
-    positionDetailList.forEach(position => {
+    positionDetailList.forEach((position) => {
       const userDto = position.userDto;
 
       if (userDto?.no === userInfo.no) {
@@ -188,6 +188,16 @@ const ProjectDetail = ({ project, comment } : Props) => {
     });
   }, [userInfo]);
 
+  useEffect(() => {
+    token &&
+      (async () => {
+        const { applicationStatus } = await ProjectService.getProjectDetail(
+          projectData.projectNo
+        );
+        setIsApplicant(applicationStatus);
+      })();
+  }, [token]);
+
   return (
     <PrimaryLayout>
       <Title title={projectData?.name} />
@@ -196,12 +206,22 @@ const ProjectDetail = ({ project, comment } : Props) => {
         <Left>
           <Main>
             <Title title="Positions" sm />
-            <Position positionList={projectData?.projectPositionDetailDtoList} projectName={projectData?.name} isRegister={isRegister} isParticipant={isParticipant} />
+            <Position
+              positionList={projectData?.projectPositionDetailDtoList}
+              projectName={projectData?.name}
+              isRegister={isRegister}
+              isParticipant={isParticipant}
+              isApplicant={isApplicant}
+            />
             <Title title="Introduction" sm />
             <Introduction>{projectData?.introduction}</Introduction>
           </Main>
           <CommentSection>
-            <Title title={`Comments (${comments.length})`}/>
+            <Title title={`Comments (${comments.length})`} />
+            <CommentInput
+              projectNo={projectData.projectNo}
+              setComments={setComments}
+            />
             {comments?.map((comment: comment) => {
               const date = comment.createDate;
               const isRegistrant = userInfo.no === comment.userNo;
@@ -210,31 +230,41 @@ const ProjectDetail = ({ project, comment } : Props) => {
                 <>
                   <CommentBox>
                     <h3>{comment.registrant}</h3>
-                    <Comment contentNo={comment.content} content={comment.content} isRegistrant={isRegistrant} />
-                    <footer>{date.substring(0, date.indexOf("T"))}</footer>
+                    <Comment
+                      contentNo={comment.commentNo}
+                      content={comment.content}
+                      isRegistrant={isRegistrant}
+                    />
+                    <footer>{date.substring(0, date.indexOf('T'))}</footer>
                   </CommentBox>
                 </>
-              )
+              );
             })}
           </CommentSection>
         </Left>
-        {projectData && <Side data={projectData} isRegister={isRegister} isParticipant={isParticipant}></Side>}
+        {projectData && (
+          <Side
+            data={projectData}
+            isRegister={isRegister}
+            isParticipant={isParticipant}
+          ></Side>
+        )}
       </Wrapper>
     </PrimaryLayout>
   );
 };
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const projectNo = context.query.id as string
-  const projectData = await ProjectService.getProjectDetail(projectNo);
-  const commentData = await CommentService.getComments(projectNo)
+  const projectNo = +(context.query.id || '');
 
+  const projectData = await ProjectService.getProjectDetail(projectNo);
+  const commentData = await CommentService.getComments(projectNo);
   return {
     props: {
       project: projectData.data,
-      comment: commentData.data.content
-    }
-  }
-}
+      comment: commentData.data.content,
+    },
+  };
+};
 
 export default ProjectDetail;
