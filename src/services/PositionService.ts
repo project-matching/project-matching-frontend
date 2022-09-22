@@ -20,4 +20,10 @@ export class PositionService {
       positionName,
     });
   }
+
+  public static async expelPosition(positionNo: number, reason: string) {
+    await appApi.delete(`/projectposition/${positionNo}/expulsion`, { data: {
+      reason
+    } });
+  }
 }

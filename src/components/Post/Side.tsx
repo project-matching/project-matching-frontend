@@ -259,7 +259,7 @@ const Side: FC<Props> = ({ data, isRegister, isParticipant }) => {
               {member.userDto.register && <span className="leader">(Leader)</span>}
               {isRegister && !member.userDto.register && <button onClick={clickBanishmentBtn}>추방</button>}
               {rejectModal && 
-                    <RejectModal title="프로젝트 추방" participateNo={member.userDto.no}/> }
+                    <RejectModal title="프로젝트 추방" participateNo={member.projectPositionNo} isExpulsion={true}/> }
             </MemberDetail>
           )
         })}
@@ -322,7 +322,7 @@ const Side: FC<Props> = ({ data, isRegister, isParticipant }) => {
                     </ApplicantButtonRow>
                   </ApplicantBox>
                   {rejectModal && 
-                    <RejectModal title="프로젝트 참가 신청 거절" participateNo={applicant.projectParticipateNo}/> }
+                    <RejectModal title="프로젝트 참가 신청 거절" participateNo={applicant.projectParticipateNo} isExpulsion={false}/> }
                 </>
               );
             })}

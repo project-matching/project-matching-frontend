@@ -2,6 +2,7 @@ import styled from '@emotion/styled';
 import { ChangeEvent, FC, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { closeModal } from 'src/redux/reducers/components/modals';
+import { PositionService } from 'src/services/PositionService';
 import { ProjectService } from 'src/services/ProjectService';
 import ModalLayout from './ModalLayout';
 
@@ -37,11 +38,12 @@ const ButtonsRow = styled.div`
 `;
 
 interface Props {
-  title: string,
-  participateNo: number,
+  title: string;
+  participateNo: number;
+  isExpulsion: boolean;
 }
 
-export const RejectModal: FC<Props> = ({ title, participateNo }) => {
+export const RejectModal: FC<Props> = ({ title, participateNo, isExpulsion = false }) => {
   const [reason, setReason] = useState<string>("");
   const dispatch = useDispatch();
 
@@ -54,8 +56,11 @@ export const RejectModal: FC<Props> = ({ title, participateNo }) => {
   }
 
   const clickRejectBtn = async () => {
-    const response = await ProjectService.rejectProjectApplicant(participateNo, {reason});
-    // 500 error
+    !isExpulsion ?
+    await ProjectService.rejectProjectApplicant(participateNo, { reason }) :
+    await PositionService.expelPosition(participateNo, reason);
+
+    dispatch(closeModal("RejectModal"));
   }
 
   return (
