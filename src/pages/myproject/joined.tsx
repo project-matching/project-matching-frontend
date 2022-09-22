@@ -8,7 +8,7 @@ import { useAppSelector } from 'src/redux/hooks';
 import { ProjectService, ProjectType } from 'src/services/ProjectService';
 
 const MyJoinedProject = () => {
-  const token = useAppSelector((state) => state.auth.token);
+  const userInfo = useAppSelector((state) => state.user.userInfo);
 
   const [joinedProject, setJoinedProject] = useState<fetchedData<ProjectType>>({
     content: [],
@@ -16,15 +16,20 @@ const MyJoinedProject = () => {
   });
 
   useEffect(() => {
-    token &&
-      (async () => {
-        setJoinedProject(await ProjectService.joinedProject());
-      })();
-  }, [token]);
+    try {
+      userInfo.no &&
+        (async () => {
+          setJoinedProject(await ProjectService.joinedProject());
+        })();
+    } catch (error: any) {
+      // TODO: 네트워크 상태를 확인해주세요.
+      // TODO: 로그인을 해주세요.
+    }
+  }, [userInfo.no]);
 
   return (
     <PrimaryLayout>
-      {token && (
+      {userInfo.no && (
         <InfiniteScrollLayout
           api={ProjectService.joinedProject}
           data={joinedProject}

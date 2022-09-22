@@ -58,7 +58,7 @@ const Position: FC<Props> = ({
   isParticipant,
   isApplicant,
 }) => {
-  const token = useAppSelector((state) => state.auth.token);
+  const userInfo = useAppSelector((state) => state.user.userInfo);
   const isClicked = useAppSelector((state) => state.modal.PositionApplyModal);
   const [positions, setPositionList] = useState<list>({});
   const [appliedPosition, setAppliedPosition] = useState<string | null>(null);
@@ -68,7 +68,7 @@ const Position: FC<Props> = ({
   const dispatch = useDispatch();
 
   const openApplyModal = (applyPosition: string) => {
-    if (!token) return dispatch(openModal('AuthModal'));
+    if (!userInfo.no) return dispatch(openModal('AuthModal'));
 
     const position = positionList?.filter(
       (position) => position.positionName === applyPosition

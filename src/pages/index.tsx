@@ -11,7 +11,7 @@ interface PropTypes {
 }
 
 const Home = ({ initRecruitingProjects, initRecruitedProjects }: PropTypes) => {
-  const token = useAppSelector((state) => state.auth.token);
+  const userInfo = useAppSelector((state) => state.user.userInfo);
   const [recruitingProjects, setRecruitingProjects] = useState(
     initRecruitingProjects
   );
@@ -20,11 +20,15 @@ const Home = ({ initRecruitingProjects, initRecruitedProjects }: PropTypes) => {
   );
 
   useEffect(() => {
-    (async () => {
-      setRecruitingProjects(await ProjectService.recruitingProjectPreview());
-      setRecruitedProjects(await ProjectService.recruitedProjectPreview());
-    })();
-  }, [token]);
+    try {
+      (async () => {
+        setRecruitingProjects(await ProjectService.recruitingProjectPreview());
+        setRecruitedProjects(await ProjectService.recruitedProjectPreview());
+      })();
+    } catch (error: any) {
+      // TODO: 네트워크 상태를 확인해주세요.
+    }
+  }, [userInfo.no]);
 
   return (
     <PrimaryLayout>

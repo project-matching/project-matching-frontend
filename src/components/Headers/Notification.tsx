@@ -49,7 +49,7 @@ const Notification = () => {
   const notificationModal = useAppSelector(
     (state) => state.modal.NotificationModal
   );
-  const token = useAppSelector((state) => state.auth.token);
+  const userInfo = useAppSelector((state) => state.user.userInfo);
   const [isOpen, setOpen] = useState(false);
 
   const Container = styled.div`
@@ -125,13 +125,13 @@ const Notification = () => {
   });
 
   useEffect(() => {
-    token &&
+    userInfo.no &&
       isOpen &&
       (async () =>
         setNotificationPreview(
           await NotificationService.getNotificationPreview()
         ))();
-  }, [token, isOpen]);
+  }, [userInfo.no, isOpen]);
 
   return (
     <Container ref={dropdownEl}>

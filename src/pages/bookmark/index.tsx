@@ -9,22 +9,28 @@ import { BookmarkService } from 'src/services/BookmarkService';
 import { ProjectType } from 'src/services/ProjectService';
 
 const Bookmark = () => {
-  const token = useAppSelector((state) => state.auth.token);
+  const userInfo = useAppSelector((state) => state.user.userInfo);
   const [bookmarkedProjects, setBookmarkedProjects] = useState<
     fetchedData<ProjectType>
   >({ content: [], last: false });
 
   useEffect(() => {
-    token &&
-      (async () => {
-        const fetchedBookmarkedProjects = await BookmarkService.getBookmarks();
-        setBookmarkedProjects(fetchedBookmarkedProjects);
-      })();
-  }, [token]);
+    try {
+      userInfo.no &&
+        (async () => {
+          const fetchedBookmarkedProjects =
+            await BookmarkService.getBookmarks();
+          setBookmarkedProjects(fetchedBookmarkedProjects);
+        })();
+    } catch (error: any) {
+      // TODO: 네트워크 상태를 확인해주세요.
+      // TODO: 로그인을 해주세요.
+    }
+  }, [userInfo.no]);
 
   return (
     <PrimaryLayout>
-      {token && bookmarkedProjects.content.length && (
+      {userInfo.no && bookmarkedProjects.content.length && (
         <InfiniteScrollLayout
           api={BookmarkService.getBookmarks}
           data={bookmarkedProjects}

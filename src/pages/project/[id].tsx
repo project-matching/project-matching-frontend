@@ -189,14 +189,14 @@ const ProjectDetail = ({ project, comment }: Props) => {
   }, [userInfo]);
 
   useEffect(() => {
-    token &&
+    userInfo.no &&
       (async () => {
         const data = await ProjectService.getProjectDetail(
           projectData.projectNo
         );
         setIsApplicant(data.data.applicationStatus);
       })();
-  }, [token]);
+  }, [userInfo.no, projectData.projectNo]);
 
   return (
     <PrimaryLayout>

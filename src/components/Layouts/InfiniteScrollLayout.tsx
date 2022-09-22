@@ -46,7 +46,7 @@ const InfiniteScrollLayout = ({
   title = '프로젝트',
 }: LayoutProps) => {
   const targetRef = useRef<HTMLDivElement>(null);
-  const token = useAppSelector((state) => state.auth.token);
+  const userInfo = useAppSelector((state) => state.user.userInfo);
 
   const [isLast, setIsLast] = useState<boolean>(false);
   const [lastItem, setLastItem] = useState<any>(null);
@@ -105,7 +105,7 @@ const InfiniteScrollLayout = ({
   useEffect(() => {
     setLastItem(data.content[data.content.length - 1]);
     setIsLast(data.last);
-  }, [data, token, isLast]);
+  }, [data, userInfo.no, isLast]);
 
   // TODO: '이/가'를 정규표현식을 통해 정리
   return (

@@ -5,23 +5,28 @@ import { useAppSelector } from 'src/redux/hooks';
 import { ProjectService } from 'src/services/ProjectService';
 
 const MyProject = () => {
-  const token = useAppSelector((state) => state.auth.token);
+  const userInfo = useAppSelector((state) => state.user.userInfo);
 
   const [createdProject, setCreatedProject] = useState([]);
   const [joinedProject, setJoinedProject] = useState([]);
   const [appliedProject, setAppliedProject] = useState([]);
 
   useEffect(() => {
-    (async () => {
-      setCreatedProject(await ProjectService.createdProjectPreview());
-      setJoinedProject(await ProjectService.joinedProjectPreview());
-      setAppliedProject(await ProjectService.appliedProjectPreview());
-    })();
-  }, [token]);
+    try {
+      (async () => {
+        setCreatedProject(await ProjectService.createdProjectPreview());
+        setJoinedProject(await ProjectService.joinedProjectPreview());
+        setAppliedProject(await ProjectService.appliedProjectPreview());
+      })();
+    } catch (error: any) {
+      // TODO: 네트워크 상태를 확인해주세요.
+      // TODO: 로그인을 해주세요.
+    }
+  }, [userInfo.no]);
 
   return (
     <PrimaryLayout>
-      {token && (
+      {userInfo.no && (
         <>
           <PrimaryProjectLayout
             title="내가 만든 프로젝트"
