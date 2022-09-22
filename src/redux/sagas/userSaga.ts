@@ -56,17 +56,18 @@ function* getUserInfoSaga() {
     yield put(authSuccess(token));
     yield put(userSuccessUserInfo(userInfo));
   } catch (error: any) {
-    yield put(
-      userFailUserInfo(
-        new Error(error?.response?.data?.error || 'UNKNOWN_ERROR')
-      )
-    );
-    TokenService.remove();
-    TokenService.removeRefresh();
-    TokenService.removeExp();
-    yield put(
-      authFail(new Error(error?.response?.data?.error || 'UNKNOWN_ERROR'))
-    );
+    if (error?.response?.data?.error?.code !== 'DESTROY_JWT_TOKEN_EXCEPTION') {
+      yield put(
+        userFailUserInfo(
+          new Error(error?.response?.data?.error || 'UNKNOWN_ERROR')
+        )
+      );
+      TokenService.remove();
+      TokenService.removeExp();
+      yield put(
+        authFail(new Error(error?.response?.data?.error || 'UNKNOWN_ERROR'))
+      );
+    }
   }
 }
 

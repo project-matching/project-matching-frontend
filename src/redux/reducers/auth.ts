@@ -65,5 +65,8 @@ export const signOut = createAction(`${authState}/signOut`);
 export const reissueToken = createAction<reissueReqType>(
   `${authState}/reissueToken`
 );
+export const delayReissue = createAction<reissueReqType>(
+  `${authState}/delayReissue`
+);
 
 export default authSlice.reducer;

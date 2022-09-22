@@ -1,5 +1,12 @@
 import { PayloadAction } from '@reduxjs/toolkit';
-import { call, put, select, takeLatest } from 'redux-saga/effects';
+import {
+  call,
+  delay,
+  put,
+  select,
+  takeEvery,
+  takeLatest,
+} from 'redux-saga/effects';
 import { closeModal, openModal } from 'src/redux/reducers/components/modals';
 import {
   removeSigninErrorMsg,
@@ -12,6 +19,7 @@ import {
   authFail,
   authPending,
   authSuccess,
+  delayReissue,
   signin,
   signinOAuth,
   signOut,
@@ -32,6 +40,16 @@ export type SignupReqType = {
   password: string;
 };
 
+function* delayReissueSaga({ payload }: PayloadAction<reissueReqType>) {
+  try {
+    const { access, refresh } = payload;
+    yield delay(1000 * 60 * 60 * 2 - 1000 * 30);
+    yield put(reissueToken({ access, refresh }));
+  } catch (error: any) {
+    // TODO: 로그인을 다시 해주세요.
+  }
+}
+
 function* signinSaga({ payload }: PayloadAction<SigninReqType>) {
   try {
     yield put(authPending());
@@ -46,6 +64,7 @@ function* signinSaga({ payload }: PayloadAction<SigninReqType>) {
     yield put(getUserInfo());
     yield put(removeSigninErrorMsg());
     yield put(closeModal('AuthModal'));
+    yield put(delayReissue({ access, refresh }));
   } catch (error: any) {
     yield put(
       authFail(new Error(error?.response?.data?.error || 'UNKNOWN_ERROR'))
@@ -121,10 +140,13 @@ function* reissueTokenSaga({ payload }: PayloadAction<reissueReqType>) {
     yield TokenService.set(access);
     TokenService.setExp(access_exp);
     yield put(authSuccess(access));
+    yield put(delayReissue({ access, refresh: payload.refresh }));
   } catch (error: any) {
     yield put(
       authFail(new Error(error?.response?.data?.error || 'UNKNOWN_ERROR'))
     );
+    TokenService.removeRefresh();
+    // 로그인을 다시 시도해주세요.
   }
 }
 
@@ -134,4 +156,5 @@ export function* authSaga() {
   yield takeLatest(signinOAuth.type, oAuthSaga);
   yield takeLatest(signup.type, signupSaga);
   yield takeLatest(reissueToken.type, reissueTokenSaga);
+  yield takeEvery(delayReissue.type, delayReissueSaga);
 }
