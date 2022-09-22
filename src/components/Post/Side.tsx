@@ -5,6 +5,7 @@ import { useDispatch } from 'react-redux';
 import useBookmark from 'src/hooks/useBookmark';
 import { useAppSelector } from 'src/redux/hooks';
 import { openModal } from 'src/redux/reducers/components/modals';
+import { PositionService } from 'src/services/PositionService';
 import { ProjectService } from '../../services/ProjectService';
 import Title from '../auth/Title';
 import { Backdrop } from '../Modals/Backdrop';
@@ -201,6 +202,7 @@ const Side: FC<Props> = ({ data, isRegister, isParticipant }) => {
   const { bookmark, toggleBookmark } = useBookmark();
   const [onModal, setOnModal] = useState<boolean>(false);
   const [applicants, setApplicants] = useState<applicant[]>([]);
+  const user = useAppSelector(state => state.user.userInfo);
   const rejectModal = useAppSelector(state => state.modal.RejectModal);
   const dispatch = useDispatch();
   const router = useRouter();
@@ -219,6 +221,13 @@ const Side: FC<Props> = ({ data, isRegister, isParticipant }) => {
     if (id === "modification") {
       const { id } = router.query;
       router.push(`${id}/modification`);
+    }
+
+    if  (id === "quit") {
+      const myPosition = data.projectPositionDetailDtoList.find(dto => dto.userDto?.no === user.no);
+      const response = await PositionService.withdrawPosition(myPosition?.projectPositionNo as number);
+
+      // 500 error "PROJECT_POSITION_NOT_EQUAL_USER"
     }
   }
 

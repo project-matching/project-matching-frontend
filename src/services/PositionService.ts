@@ -26,4 +26,8 @@ export class PositionService {
       reason
     } });
   }
+
+  public static async withdrawPosition(positionNo: number) {
+    await appApi.delete(`/projectposition/${positionNo}/withdrawal`);
+  }
 }
