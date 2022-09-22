@@ -226,7 +226,6 @@ const Side: FC<Props> = ({ data, isRegister, isParticipant }) => {
     if  (id === "quit") {
       const myPosition = data.projectPositionDetailDtoList.find(dto => dto.userDto?.no === user.no);
       const response = await PositionService.withdrawPosition(myPosition?.projectPositionNo as number);
-
       // 500 error "PROJECT_POSITION_NOT_EQUAL_USER"
     }
   }
@@ -235,9 +234,7 @@ const Side: FC<Props> = ({ data, isRegister, isParticipant }) => {
     const id = e.target.id;
 
     if (id === "allow") {
-      const response = await ProjectService.allowProjectApplicant(participantNo);
-      // 500 error?
-      console.log(response);
+      await ProjectService.allowProjectApplicant(participantNo);
     }
 
     if (id === "reject") {
@@ -247,9 +244,8 @@ const Side: FC<Props> = ({ data, isRegister, isParticipant }) => {
 
   const clickBanishmentBtn = () => {
     dispatch(openModal("RejectModal"));
-    // rejectModal에서 상황ㅇ에 맞게 나누면 됨
   }
-// 추방 버튼 활성화
+
   return (
     <Wrapper>
       <Title title="Project Detail" />
@@ -300,7 +296,6 @@ const Side: FC<Props> = ({ data, isRegister, isParticipant }) => {
           <ManagingPage>
             <header onClick={() => {setOnModal(false)}}>X</header>
             {applicants.map(applicant => {
-              console.log(applicant.projectParticipateNo);
               return(
                 <>
                   <ApplicantBox key={applicant.projectParticipateNo}>
