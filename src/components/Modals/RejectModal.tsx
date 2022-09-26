@@ -72,11 +72,11 @@ export const RejectModal: FC<Props> = ({ title, participateNo, isExpulsion = fal
         유저이름
       </UserInfo>
       <Main>
-        <span>거절 사유</span>
+        <span>{isExpulsion ? "추방" : "거절"}사유</span>
         <ReasonTextArea rows={15} value={reason} onChange={handleTextArea}/>
       </Main>
       <ButtonsRow>
-        <button onClick={clickRejectBtn}>거절하기</button>
+        <button onClick={clickRejectBtn}>{isExpulsion ? "추방" : "거절"}하기</button>
         <button onClick={clickCancelBtn}>취소</button>
       </ButtonsRow>
     </ModalLayout>
