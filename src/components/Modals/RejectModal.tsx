@@ -2,6 +2,7 @@ import styled from '@emotion/styled';
 import { ChangeEvent, FC, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { closeModal } from 'src/redux/reducers/components/modals';
+import { PositionService } from 'src/services/PositionService';
 import { ProjectService } from 'src/services/ProjectService';
 import ModalLayout from './ModalLayout';
 
@@ -37,11 +38,12 @@ const ButtonsRow = styled.div`
 `;
 
 interface Props {
-  title: string,
-  participateNo: number,
+  title: string;
+  participateNo: number;
+  isExpulsion: boolean;
 }
 
-export const RejectModal: FC<Props> = ({ title, participateNo }) => {
+export const RejectModal: FC<Props> = ({ title, participateNo, isExpulsion = false }) => {
   const [reason, setReason] = useState<string>("");
   const dispatch = useDispatch();
 
@@ -54,8 +56,11 @@ export const RejectModal: FC<Props> = ({ title, participateNo }) => {
   }
 
   const clickRejectBtn = async () => {
-    const response = await ProjectService.rejectProjectApplicant(participateNo, {reason});
-    // 500 error
+    !isExpulsion ?
+    await ProjectService.rejectProjectApplicant(participateNo, { reason }) :
+    await PositionService.expelPosition(participateNo, reason);
+
+    dispatch(closeModal("RejectModal"));
   }
 
   return (
@@ -67,11 +72,11 @@ export const RejectModal: FC<Props> = ({ title, participateNo }) => {
         유저이름
       </UserInfo>
       <Main>
-        <span>거절 사유</span>
+        <span>{isExpulsion ? "추방" : "거절"}사유</span>
         <ReasonTextArea rows={15} value={reason} onChange={handleTextArea}/>
       </Main>
       <ButtonsRow>
-        <button onClick={clickRejectBtn}>거절하기</button>
+        <button onClick={clickRejectBtn}>{isExpulsion ? "추방" : "거절"}하기</button>
         <button onClick={clickCancelBtn}>취소</button>
       </ButtonsRow>
     </ModalLayout>
