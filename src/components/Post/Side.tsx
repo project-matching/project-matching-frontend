@@ -19,7 +19,7 @@ const Wrapper = styled.div`
   flex-direction: column;
   justify-content: space-evenly;
   padding: 20px;
-  background-color: #4242;
+  border: 1px solid #d4d4d4;
 
   h1 {
     font-size: 20px;

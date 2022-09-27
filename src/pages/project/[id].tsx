@@ -28,7 +28,7 @@ const Left = styled.div`
 
 const Main = styled.div`
   width: 100%;
-  background-color: #5454;
+  border: 1px solid #d4d4d4;
   padding: 0 20px;
   padding-bottom: 20px;
 `;
@@ -38,7 +38,7 @@ const Introduction = styled.div`
 
 const CommentSection = styled.section`
   width: 100%;
-  background-color: #5454;
+  border: 1px solid #d4d4d4;
   margin-top: 30px;
 `;
 
@@ -47,7 +47,7 @@ const CommentBox = styled.article`
   flex-direction: column;
   margin: 5px;
   padding: 20px;
-  background-color: #dad8daec;
+  border: 1px solid #d4d4d4;
 
   h3 {
     font-size: 20px;
@@ -68,58 +68,6 @@ const CommentBox = styled.article`
   }
 `;
 
-const fakeData = {
-  applicationStatus: true,
-  bookmark: true,
-  currentPeople: 3,
-  endDate: '22-09-02',
-  introduction: '와인을 추천',
-  maxPeople: 5,
-  name: '와인 추천 웹 사이트',
-  projectNo: 0,
-  projectPositionDetailDtoList: [
-    {
-      positionName: 'PM',
-      projectPositionNo: 0,
-      userDto: {
-        name: 'steve',
-        no: 0,
-        register: false,
-      },
-    },
-    {
-      positionName: 'Designer',
-      projectPositionNo: 1,
-      userDto: {
-        name: 'chong',
-        no: 1,
-        register: true,
-      },
-    },
-    {
-      positionName: 'FE',
-      projectPositionNo: 3,
-      userDto: null,
-    },
-    {
-      positionName: 'FE',
-      projectPositionNo: 3,
-      userDto: {
-        name: 'waz',
-        no: 2,
-        register: false,
-      },
-    },
-    {
-      positionName: 'BE',
-      projectPositionNo: 4,
-      userDto: null,
-    },
-  ],
-  startDate: '22-08-21',
-  state: true,
-  technicalStackList: ['typescript', 'next.js', 'redux'],
-};
 interface userDto {
   name: string;
   no: number;
