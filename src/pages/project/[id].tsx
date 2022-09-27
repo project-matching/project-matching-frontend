@@ -32,6 +32,7 @@ const Main = styled.div`
   padding: 0 20px;
   padding-bottom: 20px;
 `;
+
 const Introduction = styled.div`
   padding: 20px 0;
 `;
