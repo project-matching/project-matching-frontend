@@ -1,7 +1,7 @@
 import { fetchedData } from '@/components/Layouts/InfiniteScrollLayout';
 import { PayloadAction } from '@reduxjs/toolkit';
 import { call, put, takeLatest } from 'redux-saga/effects';
-import { authFail, authSuccess, reissueToken } from 'src/redux/reducers/auth';
+import { authFail, authSuccess } from 'src/redux/reducers/auth';
 import { openModal } from 'src/redux/reducers/components/modals';
 import {
   deleteUser,
@@ -44,13 +44,8 @@ import { patchPasswordType } from './../../services/UserService';
 function* getUserInfoSaga() {
   try {
     yield put(userPendingUserInfo());
-    const exp = TokenService.getExp();
-    if (exp && +exp - Math.floor(new Date().getTime() / 1000) < 30) {
-      const access = TokenService.get();
-      const refresh = TokenService.getRefresh();
-      yield put(reissueToken({ access, refresh }));
-    }
     const token = TokenService.get();
+    console.log('userinfo', token);
     appApi.defaults.headers.common['Authorization'] = `Bearer ${token}`;
     const userInfo: UserInfoType = yield call(UserService.getUserInfo);
     yield put(authSuccess(token));
