@@ -163,7 +163,6 @@ function* reissueTokenSaga({ payload }: PayloadAction<reissueReqType>) {
       payload
     );
     yield TokenService.set(access);
-    console.log('reissue', access);
     TokenService.setExp(access_exp);
     yield put(getUserInfo());
   } catch (error: any) {
