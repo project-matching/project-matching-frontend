@@ -186,7 +186,6 @@ function* validateTokenSaga() {
     if (exp && remainingExp < 10) {
       // 토큰 만료기간이 10초 미만일 경우
       yield put(reissueToken({ access, refresh }));
-      // yield put(getUserInfo());
 
       const newAccess = TokenService.get();
       const newRefresh = TokenService.getRefresh();
