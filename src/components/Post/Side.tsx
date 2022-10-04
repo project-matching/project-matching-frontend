@@ -5,6 +5,7 @@ import { useDispatch } from 'react-redux';
 import useBookmark from 'src/hooks/useBookmark';
 import { useAppSelector } from 'src/redux/hooks';
 import { openModal } from 'src/redux/reducers/components/modals';
+import { PositionService } from 'src/services/PositionService';
 import { ProjectService } from '../../services/ProjectService';
 import Title from '../auth/Title';
 import { Backdrop } from '../Modals/Backdrop';
@@ -201,6 +202,7 @@ const Side: FC<Props> = ({ data, isRegister, isParticipant }) => {
   const { bookmark, toggleBookmark } = useBookmark();
   const [onModal, setOnModal] = useState<boolean>(false);
   const [applicants, setApplicants] = useState<applicant[]>([]);
+  const user = useAppSelector(state => state.user.userInfo);
   const rejectModal = useAppSelector(state => state.modal.RejectModal);
   const dispatch = useDispatch();
   const router = useRouter();
@@ -220,22 +222,30 @@ const Side: FC<Props> = ({ data, isRegister, isParticipant }) => {
       const { id } = router.query;
       router.push(`${id}/modification`);
     }
+
+    if  (id === "quit") {
+      const myPosition = data.projectPositionDetailDtoList.find(dto => dto.userDto?.no === user.no);
+      const response = await PositionService.withdrawPosition(myPosition?.projectPositionNo as number);
+      // 500 error "PROJECT_POSITION_NOT_EQUAL_USER"
+    }
   }
 
   const applicantButtonHandler = async (e: React.BaseSyntheticEvent, participantNo: number) => {
     const id = e.target.id;
 
     if (id === "allow") {
-      const response = await ProjectService.allowProjectApplicant(participantNo);
-      // 500 error?
-      console.log(response);
+      await ProjectService.allowProjectApplicant(participantNo);
     }
 
     if (id === "reject") {
       dispatch(openModal("RejectModal"));
     }
   }
-// 추방 버튼 활성화
+
+  const clickBanishmentBtn = () => {
+    dispatch(openModal("RejectModal"));
+  }
+
   return (
     <Wrapper>
       <Title title="Project Detail" />
@@ -252,7 +262,9 @@ const Side: FC<Props> = ({ data, isRegister, isParticipant }) => {
               <span>{member.positionName}</span>
               <span>{member.userDto.name} </span>
               {member.userDto.register && <span className="leader">(Leader)</span>}
-              {isRegister && !member.userDto.register && <button>추방</button>}
+              {isRegister && !member.userDto.register && <button onClick={clickBanishmentBtn}>추방</button>}
+              {rejectModal && 
+                    <RejectModal title="프로젝트 추방" participateNo={member.projectPositionNo} isExpulsion={true}/> }
             </MemberDetail>
           )
         })}
@@ -314,7 +326,7 @@ const Side: FC<Props> = ({ data, isRegister, isParticipant }) => {
                     </ApplicantButtonRow>
                   </ApplicantBox>
                   {rejectModal && 
-                    <RejectModal title="프로젝트 참가 신청 거절" participateNo={applicant.projectParticipateNo}/> }
+                    <RejectModal title="프로젝트 참가 신청 거절" participateNo={applicant.projectParticipateNo} isExpulsion={false}/> }
                 </>
               );
             })}

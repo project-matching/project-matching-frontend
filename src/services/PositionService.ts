@@ -20,4 +20,14 @@ export class PositionService {
       positionName,
     });
   }
+
+  public static async expelPosition(positionNo: number, reason: string) {
+    await appApi.delete(`/projectposition/${positionNo}/expulsion`, { data: {
+      reason
+    } });
+  }
+
+  public static async withdrawPosition(positionNo: number) {
+    await appApi.delete(`/projectposition/${positionNo}/withdrawal`);
+  }
 }
