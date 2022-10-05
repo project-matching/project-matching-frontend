@@ -1,7 +1,7 @@
 import { fetchedData } from '@/components/Layouts/InfiniteScrollLayout';
 import { PayloadAction } from '@reduxjs/toolkit';
 import { call, put, takeLatest } from 'redux-saga/effects';
-import { authFail, authSuccess } from 'src/redux/reducers/auth';
+import { authSuccess, signOut } from 'src/redux/reducers/auth';
 import { openModal } from 'src/redux/reducers/components/modals';
 import {
   deleteUser,
@@ -56,11 +56,7 @@ function* getUserInfoSaga() {
           new Error(error?.response?.data?.error || 'UNKNOWN_ERROR')
         )
       );
-      TokenService.remove();
-      TokenService.removeExp();
-      yield put(
-        authFail(new Error(error?.response?.data?.error || 'UNKNOWN_ERROR'))
-      );
+      yield put(signOut());
     }
   }
 }
@@ -80,10 +76,7 @@ function* getUserProfileSaga() {
         new Error(error?.response?.data?.error || 'UNKNOWN_ERROR')
       )
     );
-    TokenService.remove();
-    yield put(
-      authFail(new Error(error?.response?.data?.error || 'UNKNOWN_ERROR'))
-    );
+    yield put(openModal('AuthModal'));
   }
 }
 
@@ -93,15 +86,12 @@ function* updateUserProfileSaga({ payload }: PayloadAction<patchProfileType>) {
     yield call(UserService.patchUserProfile, payload.data);
     const userProfile: UserProfileType = yield call(UserService.getUserProfile);
     yield put(userSuccressUserProfile(userProfile));
+    yield put(getUserInfo());
   } catch (error: any) {
     yield put(
       userFailUserProfile(
         new Error(error?.response?.data?.error || 'UNKNOWN_ERROR')
       )
-    );
-    TokenService.remove();
-    yield put(
-      authFail(new Error(error?.response?.data?.error || 'UNKNOWN_ERROR'))
     );
   }
 }
