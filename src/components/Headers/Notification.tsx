@@ -1,5 +1,6 @@
 import styled from '@emotion/styled';
 import Link from 'next/link';
+import notificationImage from 'public/notification.png';
 import { useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useAppSelector } from 'src/redux/hooks';
@@ -9,8 +10,6 @@ import { NotificationService } from 'src/services/NotificationService';
 import { Backdrop } from '../Modals/Backdrop';
 import NotificationModal from '../Modals/NotificationModal';
 import ImageToggle from './ToggleDropdown/ImageToggle';
-
-const DEFAULT_NOTIFICATION_IMAGE: string = `/notification.png`;
 
 const Dropdown = styled.div`
   position: absolute;
@@ -50,7 +49,7 @@ const Notification = () => {
   const notificationModal = useAppSelector(
     (state) => state.modal.NotificationModal
   );
-  const token = useAppSelector((state) => state.auth.token);
+  const userInfo = useAppSelector((state) => state.user.userInfo);
   const [isOpen, setOpen] = useState(false);
 
   const Container = styled.div`
@@ -126,18 +125,18 @@ const Notification = () => {
   });
 
   useEffect(() => {
-    token &&
+    userInfo.no &&
       isOpen &&
       (async () =>
         setNotificationPreview(
           await NotificationService.getNotificationPreview()
         ))();
-  }, [token, isOpen]);
+  }, [userInfo.no, isOpen]);
 
   return (
     <Container ref={dropdownEl}>
       <ImageToggle
-        image={DEFAULT_NOTIFICATION_IMAGE}
+        image={notificationImage}
         alt="notification_image"
         toggleDropdown={toggleDropdown}
       />

@@ -111,7 +111,7 @@ const Notification = () => {
   const notificationModal = useAppSelector(
     (state) => state.modal.NotificationModal
   );
-  const token = useAppSelector((state) => state.auth.token);
+  const userInfo = useAppSelector((state) => state.user.userInfo);
 
   const openNotificationModal = (notification: NotificationType) => {
     dispatch(notificationDetail(notification.notificationNo));
@@ -119,15 +119,20 @@ const Notification = () => {
   };
 
   useEffect(() => {
-    token &&
-      (async () => {
-        setNotifications(await NotificationService.getNotification());
-      })();
-  }, [token]);
+    try {
+      userInfo.no &&
+        (async () => {
+          setNotifications(await NotificationService.getNotification());
+        })();
+    } catch (error: any) {
+      // TODO: 네트워크 상태를 확인해주세요.
+      // TODO: 로그인을 해주세요.
+    }
+  }, [userInfo.no]);
 
   return (
     <PrimaryLayout>
-      {token && notifications.content.length && (
+      {userInfo.no && notifications.content.length && (
         <Container>
           <Title>알림</Title>
           <Section>

@@ -12,14 +12,18 @@ interface PropTypes {
 }
 
 const Recruiting = ({ initProjects }: PropTypes) => {
-  const token = useAppSelector((state) => state.auth.token);
+  const userInfo = useAppSelector((state) => state.user.userInfo);
   const [recruitingProject, setRecruitingProject] = useState(initProjects);
 
   useEffect(() => {
-    (async () => {
-      setRecruitingProject(await ProjectService.recruitingProject());
-    })();
-  }, [token]);
+    try {
+      (async () => {
+        setRecruitingProject(await ProjectService.recruitingProject());
+      })();
+    } catch (error: any) {
+      // TODO: 네트워크 상태를 확인해주세요.
+    }
+  }, [userInfo.no]);
 
   return (
     <PrimaryLayout>

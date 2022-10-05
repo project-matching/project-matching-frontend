@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import Image from 'next/image';
+import Image, { StaticImageData } from 'next/image';
 import defaultProfileImage from 'public/default_profile.png';
 
 const ImageContainer = styled.div`
@@ -7,7 +7,7 @@ const ImageContainer = styled.div`
 `;
 
 interface Props {
-  image: string | null;
+  image: string | null | StaticImageData;
   alt: string;
   size?: string;
   borderRadius?: boolean;

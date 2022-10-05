@@ -1,5 +1,12 @@
 import { PayloadAction } from '@reduxjs/toolkit';
-import { call, put, select, takeLatest } from 'redux-saga/effects';
+import {
+  call,
+  delay,
+  put,
+  select,
+  takeEvery,
+  takeLatest,
+} from 'redux-saga/effects';
 import { closeModal, openModal } from 'src/redux/reducers/components/modals';
 import {
   removeSigninErrorMsg,
@@ -12,11 +19,13 @@ import {
   authFail,
   authPending,
   authSuccess,
+  delayReissue,
   signin,
   signinOAuth,
   signOut,
   signup,
   TokenType,
+  validateToken,
 } from '../reducers/auth';
 import { reissueReqType } from './../../services/UserService';
 import { reissueToken } from './../reducers/auth';
@@ -32,6 +41,41 @@ export type SignupReqType = {
   password: string;
 };
 
+export interface DelayReqType {
+  time?: number;
+  token: reissueReqType;
+}
+
+/**
+ * 토큰 만료까지 남은 시간 (Seconds)
+ */
+const getRemainingExpSecond = (exp: number) =>
+  exp - Math.floor(new Date().getTime() / 1000);
+
+function* delayReissueSaga({ payload }: PayloadAction<DelayReqType>) {
+  try {
+    payload.time = payload.time ?? 1000 * 60 * 60 * 2 - 1000 * 30;
+    const { access, refresh } = payload.token;
+    yield delay(payload.time);
+    yield put(reissueToken({ access, refresh }));
+
+    const exp = TokenService.getExp();
+    const newAccess = TokenService.get();
+    const newRefresh = TokenService.getRefresh();
+
+    if (newAccess && newRefresh) {
+      yield put(
+        delayReissue({
+          token: { access: newAccess, refresh: newRefresh },
+          time: getRemainingExpSecond(+exp),
+        })
+      );
+    }
+  } catch (error: any) {
+    // TODO: 로그인을 다시 해주세요.
+  }
+}
+
 function* signinSaga({ payload }: PayloadAction<SigninReqType>) {
   try {
     yield put(authPending());
@@ -46,6 +90,7 @@ function* signinSaga({ payload }: PayloadAction<SigninReqType>) {
     yield put(getUserInfo());
     yield put(removeSigninErrorMsg());
     yield put(closeModal('AuthModal'));
+    yield put(delayReissue({ token: { access, refresh } }));
   } catch (error: any) {
     yield put(
       authFail(new Error(error?.response?.data?.error || 'UNKNOWN_ERROR'))
@@ -113,18 +158,56 @@ function* signupSaga({ payload }: PayloadAction<SignupReqType>) {
 
 function* reissueTokenSaga({ payload }: PayloadAction<reissueReqType>) {
   try {
-    yield put(authPending());
     const { access, access_exp }: reissuedType = yield call(
       UserService.reissueToken,
       payload
     );
     yield TokenService.set(access);
     TokenService.setExp(access_exp);
-    yield put(authSuccess(access));
+    yield put(getUserInfo());
   } catch (error: any) {
-    yield put(
-      authFail(new Error(error?.response?.data?.error || 'UNKNOWN_ERROR'))
-    );
+    TokenService.removeRefresh();
+    // 로그인을 다시 시도해주세요.
+  }
+}
+
+function* validateTokenSaga() {
+  try {
+    const exp = TokenService.getExp();
+    const access = TokenService.get();
+    const refresh = TokenService.getRefresh();
+
+    if (!access || !refresh) {
+      throw new Error('LOGIN_NEEDED');
+    }
+
+    const remainingExp = getRemainingExpSecond(+exp);
+
+    if (exp && remainingExp < 10) {
+      // 토큰 만료기간이 10초 미만일 경우
+      yield put(reissueToken({ access, refresh }));
+
+      const newAccess = TokenService.get();
+      const newRefresh = TokenService.getRefresh();
+      const newRemainingExp = getRemainingExpSecond(+TokenService.getExp());
+
+      yield put(
+        delayReissue({
+          token: { access: newAccess, refresh: newRefresh },
+          time: (newRemainingExp - 10) * 1000,
+        })
+      );
+    } else {
+      yield put(getUserInfo());
+      yield put(
+        delayReissue({
+          token: { access, refresh },
+          time: (remainingExp - 10) * 1000,
+        })
+      );
+    }
+  } catch (error: any) {
+    // TODO: 로그인을 다시 시도해주세요.
   }
 }
 
@@ -133,5 +216,7 @@ export function* authSaga() {
   yield takeLatest(signOut.type, signOutSaga);
   yield takeLatest(signinOAuth.type, oAuthSaga);
   yield takeLatest(signup.type, signupSaga);
-  yield takeLatest(reissueToken.type, reissueTokenSaga);
+  yield takeEvery(reissueToken.type, reissueTokenSaga);
+  yield takeEvery(delayReissue.type, delayReissueSaga);
+  yield takeEvery(validateToken.type, validateTokenSaga);
 }
