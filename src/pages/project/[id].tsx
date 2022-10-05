@@ -69,6 +69,22 @@ const CommentBox = styled.article`
   }
 `;
 
+const CommentPageBtn = styled.div`
+  display: flex;
+  justify-content: space-around;
+
+  button {
+    margin: 0 2%;
+    border: 0;
+    outline: 0;
+    padding: 5px;
+    cursor: pointer;
+    &:hover {
+      background-color: gray;
+    }
+  }
+`
+
 interface userDto {
   name: string;
   no: number;
@@ -117,7 +133,30 @@ const ProjectDetail = ({ project, comment }: Props) => {
   const [isApplicant, setIsApplicant] = useState<boolean>(false);
   const [isRegister, setIsRegister] = useState<boolean>(false);
   const [comments, setComments] = useState<comment[]>(comment);
+  const [commentPageNo, setCommentPageNo] = useState<number>(0);
+  const [isLast, setIsLast] = useState<boolean>(false);
   const router = useRouter();
+  
+  const commentPageController = (e: React.BaseSyntheticEvent) => {
+    const id = e.target.id;
+
+    if (id === "next") {
+      setCommentPageNo(prev => prev + 1);
+    }
+
+    if (id === "prev") {
+      setCommentPageNo(prev => prev !== 0 ? prev - 1 : prev);
+    }
+  }
+
+  useEffect(() => {
+    const projectNo = parseInt(router.query.id as string);
+    (async() => {
+      const commentData = await CommentService.getComments(projectNo as number, commentPageNo);
+      setComments(commentData.data.content);
+      setIsLast(commentData.data.last);
+    })();
+  }, [commentPageNo]);
 
   useEffect(() => {
     const positionDetailList = projectData.projectPositionDetailDtoList;
@@ -189,6 +228,10 @@ const ProjectDetail = ({ project, comment }: Props) => {
                 </>
               );
             })}
+            <CommentPageBtn onClick={commentPageController}>
+              <button id="prev">이전</button>
+              <button id="next" disabled={isLast}>다음</button>
+            </CommentPageBtn>
           </CommentSection>
         </Left>
         {projectData && (
@@ -207,7 +250,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const projectNo = +(context.query.id || '');
 
   const projectData = await ProjectService.getProjectDetail(projectNo);
-  const commentData = await CommentService.getComments(projectNo);
+  const commentData = await CommentService.getComments(projectNo, 0);
   return {
     props: {
       project: projectData.data,
