@@ -12,7 +12,12 @@ import {
   removeSigninErrorMsg,
   setSigninErrorMsg,
 } from 'src/redux/reducers/components/validation';
-import { getUserInfo } from 'src/redux/reducers/users';
+import {
+  getUserInfo,
+  initUserInfo,
+  userSuccessUserInfo,
+} from 'src/redux/reducers/users';
+import { appApi } from 'src/services/AppApi';
 import { TokenService } from 'src/services/TokenService';
 import { reissuedType, UserService } from 'src/services/UserService';
 import {
@@ -117,8 +122,9 @@ function* signOutSaga() {
     TokenService.remove();
     TokenService.removeRefresh();
     TokenService.removeExp();
+    appApi.defaults.headers.common['Authorization'] = '';
     yield put(authSuccess(null));
-    yield put(getUserInfo());
+    yield put(userSuccessUserInfo(initUserInfo));
   }
 }
 
