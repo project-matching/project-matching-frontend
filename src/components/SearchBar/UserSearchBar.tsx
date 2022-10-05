@@ -16,6 +16,12 @@ const Container = styled.div`
   align-items: center;
   border: 1px solid #d4d4d4;
   background-color: white;
+
+  > form {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+  }
 `;
 
 const Input = styled.input`
