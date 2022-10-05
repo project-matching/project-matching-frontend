@@ -2,14 +2,10 @@ import { NotificationType } from '@/components/Headers/Notification';
 import InfiniteScrollLayout, {
   fetchedData,
 } from '@/components/Layouts/InfiniteScrollLayout';
-import { Backdrop } from '@/components/Modals/Backdrop';
-import NotificationModal from '@/components/Modals/NotificationModal';
+import NotificationArticle from '@/components/Notification/NotificationArticle';
 import styled from '@emotion/styled';
 import { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
 import { useAppSelector } from 'src/redux/hooks';
-import { openModal } from 'src/redux/reducers/components/modals';
-import { notificationDetail } from 'src/redux/reducers/notification';
 import { NotificationService } from 'src/services/NotificationService';
 import PrimaryLayout from '../../components/Layouts/PrimaryLayout';
 
@@ -67,56 +63,15 @@ const ArticleContnet = styled.div`
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  line-height: 1.5;
 `;
-
-const data = [
-  {
-    notificationNo: 1004,
-    title:
-      '[프로젝트 참가 신청] project21 name[프로젝트 참가 신청] project21 name[프로젝트 참가 신청] project21 name[프로젝트 참가 신청] project21 name[프로젝트 참가 신청] project21 name[프로젝트 참가 신청] project21 name[프로젝트 참가 신청] project21 name[프로젝트 참가 신청] project21 name[프로젝트 참가 신청] project21 name',
-    read: false,
-    createDate: '2022-08-25T13:21:52',
-  },
-  {
-    notificationNo: 1004,
-    title: '[프로젝트 참가 신청] project21 name',
-    read: true,
-    createDate: '2022-08-25T13:21:52',
-  },
-  {
-    notificationNo: 1004,
-    title: '[프로젝트 참가 신청] project21 name',
-    read: false,
-    createDate: '2022-08-25T13:21:52',
-  },
-  {
-    notificationNo: 1004,
-    title: '[프로젝트 참가 신청] project21 name',
-    read: false,
-    createDate: '2022-08-25T13:21:52',
-  },
-  {
-    notificationNo: 1004,
-    title: '[프로젝트 참가 신청] project21 name',
-    read: true,
-    createDate: '2022-08-25T13:21:52',
-  },
-];
 
 const Notification = () => {
   const [notifications, setNotifications] = useState<
     fetchedData<NotificationType>
   >({ content: [], last: false });
-  const dispatch = useDispatch();
-  const notificationModal = useAppSelector(
-    (state) => state.modal.NotificationModal
-  );
-  const userInfo = useAppSelector((state) => state.user.userInfo);
 
-  const openNotificationModal = (notification: NotificationType) => {
-    dispatch(notificationDetail(notification.notificationNo));
-    dispatch(openModal('NotificationModal'));
-  };
+  const userInfo = useAppSelector((state) => state.user.userInfo);
 
   useEffect(() => {
     try {
@@ -143,24 +98,14 @@ const Notification = () => {
               title="알림"
             >
               {notifications.content.map((notification) => (
-                <Article
+                <NotificationArticle
                   key={notification.notificationNo}
-                  read={notification.read}
-                  onClick={() => openNotificationModal(notification)}
-                >
-                  <CreatedDate>{notification.createDate}</CreatedDate>
-                  <ArticleContnet>{notification.title}</ArticleContnet>
-                  <Read>{notification.read ? `읽음` : '안 읽음'}</Read>
-                </Article>
+                  notification={notification}
+                />
               ))}
             </InfiniteScrollLayout>
           </Section>
         </Container>
-      )}
-      {notificationModal && (
-        <Backdrop>
-          <NotificationModal />
-        </Backdrop>
       )}
     </PrimaryLayout>
   );

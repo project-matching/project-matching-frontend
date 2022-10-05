@@ -2,13 +2,9 @@ import styled from '@emotion/styled';
 import Link from 'next/link';
 import notificationImage from 'public/notification.png';
 import { useEffect, useRef, useState } from 'react';
-import { useDispatch } from 'react-redux';
 import { useAppSelector } from 'src/redux/hooks';
-import { openModal } from 'src/redux/reducers/components/modals';
-import { notificationDetail } from 'src/redux/reducers/notification';
 import { NotificationService } from 'src/services/NotificationService';
-import { Backdrop } from '../Modals/Backdrop';
-import NotificationModal from '../Modals/NotificationModal';
+import NotificationContainer from './NotificationContainer';
 import ImageToggle from './ToggleDropdown/ImageToggle';
 
 const Dropdown = styled.div`
@@ -29,6 +25,7 @@ const LinkContainer = styled.div`
   justify-content: center;
 
   > a:last-child {
+    font-size: ${(props) => props.theme.sizes.sm};
     margin: 5px 0;
     text-align: center;
   }
@@ -45,11 +42,8 @@ const Notification = () => {
   const [notificationPreview, setNotificationPreview] = useState<
     NotificationType[] | null
   >(null);
-  const dispatch = useDispatch();
-  const notificationModal = useAppSelector(
-    (state) => state.modal.NotificationModal
-  );
   const userInfo = useAppSelector((state) => state.user.userInfo);
+
   const [isOpen, setOpen] = useState(false);
 
   const Container = styled.div`
@@ -60,28 +54,6 @@ const Notification = () => {
 
     > ${Dropdown} {
       visibility: ${isOpen ? 'visible' : 'hidden'};
-    }
-  `;
-
-  interface NotificationStyleType {
-    read?: boolean;
-  }
-
-  const NotificationContainer = styled.a<NotificationStyleType>`
-    ${(props) =>
-      `color: ${
-        props.read ? props.theme.colors.gray : props.theme.colors.black
-      };`}
-    width: inherit;
-    font-size: ${(props) => props.theme.sizes.sm};
-    overflow: hidden;
-    margin-bottom: 10px;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    line-height: 1.2;
-
-    &:visited {
-      ${(props) => `color: ${props.theme.colors.gray};`}
     }
   `;
 
@@ -99,21 +71,6 @@ const Notification = () => {
 
   const toggleDropdown = () => {
     setOpen(!isOpen);
-  };
-
-  const openNotificationModal = (notification: NotificationType) => {
-    /**
-     * TODO:
-     *
-     * 로직
-     * 1. global notification 상태 만들기 (O)
-     * 2. 모달 창 열기 (O)
-     * 3. 모달 창에 상태 내용 넣기 (O)
-     * 4. 모달 창 닫을 때 notification 상태 null로 변경 (O)
-     * 5. 에러 핸들링
-     */
-    dispatch(notificationDetail(notification.notificationNo));
-    dispatch(openModal('NotificationModal'));
   };
 
   useEffect(() => {
@@ -145,23 +102,15 @@ const Notification = () => {
           {notificationPreview &&
             notificationPreview.map((notification) => (
               <NotificationContainer
-                read={notification.read}
                 key={notification.notificationNo}
-                onClick={() => openNotificationModal(notification)}
-              >
-                {notification.title}
-              </NotificationContainer>
+                notification={notification}
+              />
             ))}
           <Link href="/notification" passHref>
-            <NotificationContainer>알림 더보기</NotificationContainer>
+            <a>알림 더보기</a>
           </Link>
         </LinkContainer>
       </Dropdown>
-      {notificationModal && (
-        <Backdrop>
-          <NotificationModal />
-        </Backdrop>
-      )}
     </Container>
   );
 };
