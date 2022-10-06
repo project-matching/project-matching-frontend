@@ -28,17 +28,18 @@ const Left = styled.div`
 
 const Main = styled.div`
   width: 100%;
-  background-color: #5454;
+  border: 1px solid #d4d4d4;
   padding: 0 20px;
   padding-bottom: 20px;
 `;
+
 const Introduction = styled.div`
   padding: 20px 0;
 `;
 
 const CommentSection = styled.section`
   width: 100%;
-  background-color: #5454;
+  border: 1px solid #d4d4d4;
   margin-top: 30px;
 `;
 
@@ -47,7 +48,7 @@ const CommentBox = styled.article`
   flex-direction: column;
   margin: 5px;
   padding: 20px;
-  background-color: #dad8daec;
+  border: 1px solid #d4d4d4;
 
   h3 {
     font-size: 20px;
@@ -68,58 +69,22 @@ const CommentBox = styled.article`
   }
 `;
 
-const fakeData = {
-  applicationStatus: true,
-  bookmark: true,
-  currentPeople: 3,
-  endDate: '22-09-02',
-  introduction: '와인을 추천',
-  maxPeople: 5,
-  name: '와인 추천 웹 사이트',
-  projectNo: 0,
-  projectPositionDetailDtoList: [
-    {
-      positionName: 'PM',
-      projectPositionNo: 0,
-      userDto: {
-        name: 'steve',
-        no: 0,
-        register: false,
-      },
-    },
-    {
-      positionName: 'Designer',
-      projectPositionNo: 1,
-      userDto: {
-        name: 'chong',
-        no: 1,
-        register: true,
-      },
-    },
-    {
-      positionName: 'FE',
-      projectPositionNo: 3,
-      userDto: null,
-    },
-    {
-      positionName: 'FE',
-      projectPositionNo: 3,
-      userDto: {
-        name: 'waz',
-        no: 2,
-        register: false,
-      },
-    },
-    {
-      positionName: 'BE',
-      projectPositionNo: 4,
-      userDto: null,
-    },
-  ],
-  startDate: '22-08-21',
-  state: true,
-  technicalStackList: ['typescript', 'next.js', 'redux'],
-};
+const CommentPageBtn = styled.div`
+  display: flex;
+  justify-content: space-around;
+
+  button {
+    margin: 0 2%;
+    border: 0;
+    outline: 0;
+    padding: 5px;
+    cursor: pointer;
+    &:hover {
+      background-color: gray;
+    }
+  }
+`
+
 interface userDto {
   name: string;
   no: number;
@@ -168,7 +133,30 @@ const ProjectDetail = ({ project, comment }: Props) => {
   const [isApplicant, setIsApplicant] = useState<boolean>(false);
   const [isRegister, setIsRegister] = useState<boolean>(false);
   const [comments, setComments] = useState<comment[]>(comment);
+  const [commentPageNo, setCommentPageNo] = useState<number>(0);
+  const [isLast, setIsLast] = useState<boolean>(false);
   const router = useRouter();
+  
+  const commentPageController = (e: React.BaseSyntheticEvent) => {
+    const id = e.target.id;
+
+    if (id === "next") {
+      setCommentPageNo(prev => prev + 1);
+    }
+
+    if (id === "prev") {
+      setCommentPageNo(prev => prev !== 0 ? prev - 1 : prev);
+    }
+  }
+
+  useEffect(() => {
+    const projectNo = parseInt(router.query.id as string);
+    (async() => {
+      const commentData = await CommentService.getComments(projectNo as number, commentPageNo);
+      setComments(commentData.data.content);
+      setIsLast(commentData.data.last);
+    })();
+  }, [commentPageNo]);
 
   useEffect(() => {
     const positionDetailList = projectData.projectPositionDetailDtoList;
@@ -240,6 +228,10 @@ const ProjectDetail = ({ project, comment }: Props) => {
                 </>
               );
             })}
+            <CommentPageBtn onClick={commentPageController}>
+              <button id="prev">이전</button>
+              <button id="next" disabled={isLast}>다음</button>
+            </CommentPageBtn>
           </CommentSection>
         </Left>
         {projectData && (
@@ -258,7 +250,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const projectNo = +(context.query.id || '');
 
   const projectData = await ProjectService.getProjectDetail(projectNo);
-  const commentData = await CommentService.getComments(projectNo);
+  const commentData = await CommentService.getComments(projectNo, 0);
   return {
     props: {
       project: projectData.data,

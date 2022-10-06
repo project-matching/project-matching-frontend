@@ -19,7 +19,7 @@ const Wrapper = styled.div`
   flex-direction: column;
   justify-content: space-evenly;
   padding: 20px;
-  background-color: #4242;
+  border: 1px solid #d4d4d4;
 
   h1 {
     font-size: 20px;
@@ -30,6 +30,7 @@ const Wrapper = styled.div`
     border: 0;
     outline: 0;
     padding: 5px;
+    margin-bottom: 20px;
     cursor: pointer;
     &:hover {
     background-color: gray;
@@ -38,6 +39,7 @@ const Wrapper = styled.div`
 `;
 
 const PeriodRow = styled.div`
+  margin-bottom: 10px;
 `
 
 const MemberRow = styled.div`
@@ -51,10 +53,15 @@ const MemberRow = styled.div`
 
 const MemberDetail = styled.div`
   display: flex;
-  justify-content: space-evenly;
+  justify-content: space-around;
 
   .leader {
+    width: 50%;
     color: #ff0000;
+  }
+
+  button {
+    width: 50%;
   }
 `;
 
@@ -63,11 +70,6 @@ const TechRow = styled.div`
 `;
 
 const ButtonRows = styled.div`
-  position: fixed;
-  width: 20%;
-  right: 5%;
-  bottom: 7%;
-
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -76,8 +78,7 @@ const ButtonRows = styled.div`
   button {
     border: 0;
     outline: 0;
-    padding: 5px;
-    margin: 5% 0;
+    margin-bottom: 5%;
     cursor: pointer;
     width: 100%;
     &:hover {
@@ -164,38 +165,38 @@ interface IUser {
 }
 
 interface IPosition {
-  positionName: string,
-  projectPositionNo: number,
-  userDto: IUser | null
+  positionName: string;
+  projectPositionNo: number;
+  userDto: IUser | null;
 }
 
 interface Idata {
-  applicationStatus: boolean,
-  bookmark: boolean,
-  currentPeople: number,
-  endDate: string,
-  introduction: string,
-  maxPeople: number,
-  name: string,
-  projectNo: number,
-  projectPositionDetailDtoList: IPosition[],
-  startDate: string,
-  state: boolean,
-  technicalStackList: string[]
+  applicationStatus: boolean;
+  bookmark: boolean;
+  currentPeople: number;
+  endDate: string;
+  introduction: string;
+  maxPeople: number;
+  name: string;
+  projectNo: number;
+  projectPositionDetailDtoList: IPosition[];
+  startDate: string;
+  state: boolean;
+  technicalStackList: string[];
 }
 
 interface applicant {
-  motive: string,
-  positionName: string,
-  projectParticipateNo: number,
-  technicalStackList: string[],
-  userName: string,
+  motive: string;
+  positionName: string;
+  projectParticipateNo: number;
+  technicalStackList: string[];
+  userName: string;
 }
 
 interface Props {
-  data: Idata,
-  isRegister: boolean,
-  isParticipant: boolean,
+  data: Idata;
+  isRegister: boolean;
+  isParticipant: boolean;
 }
 
 const Side: FC<Props> = ({ data, isRegister, isParticipant }) => {
