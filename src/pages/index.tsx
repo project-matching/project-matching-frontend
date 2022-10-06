@@ -1,6 +1,6 @@
 import PrimaryProjectLayout from '@/components/Projects/PrimaryProjectLayout';
 import MainSearchBar from '@/components/SearchBar/MainSearchBar';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import PrimaryLayout from 'src/components/Layouts/PrimaryLayout';
 import { useAppSelector } from 'src/redux/hooks';
 import { ProjectService, ProjectType } from 'src/services/ProjectService';
@@ -11,6 +11,7 @@ interface PropTypes {
 }
 
 const Home = ({ initRecruitingProjects, initRecruitedProjects }: PropTypes) => {
+  const initMount = useRef(true);
   const userInfo = useAppSelector((state) => state.user.userInfo);
   const [recruitingProjects, setRecruitingProjects] = useState(
     initRecruitingProjects
@@ -20,13 +21,20 @@ const Home = ({ initRecruitingProjects, initRecruitedProjects }: PropTypes) => {
   );
 
   useEffect(() => {
-    try {
-      (async () => {
-        setRecruitingProjects(await ProjectService.recruitingProjectPreview());
-        setRecruitedProjects(await ProjectService.recruitedProjectPreview());
-      })();
-    } catch (error: any) {
-      // TODO: 네트워크 상태를 확인해주세요.
+    if (initMount.current) {
+      initMount.current = false;
+    } else {
+      Promise.all([
+        ProjectService.recruitingProjectPreview(),
+        ProjectService.recruitedProjectPreview(),
+      ])
+        .then(([recruiting, recruited]) => {
+          setRecruitingProjects(recruiting);
+          setRecruitedProjects(recruited);
+        })
+        .catch((_error) => {
+          // TODO: 에러처리
+        });
     }
   }, [userInfo.no]);
 

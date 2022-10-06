@@ -6,25 +6,22 @@ import { useDispatch } from 'react-redux';
 import { useAppSelector } from 'src/redux/hooks';
 import { getUserProfile } from 'src/redux/reducers/users';
 
-/**
- * TODO:
- * 구현 사항
- * 비로그인 시 접근 불가 -> 홈으로 리다이렉트
- */
-
 const MyPage = () => {
+  const userInfo = useAppSelector((state) => state.user.userInfo);
   const userProfile = useAppSelector((state) => state.user.userProfile);
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(getUserProfile());
-  }, [dispatch]);
+  }, [userInfo.no, dispatch]);
 
   return (
     <PrimaryLayout>
-      <MyPageLayout>
-        <MyProfile myProfile={userProfile} />
-      </MyPageLayout>
+      {userInfo.no && (
+        <MyPageLayout>
+          <MyProfile myProfile={userProfile} />
+        </MyPageLayout>
+      )}
     </PrimaryLayout>
   );
 };

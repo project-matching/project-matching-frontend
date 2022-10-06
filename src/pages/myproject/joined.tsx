@@ -3,11 +3,14 @@ import InfiniteScrollLayout, {
 } from '@/components/Layouts/InfiniteScrollLayout';
 import SecondaryProjectLayout from '@/components/Projects/SecondaryProjectLayout';
 import { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import PrimaryLayout from 'src/components/Layouts/PrimaryLayout';
 import { useAppSelector } from 'src/redux/hooks';
+import { openModal } from 'src/redux/reducers/components/modals';
 import { ProjectService, ProjectType } from 'src/services/ProjectService';
 
 const MyJoinedProject = () => {
+  const dispatch = useDispatch();
   const userInfo = useAppSelector((state) => state.user.userInfo);
 
   const [joinedProject, setJoinedProject] = useState<fetchedData<ProjectType>>({
@@ -16,16 +19,12 @@ const MyJoinedProject = () => {
   });
 
   useEffect(() => {
-    try {
-      userInfo.no &&
-        (async () => {
-          setJoinedProject(await ProjectService.joinedProject());
-        })();
-    } catch (error: any) {
-      // TODO: 네트워크 상태를 확인해주세요.
-      // TODO: 로그인을 해주세요.
-    }
-  }, [userInfo.no]);
+    ProjectService.joinedProject()
+      .then((joined) => setJoinedProject(joined))
+      .catch((_error) => {
+        dispatch(openModal('AuthModal'));
+      });
+  }, [userInfo.no, dispatch]);
 
   return (
     <PrimaryLayout>
