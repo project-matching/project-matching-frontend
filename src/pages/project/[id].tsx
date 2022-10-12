@@ -83,7 +83,7 @@ const CommentPageBtn = styled.div`
       background-color: gray;
     }
   }
-`
+`;
 
 interface userDto {
   name: string;
@@ -136,23 +136,26 @@ const ProjectDetail = ({ project, comment }: Props) => {
   const [commentPageNo, setCommentPageNo] = useState<number>(0);
   const [isLast, setIsLast] = useState<boolean>(false);
   const router = useRouter();
-  
+
   const commentPageController = (e: React.BaseSyntheticEvent) => {
     const id = e.target.id;
 
-    if (id === "next") {
-      setCommentPageNo(prev => prev + 1);
+    if (id === 'next') {
+      setCommentPageNo((prev) => prev + 1);
     }
 
-    if (id === "prev") {
-      setCommentPageNo(prev => prev !== 0 ? prev - 1 : prev);
+    if (id === 'prev') {
+      setCommentPageNo((prev) => (prev !== 0 ? prev - 1 : prev));
     }
-  }
+  };
 
   useEffect(() => {
     const projectNo = parseInt(router.query.id as string);
-    (async() => {
-      const commentData = await CommentService.getComments(projectNo as number, commentPageNo);
+    (async () => {
+      const commentData = await CommentService.getComments(
+        projectNo as number,
+        commentPageNo
+      );
       setComments(commentData.data.content);
       setIsLast(commentData.data.last);
     })();
@@ -215,22 +218,22 @@ const ProjectDetail = ({ project, comment }: Props) => {
               const isRegistrant = userInfo.no === comment.userNo;
 
               return (
-                <>
-                  <CommentBox>
-                    <h3>{comment.registrant}</h3>
-                    <Comment
-                      contentNo={comment.commentNo}
-                      content={comment.content}
-                      isRegistrant={isRegistrant}
-                    />
-                    <footer>{date.substring(0, date.indexOf('T'))}</footer>
-                  </CommentBox>
-                </>
+                <CommentBox key={comment.commentNo}>
+                  <h3>{comment.registrant}</h3>
+                  <Comment
+                    contentNo={comment.commentNo}
+                    content={comment.content}
+                    isRegistrant={isRegistrant}
+                  />
+                  <footer>{date.substring(0, date.indexOf('T'))}</footer>
+                </CommentBox>
               );
             })}
             <CommentPageBtn onClick={commentPageController}>
               <button id="prev">이전</button>
-              <button id="next" disabled={isLast}>다음</button>
+              <button id="next" disabled={isLast}>
+                다음
+              </button>
             </CommentPageBtn>
           </CommentSection>
         </Left>
