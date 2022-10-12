@@ -1,17 +1,13 @@
 import styled from '@emotion/styled';
 import { ChangeEvent, useState } from 'react';
 import { CommentService } from '../../services/CommentService';
+import SecondaryButton from '../Buttons/SecondaryButton';
 
 const CommentLayout = styled.div`
+  font-size: ${(props) => props.theme.sizes.m};
   button {
-    border: 0;
-    outline: 0;
     padding: 5px;
     margin: 0 3px;
-    cursor: pointer;
-    &:hover {
-      background-color: gray;
-    }
   }
 `;
 
@@ -50,11 +46,11 @@ const Comment = ({ content, contentNo, isRegistrant }: Props) => {
       {isRegistrant && (
         <aside>
           {isEditing ? (
-            <button onClick={onEdit}>저장</button>
+            <SecondaryButton onClick={onEdit}>저장</SecondaryButton>
           ) : (
-            <button onClick={onEdit}>수정</button>
+            <SecondaryButton onClick={onEdit}>수정</SecondaryButton>
           )}
-          <button onClick={onDelete}>삭제</button>
+          <SecondaryButton onClick={onDelete}>삭제</SecondaryButton>
         </aside>
       )}
     </CommentLayout>

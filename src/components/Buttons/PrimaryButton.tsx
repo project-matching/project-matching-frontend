@@ -2,6 +2,7 @@ import styled from '@emotion/styled';
 
 type ButtonProps = {
   wFull?: boolean;
+  gray?: boolean;
 };
 
 const PrimaryButton = styled.button<ButtonProps>`
@@ -14,7 +15,8 @@ const PrimaryButton = styled.button<ButtonProps>`
   border-radius: 3px;
   border: none;
   color: white;
-  background-color: ${(props) => props.theme.colors.primary};
+  background-color: ${(props) =>
+    props.gray ? props.theme.colors.gray : props.theme.colors.primary};
   cursor: pointer;
 `;
 export default PrimaryButton;

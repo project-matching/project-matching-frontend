@@ -3,6 +3,7 @@ import { FC, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useAppSelector } from 'src/redux/hooks';
 import { openModal } from 'src/redux/reducers/components/modals';
+import SmallButton from '../Buttons/SmallButton';
 import { Backdrop } from '../Modals/Backdrop';
 import PositionApplyModal from '../Modals/PositionApplyModal';
 
@@ -14,16 +15,13 @@ const PositionContainer = styled.div`
 const PositionItem = styled.div`
   display: flex;
   justify-content: space-between;
+  align-items: center;
   width: 40%;
   margin: 5px;
-`;
 
-const ApplyButton = styled.button`
-  border: 0;
-  outline: 0;
-  cursor: pointer;
-  &:hover {
-    background-color: gray;
+  button {
+    margin: 0;
+    font-size: ${(props) => props.theme.sizes.sm};
   }
 `;
 
@@ -108,14 +106,14 @@ const Position: FC<Props> = ({
                 {currentApplicants} / {totalApplicants}
               </div>
               {!isParticipant && !isRegister && (
-                <ApplyButton
+                <SmallButton
                   disabled={state}
                   onClick={() => {
                     openApplyModal(positionName);
                   }}
                 >
-                  {state || isApplicant ? 'Done' : 'Apply'}
-                </ApplyButton>
+                  {state || isApplicant ? '모집완료' : '지원하기'}
+                </SmallButton>
               )}
             </PositionItem>
           );
