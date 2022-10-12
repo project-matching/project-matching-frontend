@@ -192,7 +192,7 @@ const ProjectDetail = ({ project, comment }: Props) => {
   return (
     <PrimaryLayout>
       <Title title={projectData?.name} />
-      <State>{!projectData?.applicationStatus ? '모집중' : '모집종료'}</State>
+      <State>{!projectData?.state ? '모집종료' : '모집중'}</State>
       <Wrapper>
         <Left>
           <Main>
