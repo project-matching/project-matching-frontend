@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import { useRouter } from 'next/router';
-import { FC, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import useBookmark from 'src/hooks/useBookmark';
 import { useAppSelector } from 'src/redux/hooks';
@@ -8,14 +8,16 @@ import { openModal } from 'src/redux/reducers/components/modals';
 import { PositionService } from 'src/services/PositionService';
 import { ProjectService } from '../../services/ProjectService';
 import Title from '../auth/Title';
+import PrimaryButton from '../Buttons/PrimaryButton';
+import SecondaryButton from '../Buttons/SecondaryButton';
+import SmallButton from '../Buttons/SmallButton';
 import { Backdrop } from '../Modals/Backdrop';
 import RejectModal from '../Modals/RejectModal';
 
 const Wrapper = styled.div`
-  width: 20%;
-  position: fixed;
-  right: 5%;
-  display: flex;
+  width: 250px;
+  position: sticky;
+  top: 120px;
   flex-direction: column;
   justify-content: space-evenly;
   padding: 20px;
@@ -27,20 +29,14 @@ const Wrapper = styled.div`
   }
 
   button {
-    border: 0;
-    outline: 0;
     padding: 5px;
     margin-bottom: 20px;
-    cursor: pointer;
-    &:hover {
-    background-color: gray;
-    }
   }
 `;
 
 const PeriodRow = styled.div`
   margin-bottom: 10px;
-`
+`;
 
 const MemberRow = styled.div`
   display: flex;
@@ -52,16 +48,25 @@ const MemberRow = styled.div`
 `;
 
 const MemberDetail = styled.div`
-  display: flex;
-  justify-content: space-around;
+  height: 20px;
+  display: grid;
+  grid-template-columns: 2fr 2fr 1fr;
+  align-items: center;
 
   .leader {
     width: 50%;
     color: #ff0000;
   }
 
-  button {
-    width: 50%;
+  span {
+    font-size: ${(props) => props.theme.sizes.m};
+  }
+
+  > button {
+    line-height: 1.7;
+    margin: 0;
+    padding: 0px;
+    height: 20px;
   }
 `;
 
@@ -76,14 +81,7 @@ const ButtonRows = styled.div`
   align-items: center;
 
   button {
-    border: 0;
-    outline: 0;
     margin-bottom: 5%;
-    cursor: pointer;
-    width: 100%;
-    &:hover {
-    background-color: gray;
-    }
   }
 `;
 
@@ -105,7 +103,7 @@ const ManagingPage = styled.main`
     font-weight: bold;
     cursor: pointer;
   }
-`
+`;
 
 const ApplicantBox = styled.article`
   width: 90%;
@@ -113,7 +111,7 @@ const ApplicantBox = styled.article`
   background-color: #4242;
   margin: 2% 0;
   padding: 2%;
-`
+`;
 
 const ApplicantInfoSection = styled.section`
   display: flex;
@@ -124,7 +122,7 @@ const ApplicantInfoSection = styled.section`
   main {
     margin-right: 15%;
   }
-`
+`;
 
 const ApplicantInfoItem = styled.div`
   width: 100%;
@@ -140,7 +138,7 @@ const ApplicantMotive = styled.div`
   span {
     font-weight: 900;
   }
-`
+`;
 
 const ApplicantButtonRow = styled.div`
   display: flex;
@@ -156,7 +154,7 @@ const ApplicantButtonRow = styled.div`
       background-color: gray;
     }
   }
-`
+`;
 
 interface IUser {
   name: string;
@@ -200,107 +198,155 @@ interface Props {
 }
 
 const Side: FC<Props> = ({ data, isRegister, isParticipant }) => {
-  const { bookmark, toggleBookmark } = useBookmark();
+  const { bookmark, setBookmark, toggleBookmark } = useBookmark();
   const [onModal, setOnModal] = useState<boolean>(false);
   const [applicants, setApplicants] = useState<applicant[]>([]);
-  const user = useAppSelector(state => state.user.userInfo);
-  const rejectModal = useAppSelector(state => state.modal.RejectModal);
+  const user = useAppSelector((state) => state.user.userInfo);
+  const rejectModal = useAppSelector((state) => state.modal.RejectModal);
   const dispatch = useDispatch();
   const router = useRouter();
 
   const clickHandler = async (e: React.BaseSyntheticEvent) => {
     const id = e.target.id;
 
-    if (id === "manage") {
+    if (id === 'manage') {
       if (!applicants.length) {
-        const response = await ProjectService.getProjectApplicants(router.query.id as string);
+        const response = await ProjectService.getProjectApplicants(
+          router.query.id as string
+        );
         setApplicants(response.content);
       }
       setOnModal(true);
     }
 
-    if (id === "modification") {
+    if (id === 'modification') {
       const { id } = router.query;
       router.push(`${id}/modification`);
     }
 
-    if  (id === "quit") {
-      const myPosition = data.projectPositionDetailDtoList.find(dto => dto.userDto?.no === user.no);
-      const response = await PositionService.withdrawPosition(myPosition?.projectPositionNo as number);
+    if (id === 'quit') {
+      const myPosition = data.projectPositionDetailDtoList.find(
+        (dto) => dto.userDto?.no === user.no
+      );
+      const response = await PositionService.withdrawPosition(
+        myPosition?.projectPositionNo as number
+      );
       // 500 error "PROJECT_POSITION_NOT_EQUAL_USER"
     }
-  }
+  };
 
-  const applicantButtonHandler = async (e: React.BaseSyntheticEvent, participantNo: number) => {
+  const applicantButtonHandler = async (
+    e: React.BaseSyntheticEvent,
+    participantNo: number
+  ) => {
     const id = e.target.id;
 
-    if (id === "allow") {
+    if (id === 'allow') {
       await ProjectService.allowProjectApplicant(participantNo);
     }
 
-    if (id === "reject") {
-      dispatch(openModal("RejectModal"));
+    if (id === 'reject') {
+      dispatch(openModal('RejectModal'));
     }
-  }
+  };
 
   const clickBanishmentBtn = () => {
-    dispatch(openModal("RejectModal"));
-  }
+    dispatch(openModal('RejectModal'));
+  };
+
+  useEffect(() => {
+    setBookmark(data.bookmark);
+    console.log(data.bookmark);
+  }, [data.bookmark, setBookmark, bookmark]);
 
   return (
     <Wrapper>
       <Title title="Project Detail" />
       <PeriodRow>
-        <h1>Period</h1>
-        <div>{data?.startDate} ~ {data?.endDate}</div>
+        <h2>프로젝트 기간</h2>
+        <div>
+          {data?.startDate} ~ {data?.endDate}
+        </div>
       </PeriodRow>
       <MemberRow>
-        <h1>Current Members({data.currentPeople} / {data.maxPeople}) </h1>
-        {data.projectPositionDetailDtoList.map(member => {
+        <h2>
+          현재 인원({data.currentPeople} / {data.maxPeople}){' '}
+        </h2>
+        {data.projectPositionDetailDtoList.map((member) => {
           if (!member.userDto) return null;
           return (
             <MemberDetail key={member.userDto.name}>
               <span>{member.positionName}</span>
               <span>{member.userDto.name} </span>
-              {member.userDto.register && <span className="leader">(Leader)</span>}
-              {isRegister && !member.userDto.register && <button onClick={clickBanishmentBtn}>추방</button>}
-              {rejectModal && 
-                    <RejectModal title="프로젝트 추방" participateNo={member.projectPositionNo} isExpulsion={true}/> }
+              {member.userDto.register && (
+                <span className="leader">(Leader)</span>
+              )}
+              {isRegister && !member.userDto.register && (
+                <SmallButton gray onClick={clickBanishmentBtn}>
+                  추방
+                </SmallButton>
+              )}
+              {rejectModal && (
+                <RejectModal
+                  title="프로젝트 추방"
+                  participateNo={member.projectPositionNo}
+                  username={member.userDto.name}
+                  isExpulsion={true}
+                />
+              )}
             </MemberDetail>
-          )
+          );
         })}
       </MemberRow>
       <TechRow>
-        <h1>Tech Stacks</h1>
-        {data.technicalStackList.map(stack => {
-          return (
-            <div key={stack}>{stack}</div>
-          )
+        <h1>기술 스택</h1>
+        {data.technicalStackList.map((stack) => {
+          return <div key={stack}>{stack}</div>;
         })}
       </TechRow>
-      <button onClick={() => {toggleBookmark(data.projectNo)}} disabled={bookmark}>Bookmark</button>
+      <PrimaryButton
+        wFull
+        onClick={() => {
+          toggleBookmark(data.projectNo);
+        }}
+        gray={bookmark ? true : false}
+      >
+        {bookmark ? '북마크 해제' : '북마크'}
+      </PrimaryButton>
       <ButtonRows onClick={clickHandler}>
-        {isRegister ? 
-        <>
-          <button id="complete">모집완료</button>
-          <button id="modification">수정하기</button>
-          <button id="manage">신청자 관리</button>
-        </>
-        :
-        isParticipant ? 
-        <button id="quit">탈퇴하기</button>
-        : null
-        }
+        {isRegister ? (
+          <>
+            <PrimaryButton wFull id="complete">
+              모집완료
+            </PrimaryButton>
+            <PrimaryButton wFull id="modification">
+              수정하기
+            </PrimaryButton>
+            <PrimaryButton wFull id="manage">
+              신청자 관리
+            </PrimaryButton>
+          </>
+        ) : isParticipant ? (
+          <PrimaryButton wFull id="quit">
+            탈퇴하기
+          </PrimaryButton>
+        ) : null}
       </ButtonRows>
-      {onModal && 
+      {onModal && (
         <Backdrop>
           <ManagingPage>
-            <header onClick={() => {setOnModal(false)}}>X</header>
-            {applicants.map(applicant => {
-              return(
+            <header
+              onClick={() => {
+                setOnModal(false);
+              }}
+            >
+              X
+            </header>
+            {applicants.map((applicant) => {
+              return (
                 <>
                   <ApplicantBox key={applicant.projectParticipateNo}>
-                    <ApplicantInfoSection >
+                    <ApplicantInfoSection>
                       <aside>{applicant.userName}</aside>
                       <main className="info">
                         <ApplicantInfoItem>
@@ -308,11 +354,11 @@ const Side: FC<Props> = ({ data, isRegister, isParticipant }) => {
                           <span>{applicant.positionName}</span>
                         </ApplicantInfoItem>
                         <ApplicantInfoItem>
-                          <span className="title">기술 스택</span> 
+                          <span className="title">기술 스택</span>
                           <span>{applicant.technicalStackList}</span>
                         </ApplicantInfoItem>
                         <ApplicantInfoItem>
-                          <span className="title">깃허브 주소</span> 
+                          <span className="title">깃허브 주소</span>
                           <span>not allowed</span>
                         </ApplicantInfoItem>
                       </main>
@@ -321,19 +367,32 @@ const Side: FC<Props> = ({ data, isRegister, isParticipant }) => {
                         <div>{applicant.motive}</div>
                       </ApplicantMotive>
                     </ApplicantInfoSection>
-                    <ApplicantButtonRow onClick={(e) => applicantButtonHandler(e, applicant.projectParticipateNo)}>
-                      <button id="allow">수락하기</button>
-                      <button id="reject">거절하기</button>
+                    <ApplicantButtonRow
+                      onClick={(e) =>
+                        applicantButtonHandler(
+                          e,
+                          applicant.projectParticipateNo
+                        )
+                      }
+                    >
+                      <PrimaryButton id="allow">수락하기</PrimaryButton>
+                      <SecondaryButton id="reject">거절하기</SecondaryButton>
                     </ApplicantButtonRow>
                   </ApplicantBox>
-                  {rejectModal && 
-                    <RejectModal title="프로젝트 참가 신청 거절" participateNo={applicant.projectParticipateNo} isExpulsion={false}/> }
+                  {rejectModal && (
+                    <RejectModal
+                      title="프로젝트 참가 신청 거절"
+                      participateNo={applicant.projectParticipateNo}
+                      username={applicant.userName}
+                      isExpulsion={false}
+                    />
+                  )}
                 </>
               );
             })}
           </ManagingPage>
         </Backdrop>
-      }
+      )}
     </Wrapper>
   );
 };

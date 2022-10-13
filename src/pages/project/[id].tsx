@@ -1,4 +1,5 @@
 import Title from '@/components/auth/Title';
+import SecondaryButton from '@/components/Buttons/SecondaryButton';
 import CommentInput from '@/components/Inputs/CommentInput';
 import PrimaryLayout from '@/components/Layouts/PrimaryLayout';
 import Position from '@/components/Post/Position';
@@ -6,7 +7,7 @@ import Side from '@/components/Post/Side';
 import styled from '@emotion/styled';
 import { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useAppSelector } from 'src/redux/hooks';
 import { ProjectService } from 'src/services/ProjectService';
 import Comment from '../../components/Post/Comment';
@@ -18,12 +19,15 @@ const State = styled.h3`
 
 const Wrapper = styled.div`
   margin-top: 30px;
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: 3fr 1fr;
+  justify-content: space-between;
+  gap: 30px;
+  align-items: flex-start;
 `;
 
 const Left = styled.div`
-  width: 70%;
+  width: 100%;
 `;
 
 const Main = styled.div`
@@ -75,15 +79,9 @@ const CommentPageBtn = styled.div`
 
   button {
     margin: 0 2%;
-    border: 0;
-    outline: 0;
     padding: 5px;
-    cursor: pointer;
-    &:hover {
-      background-color: gray;
-    }
   }
-`
+`;
 
 interface userDto {
   name: string;
@@ -127,6 +125,7 @@ interface Props {
 
 const ProjectDetail = ({ project, comment }: Props) => {
   const token = useAppSelector((state) => state.auth.token);
+  const initMount = useRef(true);
   const { userInfo, userProfile } = useAppSelector((state) => state.user);
   const [projectData, setProjectData] = useState<data>(project);
   const [isParticipant, setIsParticipant] = useState<boolean>(false);
@@ -136,23 +135,26 @@ const ProjectDetail = ({ project, comment }: Props) => {
   const [commentPageNo, setCommentPageNo] = useState<number>(0);
   const [isLast, setIsLast] = useState<boolean>(false);
   const router = useRouter();
-  
+
   const commentPageController = (e: React.BaseSyntheticEvent) => {
     const id = e.target.id;
 
-    if (id === "next") {
-      setCommentPageNo(prev => prev + 1);
+    if (id === 'next') {
+      setCommentPageNo((prev) => prev + 1);
     }
 
-    if (id === "prev") {
-      setCommentPageNo(prev => prev !== 0 ? prev - 1 : prev);
+    if (id === 'prev') {
+      setCommentPageNo((prev) => (prev !== 0 ? prev - 1 : prev));
     }
-  }
+  };
 
   useEffect(() => {
     const projectNo = parseInt(router.query.id as string);
-    (async() => {
-      const commentData = await CommentService.getComments(projectNo as number, commentPageNo);
+    (async () => {
+      const commentData = await CommentService.getComments(
+        projectNo as number,
+        commentPageNo
+      );
       setComments(commentData.data.content);
       setIsLast(commentData.data.last);
     })();
@@ -177,19 +179,20 @@ const ProjectDetail = ({ project, comment }: Props) => {
   }, [userInfo]);
 
   useEffect(() => {
-    userInfo.no &&
-      (async () => {
-        const data = await ProjectService.getProjectDetail(
-          projectData.projectNo
-        );
+    if (initMount.current) {
+      initMount.current = false;
+    } else {
+      ProjectService.getProjectDetail(projectData.projectNo).then((data) => {
         setIsApplicant(data.data.applicationStatus);
-      })();
+        setProjectData(data.data);
+      });
+    }
   }, [userInfo.no, projectData.projectNo]);
 
   return (
     <PrimaryLayout>
       <Title title={projectData?.name} />
-      <State>{!projectData?.applicationStatus ? '모집중' : '모집종료'}</State>
+      <State>{!projectData?.state ? '모집종료' : '모집중'}</State>
       <Wrapper>
         <Left>
           <Main>
@@ -215,22 +218,22 @@ const ProjectDetail = ({ project, comment }: Props) => {
               const isRegistrant = userInfo.no === comment.userNo;
 
               return (
-                <>
-                  <CommentBox>
-                    <h3>{comment.registrant}</h3>
-                    <Comment
-                      contentNo={comment.commentNo}
-                      content={comment.content}
-                      isRegistrant={isRegistrant}
-                    />
-                    <footer>{date.substring(0, date.indexOf('T'))}</footer>
-                  </CommentBox>
-                </>
+                <CommentBox key={comment.commentNo}>
+                  <h4>{comment.registrant}</h4>
+                  <Comment
+                    contentNo={comment.commentNo}
+                    content={comment.content}
+                    isRegistrant={isRegistrant}
+                  />
+                  <footer>{date.substring(0, date.indexOf('T'))}</footer>
+                </CommentBox>
               );
             })}
             <CommentPageBtn onClick={commentPageController}>
-              <button id="prev">이전</button>
-              <button id="next" disabled={isLast}>다음</button>
+              <SecondaryButton id="prev">이전</SecondaryButton>
+              <SecondaryButton id="next" disabled={isLast}>
+                다음
+              </SecondaryButton>
             </CommentPageBtn>
           </CommentSection>
         </Left>
