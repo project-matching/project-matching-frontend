@@ -148,6 +148,10 @@ const MultiSelectDropdown = ({
     };
   });
 
+  useEffect(() => {
+    setOption(filterSelectedItems(items, selectedItems));
+  }, [selectedItems, items]);
+
   return (
     <>
       {items.length > 0 && (
