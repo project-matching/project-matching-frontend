@@ -26,7 +26,7 @@
 
 ---
 
-![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/7d71d03d-4d93-467a-8eb5-73d57db746af/Untitled.png)
+![Untitled](https://s3.us-west-2.amazonaws.com/secure.notion-static.com/7d71d03d-4d93-467a-8eb5-73d57db746af/Untitled.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45EIPT3X45%2F20221014%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20221014T121251Z&X-Amz-Expires=86400&X-Amz-Signature=5c50f0062811e89ba913d494d8e42baaf649b5c688210df7beb66b76c7e3e963&X-Amz-SignedHeaders=host&response-content-disposition=filename%20%3D%22Untitled.png%22&x-id=GetObject)
 
 ## 프로젝트 목표
 
