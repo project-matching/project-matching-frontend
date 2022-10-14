@@ -102,11 +102,11 @@ const TechStackItem = ({
      * confirm 모달 열기
      * 모달에서 확인 누르면 api call
      */
-    if (!imageFile || !inputValue) return;
+    if (!imageFile && !inputValue) return;
 
     const formData = new FormData();
-    formData.set('image', imageFile);
-    formData.set('technicalStackName', inputValue);
+    imageFile && formData.set('image', imageFile);
+    inputValue && formData.set('technicalStackName', inputValue);
 
     dispatch(putTechStack({ technicalStackNo, formData }));
     setEdit(false);

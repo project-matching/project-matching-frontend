@@ -221,7 +221,6 @@ const MyProfileChange = ({ myProfile }: MyProfileProps) => {
     // TODO: 수정 제출
     const formData = new FormData();
     for (const [key, value] of Object.entries(data)) {
-      console.log(key, value);
       if (Array.isArray(value)) {
         value.forEach((item) => {
           formData.append(key, item);
