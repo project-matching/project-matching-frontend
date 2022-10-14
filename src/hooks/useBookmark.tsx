@@ -15,11 +15,11 @@ const useBookmark = () => {
         } else {
           await BookmarkService.deleteBookmarks(projectNo);
         }
-        setBookmark(!bookmark);
-      } catch (error) {
-        // 에러 처리
-        console.error(error);
-        dispatch(openModal('AuthModal'));
+        setBookmark((prev) => !prev);
+      } catch (error: any) {
+        if (error.code !== 'ECONNABORTED') {
+          dispatch(openModal('AuthModal'));
+        }
       }
     },
     [bookmark, dispatch]

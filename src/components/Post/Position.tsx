@@ -69,7 +69,7 @@ const Position: FC<Props> = ({
     if (!userInfo.no) return dispatch(openModal('AuthModal'));
 
     const position = positionList?.filter(
-      (position) => position.positionName === applyPosition
+      (position) => position.positionName === applyPosition && !position.userDto
     );
 
     dispatch(openModal('PositionApplyModal'));

@@ -90,7 +90,7 @@ const PositionApplyModal: FC<Props> = ({
   position,
   positionNo,
 }) => {
-  const [listedTechStack, setListedTechStack] = useState<string[]>(['JS']);
+  const [listedTechStack, setListedTechStack] = useState<string[]>([]);
   const [techStack, setTechStack] = useState<string[]>([]);
   const [githubLink, setGithubLink] = useState<string>('');
   const [motive, setMotive] = useState<string>('');
@@ -160,11 +160,13 @@ const PositionApplyModal: FC<Props> = ({
                 내 프로필로 자동 완성
               </SmallButton>
             </Title>
-            <MultiSelectDropdown
-              items={listedTechStack}
-              selectedItems={techStack}
-              setSelectedItem={setTechStack}
-            />
+            {listedTechStack.length && (
+              <MultiSelectDropdown
+                items={listedTechStack}
+                selectedItems={techStack}
+                setSelectedItem={setTechStack}
+              />
+            )}
           </TechBox>
           <TechBox>
             <Title>깃허브 주소</Title>
