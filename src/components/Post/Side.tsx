@@ -256,7 +256,6 @@ const Side: FC<Props> = ({ data, isRegister, isParticipant }) => {
 
   useEffect(() => {
     setBookmark(data.bookmark);
-    console.log(data.bookmark);
   }, [data.bookmark, setBookmark, bookmark]);
 
   return (
@@ -314,7 +313,7 @@ const Side: FC<Props> = ({ data, isRegister, isParticipant }) => {
         {bookmark ? '북마크 해제' : '북마크'}
       </PrimaryButton>
       <ButtonRows onClick={clickHandler}>
-        {isRegister ? (
+        {user.no && isRegister ? (
           <>
             <PrimaryButton wFull id="complete">
               모집완료
@@ -326,7 +325,7 @@ const Side: FC<Props> = ({ data, isRegister, isParticipant }) => {
               신청자 관리
             </PrimaryButton>
           </>
-        ) : isParticipant ? (
+        ) : user.no && isParticipant ? (
           <PrimaryButton wFull id="quit">
             탈퇴하기
           </PrimaryButton>
