@@ -103,8 +103,10 @@ const PositionApplyModal: FC<Props> = ({
   const fillMyProfile = async () => {
     const myProfile = await UserService.getUserProfile();
     const myTechStack = myProfile.technicalStackList;
+    const myGithubLink = myProfile.github;
 
     setTechStack(myTechStack);
+    myGithubLink && setGithubLink(myGithubLink);
   };
 
   const writeGithubLink = (e: ChangeEvent<HTMLInputElement>) => {
