@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import defaultProfileImage from 'public/default_profile.png';
-import { useEffect, useRef } from 'react';
+import { useRef } from 'react';
 import useBookmark from 'src/hooks/useBookmark';
 import { useAppSelector } from 'src/redux/hooks';
 import { ProjectType } from 'src/services/ProjectService';
@@ -139,7 +139,9 @@ const LargeCard = ({ projectDto, update = false }: LargeCardProps) => {
   } = projectDto;
 
   // TODO: 프레젠테이션 컴포넌트로 변경 가능한지 확인
-  const { bookmark, setBookmark, toggleBookmark } = useBookmark();
+  const { bookmark, toggleBookmark } = useBookmark({
+    initBookmark,
+  });
   const { role } = useAppSelector((state) => state.user.userInfo);
   const bookmarkRef = useRef<HTMLElement>(null);
 
@@ -168,10 +170,6 @@ const LargeCard = ({ projectDto, update = false }: LargeCardProps) => {
 
     router.push(`/project/${projectNo}`);
   };
-
-  useEffect(() => {
-    setBookmark(initBookmark);
-  }, [initBookmark, setBookmark]);
 
   return (
     <>

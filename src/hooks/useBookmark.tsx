@@ -1,9 +1,13 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { openModal } from 'src/redux/reducers/components/modals';
 import { BookmarkService } from 'src/services/BookmarkService';
 
-const useBookmark = () => {
+interface Props {
+  initBookmark: boolean;
+}
+
+const useBookmark = ({ initBookmark }: Props) => {
   const dispatch = useDispatch();
   const [bookmark, setBookmark] = useState(false);
 
@@ -24,6 +28,10 @@ const useBookmark = () => {
     },
     [bookmark, dispatch]
   );
+
+  useEffect(() => {
+    setBookmark(initBookmark);
+  }, [initBookmark, setBookmark]);
 
   return { bookmark, setBookmark, toggleBookmark };
 };
