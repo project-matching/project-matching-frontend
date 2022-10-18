@@ -147,8 +147,8 @@ interface MyProfileProps {
 
 const MyProfileChange = ({ myProfile }: MyProfileProps) => {
   const dispatch = useDispatch();
-  const [defaultPositions, setDefaultPositions] = useState<Array<string>>([]);
-  const [defaultTechStacks, setDefaultTechStacks] = useState<Array<string>>([]);
+  const [defaultPositions, setDefaultPositions] = useState<string[]>([]);
+  const [defaultTechStacks, setDefaultTechStacks] = useState<string[]>([]);
 
   const {
     email,
@@ -311,17 +311,15 @@ const MyProfileChange = ({ myProfile }: MyProfileProps) => {
             />
           </InfoLi>
         )}
-        {defaultTechStacks.length && (
-          <InfoLi vertical={true}>
-            <InfoTitle htmlFor="techStack">기술 스택</InfoTitle>
-            <MultiSelectDropdown
-              id="techStack"
-              items={defaultTechStacks}
-              selectedItems={techStacks}
-              setSelectedItem={setTechStack}
-            />
-          </InfoLi>
-        )}
+        <InfoLi vertical={true}>
+          <InfoTitle htmlFor="techStack">기술 스택</InfoTitle>
+          <MultiSelectDropdown
+            id="techStack"
+            items={defaultTechStacks}
+            selectedItems={techStacks}
+            setSelectedItem={setTechStack}
+          />
+        </InfoLi>
         <InfoLi>
           <InfoTitle htmlFor="github">Github</InfoTitle>
           <input id="github" value={github} onChange={handleChangeGithub} />

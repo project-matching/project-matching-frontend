@@ -99,10 +99,7 @@ const MultiSelectDropdown = ({
   selectedItems,
   setSelectedItem,
 }: DropdownProps) => {
-  const filterSelectedItems = (items: string[], selectedItems: string[]) =>
-    items.filter((item) => !selectedItems.includes(item));
-
-  const [options, setOption] = useState(
+  const [options, setOption] = useState<string[]>(
     filterSelectedItems(items, selectedItems)
   );
   const [open, setOpen] = useState(false);
@@ -148,6 +145,15 @@ const MultiSelectDropdown = ({
     };
   });
 
+  useEffect(() => {
+    setOption((_options) => {
+      const filteredOptions = filterSelectedItems(items, selectedItems);
+      return filteredOptions.filter(
+        (option) => !selectedItems.includes(option)
+      );
+    });
+  }, [items, selectedItems]);
+
   return (
     <>
       {items.length > 0 && (
@@ -185,3 +191,6 @@ const MultiSelectDropdown = ({
 };
 
 export default MultiSelectDropdown;
+
+const filterSelectedItems = (items: string[], selectedItems: string[]) =>
+  items.filter((item) => !selectedItems.includes(item));

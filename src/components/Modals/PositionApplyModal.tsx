@@ -90,7 +90,7 @@ const PositionApplyModal: FC<Props> = ({
   position,
   positionNo,
 }) => {
-  const [listedTechStack, setListedTechStack] = useState<string[]>(['JS']);
+  const [listedTechStack, setListedTechStack] = useState<string[]>([]);
   const [techStack, setTechStack] = useState<string[]>([]);
   const [githubLink, setGithubLink] = useState<string>('');
   const [motive, setMotive] = useState<string>('');
@@ -133,10 +133,11 @@ const PositionApplyModal: FC<Props> = ({
   };
 
   useEffect(() => {
-    (async () => {
-      const response = await TechStackService.getTechStacks();
-      setListedTechStack(response.map((data: data) => data.technicalStackName));
-    })();
+    TechStackService.getTechStacks().then((data) => {
+      setListedTechStack(
+        data.map((techStack: data) => techStack.technicalStackName)
+      );
+    });
 
     document.body.style.overflow = 'hidden';
 
