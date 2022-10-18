@@ -161,13 +161,11 @@ const PositionApplyModal: FC<Props> = ({
                 내 프로필로 자동 완성
               </SmallButton>
             </Title>
-            {listedTechStack.length && (
-              <MultiSelectDropdown
-                items={listedTechStack}
-                selectedItems={techStack}
-                setSelectedItem={setTechStack}
-              />
-            )}
+            <MultiSelectDropdown
+              items={listedTechStack}
+              selectedItems={techStack}
+              setSelectedItem={setTechStack}
+            />
           </TechBox>
           <TechBox>
             <Title>깃허브 주소</Title>
