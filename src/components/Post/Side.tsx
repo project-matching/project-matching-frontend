@@ -256,8 +256,7 @@ const Side: FC<Props> = ({ data, isRegister, isParticipant }) => {
 
   useEffect(() => {
     setBookmark(data.bookmark);
-    console.log(data.bookmark);
-  }, [data.bookmark, setBookmark, bookmark]);
+  }, [data.bookmark, setBookmark]);
 
   return (
     <Wrapper>
@@ -314,7 +313,7 @@ const Side: FC<Props> = ({ data, isRegister, isParticipant }) => {
         {bookmark ? '북마크 해제' : '북마크'}
       </PrimaryButton>
       <ButtonRows onClick={clickHandler}>
-        {isRegister ? (
+        {user.no && isRegister ? (
           <>
             <PrimaryButton wFull id="complete">
               모집완료
@@ -326,7 +325,7 @@ const Side: FC<Props> = ({ data, isRegister, isParticipant }) => {
               신청자 관리
             </PrimaryButton>
           </>
-        ) : isParticipant ? (
+        ) : user.no && isParticipant ? (
           <PrimaryButton wFull id="quit">
             탈퇴하기
           </PrimaryButton>
@@ -342,54 +341,58 @@ const Side: FC<Props> = ({ data, isRegister, isParticipant }) => {
             >
               X
             </header>
-            {applicants.map((applicant) => {
-              return (
-                <>
-                  <ApplicantBox key={applicant.projectParticipateNo}>
-                    <ApplicantInfoSection>
-                      <aside>{applicant.userName}</aside>
-                      <main className="info">
-                        <ApplicantInfoItem>
-                          <span className="title">포지션</span>
-                          <span>{applicant.positionName}</span>
-                        </ApplicantInfoItem>
-                        <ApplicantInfoItem>
-                          <span className="title">기술 스택</span>
-                          <span>{applicant.technicalStackList}</span>
-                        </ApplicantInfoItem>
-                        <ApplicantInfoItem>
-                          <span className="title">깃허브 주소</span>
-                          <span>not allowed</span>
-                        </ApplicantInfoItem>
-                      </main>
-                      <ApplicantMotive>
-                        <span>신청 동기</span>
-                        <div>{applicant.motive}</div>
-                      </ApplicantMotive>
-                    </ApplicantInfoSection>
-                    <ApplicantButtonRow
-                      onClick={(e) =>
-                        applicantButtonHandler(
-                          e,
-                          applicant.projectParticipateNo
-                        )
-                      }
-                    >
-                      <PrimaryButton id="allow">수락하기</PrimaryButton>
-                      <SecondaryButton id="reject">거절하기</SecondaryButton>
-                    </ApplicantButtonRow>
-                  </ApplicantBox>
-                  {rejectModal && (
-                    <RejectModal
-                      title="프로젝트 참가 신청 거절"
-                      participateNo={applicant.projectParticipateNo}
-                      username={applicant.userName}
-                      isExpulsion={false}
-                    />
-                  )}
-                </>
-              );
-            })}
+            {applicants.length ? (
+              applicants.map((applicant) => {
+                return (
+                  <>
+                    <ApplicantBox key={applicant.projectParticipateNo}>
+                      <ApplicantInfoSection>
+                        <aside>{applicant.userName}</aside>
+                        <main className="info">
+                          <ApplicantInfoItem>
+                            <span className="title">포지션</span>
+                            <span>{applicant.positionName}</span>
+                          </ApplicantInfoItem>
+                          <ApplicantInfoItem>
+                            <span className="title">기술 스택</span>
+                            <span>{applicant.technicalStackList}</span>
+                          </ApplicantInfoItem>
+                          <ApplicantInfoItem>
+                            <span className="title">깃허브 주소</span>
+                            <span>not allowed</span>
+                          </ApplicantInfoItem>
+                        </main>
+                        <ApplicantMotive>
+                          <span>신청 동기</span>
+                          <div>{applicant.motive}</div>
+                        </ApplicantMotive>
+                      </ApplicantInfoSection>
+                      <ApplicantButtonRow
+                        onClick={(e) =>
+                          applicantButtonHandler(
+                            e,
+                            applicant.projectParticipateNo
+                          )
+                        }
+                      >
+                        <PrimaryButton id="allow">수락하기</PrimaryButton>
+                        <SecondaryButton id="reject">거절하기</SecondaryButton>
+                      </ApplicantButtonRow>
+                    </ApplicantBox>
+                    {rejectModal && (
+                      <RejectModal
+                        title="프로젝트 참가 신청 거절"
+                        participateNo={applicant.projectParticipateNo}
+                        username={applicant.userName}
+                        isExpulsion={false}
+                      />
+                    )}
+                  </>
+                );
+              })
+            ) : (
+              <span>신청자가 없습니다.</span>
+            )}
           </ManagingPage>
         </Backdrop>
       )}

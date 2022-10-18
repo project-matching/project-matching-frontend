@@ -158,9 +158,14 @@ const ProjectDetail = ({ project, comment }: Props) => {
       setComments(commentData.data.content);
       setIsLast(commentData.data.last);
     })();
-  }, [commentPageNo]);
+  }, [commentPageNo, router.query.id]);
 
   useEffect(() => {
+    if (!userInfo.no) {
+      setIsParticipant(false);
+      setIsRegister(false);
+    }
+
     const positionDetailList = projectData.projectPositionDetailDtoList;
     const Participants: (number | null | undefined)[] = positionDetailList.map(
       (position) => position.userDto?.no
@@ -176,7 +181,7 @@ const ProjectDetail = ({ project, comment }: Props) => {
         if (userDto.register) setIsRegister(true);
       }
     });
-  }, [userInfo]);
+  }, [userInfo.no, projectData.projectPositionDetailDtoList]);
 
   useEffect(() => {
     if (initMount.current) {
