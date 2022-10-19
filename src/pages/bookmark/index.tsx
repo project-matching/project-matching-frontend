@@ -1,7 +1,7 @@
 import InfiniteScrollLayout, {
   fetchedData,
 } from '@/components/Layouts/InfiniteScrollLayout';
-import BookmarkProjectLayout from '@/components/Projects/BookmarkProjectLayout';
+import SecondaryProjectLayout from '@/components/Projects/SecondaryProjectLayout';
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import PrimaryLayout from 'src/components/Layouts/PrimaryLayout';
@@ -34,9 +34,10 @@ const Bookmark = () => {
           data={bookmarkedProjects}
           setData={setBookmarkedProjects}
         >
-          <BookmarkProjectLayout
+          <SecondaryProjectLayout
             title="즐겨찾기한 프로젝트"
             projectDtoList={bookmarkedProjects.content}
+            bookmarkOnly={true}
           />
         </InfiniteScrollLayout>
       )}
