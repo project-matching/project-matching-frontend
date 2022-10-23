@@ -2,7 +2,7 @@ import InfiniteScrollLayout, {
   fetchedData,
 } from '@/components/Layouts/InfiniteScrollLayout';
 import SecondaryProjectLayout from '@/components/Projects/SecondaryProjectLayout';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import PrimaryLayout from 'src/components/Layouts/PrimaryLayout';
 import { useAppSelector } from 'src/redux/hooks';
 import { ProjectService, ProjectType } from 'src/services/ProjectService';
@@ -12,14 +12,23 @@ interface PropTypes {
 }
 
 const Recruited = ({ initProjects }: PropTypes) => {
-  const token = useAppSelector((state) => state.auth.token);
+  const initMount = useRef(true);
+  const userInfo = useAppSelector((state) => state.user.userInfo);
   const [recruitedProjects, setRecruitedProject] = useState(initProjects);
 
   useEffect(() => {
-    (async () => {
-      setRecruitedProject(await ProjectService.recruitedProject());
-    })();
-  }, [token]);
+    if (initMount.current) {
+      initMount.current = false;
+    } else {
+      try {
+        (async () => {
+          setRecruitedProject(await ProjectService.recruitedProject());
+        })();
+      } catch (error: any) {
+        // TODO: 네트워크 상태를 확인해주세요.
+      }
+    }
+  }, [userInfo.no]);
 
   return (
     <PrimaryLayout>

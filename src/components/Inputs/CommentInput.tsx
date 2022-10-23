@@ -37,7 +37,7 @@ const CommentInput = ({ projectNo, setComments }: PropType) => {
       formRef.current?.setAttribute('disabled', '');
 
       await CommentService.postComment(projectNo, { content: commentValue });
-      setComments(await CommentService.getComments(projectNo));
+      setComments(await CommentService.getComments(projectNo, 0));
       commentValue = '';
 
       formRef.current?.removeAttribute('disabled');

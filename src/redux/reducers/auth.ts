@@ -1,5 +1,9 @@
 import { createAction, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { SigninReqType, SignupReqType } from 'src/redux/sagas/authSaga';
+import {
+  DelayReqType,
+  SigninReqType,
+  SignupReqType,
+} from 'src/redux/sagas/authSaga';
 import { reissueReqType } from './../../services/UserService';
 
 interface AuthState {
@@ -65,5 +69,9 @@ export const signOut = createAction(`${authState}/signOut`);
 export const reissueToken = createAction<reissueReqType>(
   `${authState}/reissueToken`
 );
+export const delayReissue = createAction<DelayReqType>(
+  `${authState}/delayReissue`
+);
+export const validateToken = createAction(`${authState}/validateToken`);
 
 export default authSlice.reducer;

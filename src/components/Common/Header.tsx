@@ -11,7 +11,7 @@ import Profile from '../Headers/Profile';
 import AuthModal from '../Modals/AuthModal';
 import SignupEmailSentModal from '../Modals/SignupEmailSentModal';
 import HeaderSearchBar from '../SearchBar/HeaderSearchBar';
-import Logo from './Logo';
+import LogoLink from './LogoLink';
 
 export const Flex = styled.div`
   display: flex;
@@ -45,8 +45,7 @@ const Header: React.FC = () => {
     font-weight: bold;
   `;
 
-  const { token } = useAppSelector((state) => state.auth);
-  const { role } = useAppSelector((state) => state.user.userInfo);
+  const userInfo = useAppSelector((state) => state.user.userInfo);
   const authModal = useAppSelector((state) => state.modal.AuthModal);
   const signupEmailSentModal = useAppSelector(
     (state) => state.modal.SignupEmailSentModal
@@ -54,7 +53,7 @@ const Header: React.FC = () => {
   const dispatch = useDispatch();
 
   const openRecruitModal = () => {
-    if (!token) {
+    if (!userInfo.no) {
       dispatch(openModal('AuthModal'));
       return;
     }
@@ -71,7 +70,7 @@ const Header: React.FC = () => {
       <Wrapper>
         <HeaderContainer>
           <Flex>
-            <Logo />
+            <LogoLink />
             <Nav>
               <Link href="/" passHref>
                 <A>Home</A>
@@ -82,7 +81,7 @@ const Header: React.FC = () => {
               <Link href="/recruited" passHref>
                 <A>Recruited</A>
               </Link>
-              {role === 'ROLE_ADMIN' && (
+              {userInfo.role === 'ROLE_ADMIN' && (
                 <Link href="/dashboard" passHref>
                   <A>Dashboard</A>
                 </Link>
@@ -91,16 +90,18 @@ const Header: React.FC = () => {
           </Flex>
           <Flex>
             {router.asPath !== '/' && <HeaderSearchBar />}
-            {role !== 'ROLE_ADMIN' && (
-              <PrimaryButton onClick={openRecruitModal}>Recruit</PrimaryButton>
+            {userInfo.role !== 'ROLE_ADMIN' && (
+              <PrimaryButton onClick={openRecruitModal}>
+                새 프로젝트
+              </PrimaryButton>
             )}
-            {token ? (
+            {userInfo.no ? (
               <>
                 <Notification />
                 <Profile />
               </>
             ) : (
-              <PrimaryButton onClick={openAuthModal}>Log In</PrimaryButton>
+              <PrimaryButton onClick={openAuthModal}>로그인</PrimaryButton>
             )}
           </Flex>
         </HeaderContainer>

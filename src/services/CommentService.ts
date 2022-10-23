@@ -5,9 +5,12 @@ interface dto {
 }
 
 export class CommentService {
-  public static async getComments(projectNo?: number | number[]) {
-    const response = await appApi.get(`/comment/${projectNo}`);
-
+  public static async getComments(projectNo: number, page: number) {
+    const response = await appApi.get(`/comment/${projectNo}`, {
+      params: {
+        page,
+      },
+    });
     return response.data;
   }
 

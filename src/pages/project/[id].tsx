@@ -1,4 +1,5 @@
 import Title from '@/components/auth/Title';
+import SecondaryButton from '@/components/Buttons/SecondaryButton';
 import CommentInput from '@/components/Inputs/CommentInput';
 import PrimaryLayout from '@/components/Layouts/PrimaryLayout';
 import Position from '@/components/Post/Position';
@@ -6,7 +7,7 @@ import Side from '@/components/Post/Side';
 import styled from '@emotion/styled';
 import { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useAppSelector } from 'src/redux/hooks';
 import { ProjectService } from 'src/services/ProjectService';
 import Comment from '../../components/Post/Comment';
@@ -18,27 +19,31 @@ const State = styled.h3`
 
 const Wrapper = styled.div`
   margin-top: 30px;
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: 3fr 1fr;
+  justify-content: space-between;
+  gap: 30px;
+  align-items: flex-start;
 `;
 
 const Left = styled.div`
-  width: 70%;
+  width: 100%;
 `;
 
 const Main = styled.div`
   width: 100%;
-  background-color: #5454;
+  border: 1px solid #d4d4d4;
   padding: 0 20px;
   padding-bottom: 20px;
 `;
+
 const Introduction = styled.div`
   padding: 20px 0;
 `;
 
 const CommentSection = styled.section`
   width: 100%;
-  background-color: #5454;
+  border: 1px solid #d4d4d4;
   margin-top: 30px;
 `;
 
@@ -47,7 +52,7 @@ const CommentBox = styled.article`
   flex-direction: column;
   margin: 5px;
   padding: 20px;
-  background-color: #dad8daec;
+  border: 1px solid #d4d4d4;
 
   h3 {
     font-size: 20px;
@@ -68,58 +73,16 @@ const CommentBox = styled.article`
   }
 `;
 
-const fakeData = {
-  applicationStatus: true,
-  bookmark: true,
-  currentPeople: 3,
-  endDate: '22-09-02',
-  introduction: '와인을 추천',
-  maxPeople: 5,
-  name: '와인 추천 웹 사이트',
-  projectNo: 0,
-  projectPositionDetailDtoList: [
-    {
-      positionName: 'PM',
-      projectPositionNo: 0,
-      userDto: {
-        name: 'steve',
-        no: 0,
-        register: false,
-      },
-    },
-    {
-      positionName: 'Designer',
-      projectPositionNo: 1,
-      userDto: {
-        name: 'chong',
-        no: 1,
-        register: true,
-      },
-    },
-    {
-      positionName: 'FE',
-      projectPositionNo: 3,
-      userDto: null,
-    },
-    {
-      positionName: 'FE',
-      projectPositionNo: 3,
-      userDto: {
-        name: 'waz',
-        no: 2,
-        register: false,
-      },
-    },
-    {
-      positionName: 'BE',
-      projectPositionNo: 4,
-      userDto: null,
-    },
-  ],
-  startDate: '22-08-21',
-  state: true,
-  technicalStackList: ['typescript', 'next.js', 'redux'],
-};
+const CommentPageBtn = styled.div`
+  display: flex;
+  justify-content: space-around;
+
+  button {
+    margin: 0 2%;
+    padding: 5px;
+  }
+`;
+
 interface userDto {
   name: string;
   no: number;
@@ -162,15 +125,47 @@ interface Props {
 
 const ProjectDetail = ({ project, comment }: Props) => {
   const token = useAppSelector((state) => state.auth.token);
+  const initMount = useRef(true);
   const { userInfo, userProfile } = useAppSelector((state) => state.user);
   const [projectData, setProjectData] = useState<data>(project);
   const [isParticipant, setIsParticipant] = useState<boolean>(false);
   const [isApplicant, setIsApplicant] = useState<boolean>(false);
   const [isRegister, setIsRegister] = useState<boolean>(false);
   const [comments, setComments] = useState<comment[]>(comment);
+  const [commentPageNo, setCommentPageNo] = useState<number>(0);
+  const [isLast, setIsLast] = useState<boolean>(false);
   const router = useRouter();
 
+  const commentPageController = (e: React.BaseSyntheticEvent) => {
+    const id = e.target.id;
+
+    if (id === 'next') {
+      setCommentPageNo((prev) => prev + 1);
+    }
+
+    if (id === 'prev') {
+      setCommentPageNo((prev) => (prev !== 0 ? prev - 1 : prev));
+    }
+  };
+
   useEffect(() => {
+    const projectNo = parseInt(router.query.id as string);
+    (async () => {
+      const commentData = await CommentService.getComments(
+        projectNo as number,
+        commentPageNo
+      );
+      setComments(commentData.data.content);
+      setIsLast(commentData.data.last);
+    })();
+  }, [commentPageNo, router.query.id]);
+
+  useEffect(() => {
+    if (!userInfo.no) {
+      setIsParticipant(false);
+      setIsRegister(false);
+    }
+
     const positionDetailList = projectData.projectPositionDetailDtoList;
     const Participants: (number | null | undefined)[] = positionDetailList.map(
       (position) => position.userDto?.no
@@ -186,22 +181,23 @@ const ProjectDetail = ({ project, comment }: Props) => {
         if (userDto.register) setIsRegister(true);
       }
     });
-  }, [userInfo]);
+  }, [userInfo.no, projectData.projectPositionDetailDtoList]);
 
   useEffect(() => {
-    token &&
-      (async () => {
-        const { applicationStatus } = await ProjectService.getProjectDetail(
-          projectData.projectNo
-        );
-        setIsApplicant(applicationStatus);
-      })();
-  }, [token]);
+    if (initMount.current) {
+      initMount.current = false;
+    } else {
+      ProjectService.getProjectDetail(projectData.projectNo).then((data) => {
+        setIsApplicant(data.data.applicationStatus);
+        setProjectData(data.data);
+      });
+    }
+  }, [userInfo.no, projectData.projectNo]);
 
   return (
     <PrimaryLayout>
       <Title title={projectData?.name} />
-      <State>{!projectData?.applicationStatus ? '모집중' : '모집종료'}</State>
+      <State>{!projectData?.state ? '모집종료' : '모집중'}</State>
       <Wrapper>
         <Left>
           <Main>
@@ -227,19 +223,23 @@ const ProjectDetail = ({ project, comment }: Props) => {
               const isRegistrant = userInfo.no === comment.userNo;
 
               return (
-                <>
-                  <CommentBox>
-                    <h3>{comment.registrant}</h3>
-                    <Comment
-                      contentNo={comment.commentNo}
-                      content={comment.content}
-                      isRegistrant={isRegistrant}
-                    />
-                    <footer>{date.substring(0, date.indexOf('T'))}</footer>
-                  </CommentBox>
-                </>
+                <CommentBox key={comment.commentNo}>
+                  <h4>{comment.registrant}</h4>
+                  <Comment
+                    contentNo={comment.commentNo}
+                    content={comment.content}
+                    isRegistrant={isRegistrant}
+                  />
+                  <footer>{date.substring(0, date.indexOf('T'))}</footer>
+                </CommentBox>
               );
             })}
+            <CommentPageBtn onClick={commentPageController}>
+              <SecondaryButton id="prev">이전</SecondaryButton>
+              <SecondaryButton id="next" disabled={isLast}>
+                다음
+              </SecondaryButton>
+            </CommentPageBtn>
           </CommentSection>
         </Left>
         {projectData && (
@@ -258,7 +258,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const projectNo = +(context.query.id || '');
 
   const projectData = await ProjectService.getProjectDetail(projectNo);
-  const commentData = await CommentService.getComments(projectNo);
+  const commentData = await CommentService.getComments(projectNo, 0);
   return {
     props: {
       project: projectData.data,

@@ -1,27 +1,38 @@
 import PrimaryLayout from '@/components/Layouts/PrimaryLayout';
 import PrimaryProjectLayout from '@/components/Projects/PrimaryProjectLayout';
 import { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { useAppSelector } from 'src/redux/hooks';
-import { ProjectService } from 'src/services/ProjectService';
+import { openModal } from 'src/redux/reducers/components/modals';
+import { ProjectService, ProjectType } from 'src/services/ProjectService';
 
 const MyProject = () => {
-  const token = useAppSelector((state) => state.auth.token);
+  const dispatch = useDispatch();
+  const userInfo = useAppSelector((state) => state.user.userInfo);
 
-  const [createdProject, setCreatedProject] = useState([]);
-  const [joinedProject, setJoinedProject] = useState([]);
-  const [appliedProject, setAppliedProject] = useState([]);
+  const [createdProject, setCreatedProject] = useState<ProjectType[]>([]);
+  const [joinedProject, setJoinedProject] = useState<ProjectType[]>([]);
+  const [appliedProject, setAppliedProject] = useState<ProjectType[]>([]);
 
   useEffect(() => {
-    (async () => {
-      setCreatedProject(await ProjectService.createdProjectPreview());
-      setJoinedProject(await ProjectService.joinedProjectPreview());
-      setAppliedProject(await ProjectService.appliedProjectPreview());
-    })();
-  }, [token]);
+    Promise.all([
+      ProjectService.createdProjectPreview(),
+      ProjectService.joinedProjectPreview(),
+      ProjectService.appliedProjectPreview(),
+    ])
+      .then(([created, joined, applied]) => {
+        setCreatedProject(created);
+        setJoinedProject(joined);
+        setAppliedProject(applied);
+      })
+      .catch((_error) => {
+        dispatch(openModal('AuthModal'));
+      });
+  }, [userInfo.no, dispatch]);
 
   return (
     <PrimaryLayout>
-      {token && (
+      {userInfo.no && (
         <>
           <PrimaryProjectLayout
             title="내가 만든 프로젝트"

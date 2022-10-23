@@ -93,7 +93,11 @@ export class UserService {
   public static async reissueToken(
     reqData: reissueReqType
   ): Promise<reissuedType> {
-    const response = await appApi.post(`/common/token/reissue`, reqData);
+    const response = await appApi.post(`/common/token/reissue`, reqData, {
+      headers: {
+        Authorization: '',
+      },
+    });
     return response.data.data;
   }
 

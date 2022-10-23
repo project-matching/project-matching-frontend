@@ -7,21 +7,23 @@ import { useAppSelector } from 'src/redux/hooks';
 import { getUserProfile } from 'src/redux/reducers/users';
 
 const MyPageChangeProfile = () => {
+  const userInfo = useAppSelector((state) => state.user.userInfo);
   const userProfile = useAppSelector((state) => state.user.userProfile);
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(getUserProfile());
-  }, [dispatch]);
+  }, [userInfo.no, dispatch]);
 
   return (
     <PrimaryLayout>
-      <MyPageLayout>
-        <MyProfileChange myProfile={userProfile} />
-      </MyPageLayout>
+      {userInfo.no && (
+        <MyPageLayout>
+          <MyProfileChange myProfile={userProfile} />
+        </MyPageLayout>
+      )}
     </PrimaryLayout>
   );
 };
 
 export default MyPageChangeProfile;
-MyPageChangeProfile;

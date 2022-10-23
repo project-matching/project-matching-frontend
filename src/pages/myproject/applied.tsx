@@ -3,12 +3,15 @@ import InfiniteScrollLayout, {
 } from '@/components/Layouts/InfiniteScrollLayout';
 import SecondaryProjectLayout from '@/components/Projects/SecondaryProjectLayout';
 import { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import PrimaryLayout from 'src/components/Layouts/PrimaryLayout';
 import { useAppSelector } from 'src/redux/hooks';
+import { openModal } from 'src/redux/reducers/components/modals';
 import { ProjectService, ProjectType } from 'src/services/ProjectService';
 
 const MyAppliedProject = () => {
-  const token = useAppSelector((state) => state.auth.token);
+  const dispatch = useDispatch();
+  const userInfo = useAppSelector((state) => state.user.userInfo);
 
   const [appliedProject, setAppliedProject] = useState<
     fetchedData<ProjectType>
@@ -18,15 +21,16 @@ const MyAppliedProject = () => {
   });
 
   useEffect(() => {
-    token &&
-      (async () => {
-        setAppliedProject(await ProjectService.appliedProject());
-      })();
-  }, [token]);
+    ProjectService.appliedProject()
+      .then((applied) => setAppliedProject(applied))
+      .catch((_error) => {
+        dispatch(openModal('AuthModal'));
+      });
+  }, [userInfo.no, dispatch]);
 
   return (
     <PrimaryLayout>
-      {token && (
+      {userInfo.no && (
         <InfiniteScrollLayout
           api={ProjectService.appliedProject}
           data={appliedProject}

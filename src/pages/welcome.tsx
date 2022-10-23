@@ -29,14 +29,6 @@ const ButtonContainer = styled.div`
 `;
 
 const Welcome = () => {
-  /**
-   * 회원가입 환영메세지
-   *
-   * TODO:
-   * 1. 저장된 토큰으로 유저정보 불러오기
-   * 2. 추가 정보 입력 이동
-   */
-
   const userInfo = useAppSelector((state) => state.user.userInfo);
   const dispatch = useDispatch();
 

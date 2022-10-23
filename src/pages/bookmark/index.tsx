@@ -1,38 +1,43 @@
 import InfiniteScrollLayout, {
   fetchedData,
 } from '@/components/Layouts/InfiniteScrollLayout';
-import BookmarkProjectLayout from '@/components/Projects/BookmarkProjectLayout';
+import SecondaryProjectLayout from '@/components/Projects/SecondaryProjectLayout';
 import { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import PrimaryLayout from 'src/components/Layouts/PrimaryLayout';
 import { useAppSelector } from 'src/redux/hooks';
+import { openModal } from 'src/redux/reducers/components/modals';
 import { BookmarkService } from 'src/services/BookmarkService';
 import { ProjectType } from 'src/services/ProjectService';
 
 const Bookmark = () => {
-  const token = useAppSelector((state) => state.auth.token);
+  const dispatch = useDispatch();
+  const userInfo = useAppSelector((state) => state.user.userInfo);
+
   const [bookmarkedProjects, setBookmarkedProjects] = useState<
     fetchedData<ProjectType>
   >({ content: [], last: false });
 
   useEffect(() => {
-    token &&
-      (async () => {
-        const fetchedBookmarkedProjects = await BookmarkService.getBookmarks();
-        setBookmarkedProjects(fetchedBookmarkedProjects);
-      })();
-  }, [token]);
+    BookmarkService.getBookmarks()
+      .then((bookmarked) => setBookmarkedProjects(bookmarked))
+      .catch((_error) => {
+        dispatch(openModal('AuthModal'));
+      });
+  }, [userInfo.no, dispatch]);
 
   return (
     <PrimaryLayout>
-      {token && bookmarkedProjects.content.length && (
+      {userInfo.no && bookmarkedProjects.content.length && (
         <InfiniteScrollLayout
           api={BookmarkService.getBookmarks}
           data={bookmarkedProjects}
           setData={setBookmarkedProjects}
         >
-          <BookmarkProjectLayout
+          <SecondaryProjectLayout
             title="즐겨찾기한 프로젝트"
             projectDtoList={bookmarkedProjects.content}
+            bookmarkOnly={true}
           />
         </InfiniteScrollLayout>
       )}
