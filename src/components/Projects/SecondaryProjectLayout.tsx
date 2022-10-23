@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import { ProjectType } from 'src/services/ProjectService';
-import LargeCard from './LargeCard';
+import ProjectCard from './ProjectCard';
 
 const Title = styled.h2`
   margin: 30px 0;
@@ -25,20 +25,24 @@ const Grid = styled.div`
 interface SecondaryProjectLayoutProps {
   title: string;
   projectDtoList: ProjectType[];
+  bookmarkOnly?: boolean;
 }
 
 const SecondaryProjectLayout = ({
   title,
   projectDtoList,
+  bookmarkOnly = false,
 }: SecondaryProjectLayoutProps) => {
   return (
     <>
       <Title>{title}</Title>
       <Grid>
         {projectDtoList.map(({ projectNo, ...projectDto }) => (
-          <LargeCard
+          <ProjectCard
             key={projectNo}
             projectDto={{ projectNo, ...projectDto }}
+            bookmarkOnly={bookmarkOnly}
+            size="large"
           />
         ))}
       </Grid>

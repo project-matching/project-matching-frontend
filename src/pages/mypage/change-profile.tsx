@@ -27,4 +27,3 @@ const MyPageChangeProfile = () => {
 };
 
 export default MyPageChangeProfile;
-MyPageChangeProfile;

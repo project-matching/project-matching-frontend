@@ -103,8 +103,10 @@ const PositionApplyModal: FC<Props> = ({
   const fillMyProfile = async () => {
     const myProfile = await UserService.getUserProfile();
     const myTechStack = myProfile.technicalStackList;
+    const myGithubLink = myProfile.github;
 
     setTechStack(myTechStack);
+    myGithubLink && setGithubLink(myGithubLink);
   };
 
   const writeGithubLink = (e: ChangeEvent<HTMLInputElement>) => {
@@ -133,10 +135,11 @@ const PositionApplyModal: FC<Props> = ({
   };
 
   useEffect(() => {
-    (async () => {
-      const response = await TechStackService.getTechStacks();
-      setListedTechStack(response.map((data: data) => data.technicalStackName));
-    })();
+    TechStackService.getTechStacks().then((data) => {
+      setListedTechStack(
+        data.map((techStack: data) => techStack.technicalStackName)
+      );
+    });
 
     document.body.style.overflow = 'hidden';
 
@@ -160,13 +163,11 @@ const PositionApplyModal: FC<Props> = ({
                 내 프로필로 자동 완성
               </SmallButton>
             </Title>
-            {listedTechStack.length && (
-              <MultiSelectDropdown
-                items={listedTechStack}
-                selectedItems={techStack}
-                setSelectedItem={setTechStack}
-              />
-            )}
+            <MultiSelectDropdown
+              items={listedTechStack}
+              selectedItems={techStack}
+              setSelectedItem={setTechStack}
+            />
           </TechBox>
           <TechBox>
             <Title>깃허브 주소</Title>

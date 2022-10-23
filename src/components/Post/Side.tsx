@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import { useRouter } from 'next/router';
-import { FC, useEffect, useState } from 'react';
+import { FC, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import useBookmark from 'src/hooks/useBookmark';
 import { useAppSelector } from 'src/redux/hooks';
@@ -198,7 +198,9 @@ interface Props {
 }
 
 const Side: FC<Props> = ({ data, isRegister, isParticipant }) => {
-  const { bookmark, setBookmark, toggleBookmark } = useBookmark();
+  const { bookmark, toggleBookmark } = useBookmark({
+    initBookmark: data.bookmark,
+  });
   const [onModal, setOnModal] = useState<boolean>(false);
   const [applicants, setApplicants] = useState<applicant[]>([]);
   const user = useAppSelector((state) => state.user.userInfo);
@@ -253,10 +255,6 @@ const Side: FC<Props> = ({ data, isRegister, isParticipant }) => {
   const clickBanishmentBtn = () => {
     dispatch(openModal('RejectModal'));
   };
-
-  useEffect(() => {
-    setBookmark(data.bookmark);
-  }, [data.bookmark, setBookmark]);
 
   return (
     <Wrapper>

@@ -3,7 +3,7 @@ import Link from 'next/link';
 import React from 'react';
 import { ProjectType } from 'src/services/ProjectService';
 import { Divider } from 'src/styles/global';
-import SmallCard from './SmallCard';
+import ProjectCard from './ProjectCard';
 
 const Section = styled.section`
   margin-top: 20px;
@@ -59,9 +59,10 @@ const PrimaryProjectLayout: React.FC<PropsPrimaryProjectLayout> = ({
       <Divider />
       <Grid>
         {projectDtoList?.map(({ projectNo, ...projectDto }) => (
-          <SmallCard
+          <ProjectCard
             key={projectNo}
             projectDto={{ projectNo, ...projectDto }}
+            size="medium"
           />
         ))}
       </Grid>
