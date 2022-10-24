@@ -2,26 +2,6 @@ import styled from '@emotion/styled';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 
-const Container = styled.aside`
-  padding: 20px;
-  width: 200px;
-  display: flex;
-  flex-direction: column;
-  height: fit-content;
-  border: 1px solid #d4d4d4;
-
-  a {
-    margin-bottom: 10px;
-    font-size: ${(props) => props.theme.sizes.m};
-
-    &:last-child {
-      margin-bottom: 0;
-    }
-
-    &:visited {
-    }
-  }
-`;
 export interface LinksProps {
   id: number;
   href: string;
@@ -59,3 +39,24 @@ const RoutingSidebar = ({ links }: RoutingSidebarProps) => {
 };
 
 export default RoutingSidebar;
+
+const Container = styled.aside`
+  padding: 20px;
+  width: 200px;
+  display: flex;
+  flex-direction: column;
+  height: fit-content;
+  border: 1px solid #d4d4d4;
+
+  a {
+    margin-bottom: 10px;
+    font-size: ${(props) => props.theme.sizes.m};
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+
+    &:visited {
+    }
+  }
+`;

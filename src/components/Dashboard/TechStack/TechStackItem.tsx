@@ -1,3 +1,4 @@
+import BorderlessButton from '@/components/Buttons/BorderlessButton';
 import styled from '@emotion/styled';
 import { solid } from '@fortawesome/fontawesome-svg-core/import.macro';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -6,51 +7,20 @@ import defaultProfileImage from 'public/default_profile.png';
 import { useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { putTechStack } from 'src/redux/reducers/techstacks';
+import { setIdName } from 'src/utils/common';
+import { Input } from '../DashboardCommon';
 
-const Item = styled.li`
-  margin: 20px 0;
-  list-style: none;
-  font-size: ${(props) => props.theme.sizes.m};
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-`;
-
-const ButtonContainer = styled.div`
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 15px;
-`;
-
-const InputContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  width: 100%;
-  align-items: center;
-  justify-content: space-between;
-`;
-
-const Input = styled.input`
-  width: 300px;
-  padding: 5px 10px;
-  font-size: 16px;
-  border: 1px solid #d4d4d4;
-`;
-
-interface PropsType {
+interface Props {
   techStackName: string;
   image: string;
   techStackNo: number;
 }
 
-const setIdName = (name: string) => name.toLowerCase() + '-edit-image';
-
 const TechStackItem = ({
   techStackName,
   image: initImage,
   techStackNo: technicalStackNo,
-}: PropsType) => {
+}: Props) => {
   const dispatch = useDispatch();
 
   const [imageFile, setImageFile] = useState<File | null>(null);
@@ -97,11 +67,6 @@ const TechStackItem = ({
   };
 
   const editTechStack = () => {
-    /**
-     * TODO:
-     * confirm 모달 열기
-     * 모달에서 확인 누르면 api call
-     */
     if (!imageFile && !inputValue) return;
 
     const formData = new FormData();
@@ -135,6 +100,7 @@ const TechStackItem = ({
               type="file"
               name={setIdName(techStackName)}
               id={setIdName(techStackName)}
+              accept="image/*"
             ></input>
           </ImageContainer>
           <Input
@@ -142,8 +108,12 @@ const TechStackItem = ({
             onChange={(e) => setInputValue(e.target.value)}
           />
           <ButtonContainer>
-            <a onClick={editTechStack}>수정</a>
-            <a onClick={() => setEdit(false)}>취소</a>
+            <BorderlessButton type="button" onClick={editTechStack}>
+              수정
+            </BorderlessButton>
+            <BorderlessButton type="button" onClick={() => setEdit(false)}>
+              취소
+            </BorderlessButton>
           </ButtonContainer>
         </InputContainer>
       ) : (
@@ -158,7 +128,9 @@ const TechStackItem = ({
             }}
           />
           <div>{techStackName}</div>
-          <a onClick={() => setEdit(true)}>수정</a>
+          <BorderlessButton type="button" onClick={() => setEdit(true)}>
+            수정
+          </BorderlessButton>
         </>
       )}
     </Item>
@@ -166,3 +138,27 @@ const TechStackItem = ({
 };
 
 export default TechStackItem;
+
+const Item = styled.li`
+  margin: 20px 0;
+  list-style: none;
+  font-size: ${(props) => props.theme.sizes.m};
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+`;
+
+const ButtonContainer = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+`;
+
+const InputContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+`;

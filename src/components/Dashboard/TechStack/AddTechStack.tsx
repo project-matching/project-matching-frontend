@@ -1,3 +1,4 @@
+import BorderlessButton from '@/components/Buttons/BorderlessButton';
 import styled from '@emotion/styled';
 import { solid } from '@fortawesome/fontawesome-svg-core/import.macro';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -6,61 +7,13 @@ import defaultProfileImage from 'public/default_profile.png';
 import React, { useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { postTechStack } from 'src/redux/reducers/techstacks';
-
-const ImageContainer = styled.div`
-  position: relative;
-
-  input#tech-upload-image {
-    display: none;
-  }
-
-  label {
-    position: absolute;
-    padding: 2px 4px;
-    top: 25px;
-    left: 25px;
-    background-color: ${(props) => props.theme.colors.darkGray};
-    border-radius: 50%;
-    color: white;
-    cursor: pointer;
-
-    svg {
-      width: 10px;
-    }
-  }
-`;
-
-const Container = styled.div`
-  margin-bottom: 20px;
-`;
-
-const Title = styled.div`
-  font-weight: bold;
-  margin-bottom: 10px;
-`;
-
-const Warning = styled.div`
-  margin-top: 10px;
-  font-size: ${(props) => props.theme.sizes.sm};
-  color: ${(props) => props.theme.colors.error};
-`;
-
-const InputContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  width: 100%;
-  align-items: center;
-  justify-content: space-between;
-  font-size: ${(props) => props.theme.sizes.m};
-`;
-
-const Input = styled.input`
-  margin: 20px 0;
-  width: 300px;
-  padding: 5px 10px;
-  font-size: 16px;
-  border: 1px solid #d4d4d4;
-`;
+import {
+  AddContainer,
+  Input,
+  InputContainer,
+  SubTitle,
+  Warning,
+} from '../DashboardCommon';
 
 const AddTechStack = () => {
   const dispatch = useDispatch();
@@ -84,12 +37,6 @@ const AddTechStack = () => {
   };
 
   const addTechStack = () => {
-    /**
-     * TODO:
-     * confirm 모달 열기
-     * 모달에서 확인 누르면 api call
-     */
-
     const inputValue = InputEl?.current?.value;
     if (!imageFile || !inputValue) return;
 
@@ -98,13 +45,16 @@ const AddTechStack = () => {
     formData.set('technicalStackName', inputValue);
 
     dispatch(postTechStack(formData));
+
+    InputEl.current.value = '';
+    setImage(null);
   };
 
   return (
-    <Container>
-      <Title>기술 스택 추가</Title>
+    <AddContainer>
+      <SubTitle>기술 스택 추가</SubTitle>
       <Warning>
-        ⚠주의: 기술 스택 삭제는 불가능합니다. 신중하게 추가해주세요.
+        ⚠주의: 기술 스택은 삭제할 수 없습니다. 신중하게 추가해주세요.
       </Warning>
       <InputContainer>
         <ImageContainer>
@@ -129,10 +79,35 @@ const AddTechStack = () => {
           ></input>
         </ImageContainer>
         <Input ref={InputEl} />
-        <a onClick={addTechStack}>추가</a>
+        <BorderlessButton type="button" onClick={addTechStack}>
+          추가
+        </BorderlessButton>
       </InputContainer>
-    </Container>
+    </AddContainer>
   );
 };
 
 export default AddTechStack;
+
+const ImageContainer = styled.div`
+  position: relative;
+
+  input#tech-upload-image {
+    display: none;
+  }
+
+  label {
+    position: absolute;
+    padding: 2px 4px;
+    top: 25px;
+    left: 25px;
+    background-color: ${(props) => props.theme.colors.darkGray};
+    border-radius: 50%;
+    color: white;
+    cursor: pointer;
+
+    svg {
+      width: 10px;
+    }
+  }
+`;

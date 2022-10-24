@@ -5,37 +5,6 @@ import { getUserList } from 'src/redux/reducers/users';
 import SearchButton from '../Buttons/Search/SearchButton';
 import SmallButton from '../Buttons/SmallButton';
 
-const Container = styled.div`
-  margin: 50px 0;
-  width: 100%;
-  height: 40px;
-  padding: 0 10px;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  border: 1px solid #d4d4d4;
-  background-color: white;
-
-  > form {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-  }
-`;
-
-const Input = styled.input`
-  border: none;
-  width: 300px;
-  height: inherit;
-  margin: 0 10px;
-  background-color: transparent;
-
-  &:focus {
-    outline: none;
-  }
-`;
-
 const UserSearchBar = () => {
   const dispatch = useDispatch();
   const [searchFilter, setSearchFilter] = useState<'EMAIL' | 'NAME'>('EMAIL');
@@ -73,3 +42,34 @@ const UserSearchBar = () => {
 };
 
 export default UserSearchBar;
+
+const Container = styled.div`
+  margin: 50px 0;
+  width: 100%;
+  height: 40px;
+  padding: 0 10px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px solid ${(props) => props.theme.colors.darkGray};
+  background-color: white;
+
+  > form {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+  }
+`;
+
+const Input = styled.input`
+  border: none;
+  width: 300px;
+  height: inherit;
+  margin: 0 10px;
+  background-color: transparent;
+
+  &:focus {
+    outline: none;
+  }
+`;

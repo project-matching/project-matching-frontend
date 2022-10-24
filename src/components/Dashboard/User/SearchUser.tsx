@@ -1,22 +1,18 @@
 import UserSearchBar from '@/components/SearchBar/UserSearchBar';
 import styled from '@emotion/styled';
-
-const Container = styled.div`
-  margin-bottom: 20px;
-`;
-
-const Title = styled.div`
-  font-weight: bold;
-  margin-bottom: 10px;
-`;
+import { SubTitle } from '../DashboardCommon';
 
 const SearchUser = () => {
   return (
     <Container>
-      <Title>회원 검색</Title>
+      <SubTitle>회원 검색</SubTitle>
       <UserSearchBar />
     </Container>
   );
 };
 
 export default SearchUser;
+
+const Container = styled.div`
+  margin-bottom: 20px;
+`;

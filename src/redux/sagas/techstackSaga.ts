@@ -31,7 +31,7 @@ function* getTechStackListSaga() {
     yield put(
       techstackFail(new Error(error?.response?.data?.error || 'UNKNOWN_ERROR'))
     );
-    // yield put(closeModal(''));
+    alert('기술 스택을 불러올 수 없습니다. 잠시 후 다시 시도해주세요.');
   }
 }
 
@@ -43,7 +43,7 @@ function* addTechStackSaga({ payload }: PayloadAction<FormData>) {
     yield put(techstackSuccessAdd());
   } catch (error: any) {
     yield put(techstackFailAdd(new Error(error || 'UNKNOWN_ERROR')));
-    // yield put(closeModal(''));
+    alert('기술 스택을 추가할 수 없습니다. 잠시 후 다시 시도해주세요.');
   }
 }
 
@@ -55,7 +55,7 @@ function* editTechStackSaga({ payload }: PayloadAction<TechStackSendType>) {
     yield put(techstackSuccessEdit());
   } catch (error: any) {
     yield put(techstackFailEdit(new Error(error || 'UNKNOWN_ERROR')));
-    // yield put(closeModal(''));
+    alert('기술 스택을 수정할 수 없습니다. 잠시 후 다시 시도해주세요.');
   }
 }
 

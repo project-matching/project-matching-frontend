@@ -1,6 +1,7 @@
 import styled from '@emotion/styled';
 import React from 'react';
 import { useAppSelector } from 'src/redux/hooks';
+import { LinksProps } from '../Layouts/RoutingSidebar';
 import MyPageSection from './MyPageSection';
 import MyPageSidebar from './Sidebar';
 
@@ -21,12 +22,6 @@ const Section = styled.section`
   flex-direction: row;
   gap: 30px;
 `;
-
-export interface LinksProps {
-  id: number;
-  href: string;
-  title: string;
-}
 
 const links: LinksProps[] = [
   {

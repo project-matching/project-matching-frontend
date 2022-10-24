@@ -101,7 +101,7 @@ function* updatePasswordSaga({ payload }: PayloadAction<patchPasswordType>) {
     yield put(userPendingPassword());
     yield call(UserService.patchPassword, payload);
     yield put(userSuccessPassword());
-    yield put(openModal('SuccessPasswordChangeModal'));
+    yield put(openModal('AlertModal'));
   } catch (error: any) {
     yield put(
       userFailPassword(

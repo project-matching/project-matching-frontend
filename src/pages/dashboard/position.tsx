@@ -3,9 +3,11 @@ import AddPosition from '@/components/Dashboard/Position/AddPosition';
 import PositionList from '@/components/Dashboard/Position/PositionList';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
+import { useAppSelector } from 'src/redux/hooks';
 import { getPositions } from 'src/redux/reducers/positions';
 
 const DashboardPosition = () => {
+  const positions = useAppSelector((state) => state.position.positions);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -15,7 +17,7 @@ const DashboardPosition = () => {
   return (
     <DashboardLayout>
       <AddPosition />
-      <PositionList />
+      {positions && <PositionList positions={positions} />}
     </DashboardLayout>
   );
 };

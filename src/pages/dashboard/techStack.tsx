@@ -1,11 +1,14 @@
 import DashboardLayout from '@/components/Dashboard/DashboardLayout';
 import AddTechStack from '@/components/Dashboard/TechStack/AddTechStack';
-import TechstackList from '@/components/Dashboard/TechStack/TechstackList';
+import TechstackList from '@/components/Dashboard/TechStack/TechStackList';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
+import { useAppSelector } from 'src/redux/hooks';
 import { getTechStacks } from 'src/redux/reducers/techstacks';
+
 const DashboardTechStack = () => {
   const dispatch = useDispatch();
+  const techstacks = useAppSelector((state) => state.techStack.techstacks);
 
   useEffect(() => {
     dispatch(getTechStacks());
@@ -14,7 +17,7 @@ const DashboardTechStack = () => {
   return (
     <DashboardLayout>
       <AddTechStack />
-      <TechstackList />
+      {techstacks && <TechstackList techstacks={techstacks} />}
     </DashboardLayout>
   );
 };
