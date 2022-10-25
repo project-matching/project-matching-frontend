@@ -1,6 +1,6 @@
 import ChangePasswordForm from '@/components/Forms/ChangePasswordForm';
 import PrimaryLayout from '@/components/Layouts/PrimaryLayout';
-import SuccessPasswordChangeModal from '@/components/Modals/SuccessPasswordChangeModal';
+import AlertModal from '@/components/Modals/AlertModal';
 import MyPageLayout from '@/components/MyPage/MyPageLayout';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
@@ -9,9 +9,7 @@ import { getUserProfile } from 'src/redux/reducers/users';
 
 const MyPageChangePassword = () => {
   const userInfo = useAppSelector((state) => state.user.userInfo);
-  const successPasswordChangeModal = useAppSelector(
-    (state) => state.modal.SuccessPasswordChangeModal
-  );
+  const alertModal = useAppSelector((state) => state.modal.AlertModal);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -22,7 +20,7 @@ const MyPageChangePassword = () => {
     <PrimaryLayout>
       {userInfo.no && (
         <MyPageLayout>
-          {successPasswordChangeModal && <SuccessPasswordChangeModal />}
+          {alertModal && <AlertModal content="비밀번호가 변경되었습니다." />}
           <ChangePasswordForm />
         </MyPageLayout>
       )}

@@ -7,6 +7,74 @@ import { useState } from 'react';
 import { UserListType } from 'src/redux/reducers/users';
 import { UserService } from 'src/services/UserService';
 
+interface PropType {
+  userInfo: UserListType;
+}
+
+const UserCard = ({ userInfo }: PropType) => {
+  const { email, image, name, block: initBlock, userNo } = userInfo;
+  const [open, setOpen] = useState(false);
+  const [block, setBlock] = useState(initBlock);
+
+  const blockUser = async () => {
+    setOpen(true);
+  };
+
+  const unblockUser = async () => {
+    try {
+      await UserService.unblockUser(userNo);
+      setBlock((prev) => !prev);
+    } catch (error: any) {
+      console.log(new Error(error?.response?.data?.error || 'UNKNWON_ERROR'));
+      alert('차단 해제에 실패하였습니다. 잠시 후 다시 시도해주세요.');
+    }
+  };
+
+  return (
+    <Card>
+      <UserContainer>
+        <ImageContainer>
+          <Image
+            src={image || defaultProfileImage}
+            alt="user_image"
+            width="60px"
+            height="60px"
+            style={{
+              borderRadius: '50%',
+            }}
+          />
+        </ImageContainer>
+        <UserInfo>
+          <div>
+            <span>이름</span>
+            <span>{name}</span>
+          </div>
+          <div>
+            <span>이메일</span>
+            <span>{email}</span>
+          </div>
+        </UserInfo>
+      </UserContainer>
+      <UserBlock>
+        <PrimaryButton onClick={block ? unblockUser : blockUser}>
+          {block ? '차단 해제' : '차단'}
+        </PrimaryButton>
+      </UserBlock>
+      {open && (
+        <UserBlockModal
+          userNo={userNo}
+          name={name}
+          image={image}
+          onClose={setOpen}
+          onBlock={setBlock}
+        />
+      )}
+    </Card>
+  );
+};
+
+export default UserCard;
+
 const Card = styled.div`
   margin: 20px 0;
   width: 100%;
@@ -58,70 +126,3 @@ const UserBlock = styled.div`
   width: 100%;
   flex-direction: row-reverse;
 `;
-
-interface PropType {
-  userInfo: UserListType;
-}
-
-const UserCard = ({ userInfo }: PropType) => {
-  const { email, image, name, block: initBlock, userNo } = userInfo;
-  const [open, setOpen] = useState(false);
-  const [block, setBlock] = useState(initBlock);
-
-  const blockUser = async () => {
-    setOpen(true);
-  };
-
-  const unblockUser = async () => {
-    try {
-      await UserService.unblockUser(userNo);
-      setBlock((prev) => !prev);
-    } catch (error: any) {
-      console.log(new Error(error?.response?.data?.error || 'UNKNWON_ERROR'));
-    }
-  };
-
-  return (
-    <Card>
-      <UserContainer>
-        <ImageContainer>
-          <Image
-            src={image || defaultProfileImage}
-            alt="user_image"
-            width="60px"
-            height="60px"
-            style={{
-              borderRadius: '50%',
-            }}
-          />
-        </ImageContainer>
-        <UserInfo>
-          <div>
-            <span>이름</span>
-            <span>{name}</span>
-          </div>
-          <div>
-            <span>이메일</span>
-            <span>{email}</span>
-          </div>
-        </UserInfo>
-      </UserContainer>
-      <UserBlock>
-        <PrimaryButton onClick={block ? unblockUser : blockUser}>
-          {block ? '차단 해제' : '차단'}
-        </PrimaryButton>
-      </UserBlock>
-      {open && (
-        <UserBlockModal
-          userNo={userNo}
-          name={name}
-          image={image}
-          onClose={setOpen}
-          onBlock={setBlock}
-        />
-      )}
-    </Card>
-  );
-};
-
-export default UserCard;

@@ -26,7 +26,7 @@ function* getPositionListSaga() {
     yield put(
       positionFail(new Error(error?.response?.data?.error || 'UNKNOWN_ERROR'))
     );
-    // yield put(closeModal(''));
+    alert('포지션을 불러올 수 없습니다. 잠시 후 다시 시도해주세요.');
   }
 }
 
@@ -42,7 +42,7 @@ function* addPositionSaga({ payload }: PayloadAction<string>) {
         new Error(error?.response?.data?.error || 'UNKNOWN_ERROR')
       )
     );
-    // yield put(closeModal(''));
+    alert('포지션을 추가할 수 없습니다. 잠시 후 다시 시도해주세요.');
   }
 }
 
@@ -58,7 +58,7 @@ function* editPositionSaga({ payload }: PayloadAction<PositionType>) {
         new Error(error?.response?.data?.error || 'UNKNOWN_ERROR')
       )
     );
-    // yield put(closeModal(''));
+    alert('포지션을 수정할 수 없습니다. 잠시 후 다시 시도해주세요.');
   }
 }
 

@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import { useRouter } from 'next/router';
-import { LinksProps } from './MyPageLayout';
+import { LinksProps } from '../Layouts/RoutingSidebar';
 
 const Article = styled.article`
   padding: 40px 100px;

@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import Link from 'next/link';
-import { LinksProps } from './MyPageLayout';
+import { LinksProps } from '../Layouts/RoutingSidebar';
 
 const Container = styled.aside`
   padding: 20px;

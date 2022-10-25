@@ -34,6 +34,8 @@ interface OAuthButtonType {
   content: string;
 }
 
+// TODO: 이미지 소스 props로 전달 받기
+
 const OAuthButton = ({
   onClick,
   serviceProvider,

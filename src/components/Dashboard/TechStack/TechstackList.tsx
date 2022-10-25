@@ -1,26 +1,25 @@
-import TechStackItem from '@/components/Dashboard/TechStack/TechStackItem';
-import styled from '@emotion/styled';
-import { useAppSelector } from 'src/redux/hooks';
+import { TechStackType } from 'src/redux/reducers/techstacks';
+import { SubTitle } from '../DashboardCommon';
+import TechStackItem from './TechStackItem';
 
-const Title = styled.div`
-  font-weight: bold;
-  margin-bottom: 10px;
-`;
+interface Props {
+  techstacks: TechStackType[];
+}
 
-const TechstackList = () => {
-  const techstacks = useAppSelector((state) => state.techStack.techstacks);
-
+const TechstackList = ({ techstacks }: Props) => {
   return (
     <div>
-      <Title>기술 스택 리스트</Title>
-      {techstacks?.map(({ technicalStackName, technicalStackNo, image }) => (
-        <TechStackItem
-          key={technicalStackNo}
-          techStackName={technicalStackName}
-          techStackNo={technicalStackNo}
-          image={image}
-        />
-      ))}
+      <SubTitle>기술 스택</SubTitle>
+      <div>
+        {techstacks?.map(({ technicalStackName, technicalStackNo, image }) => (
+          <TechStackItem
+            key={technicalStackNo}
+            techStackName={technicalStackName}
+            techStackNo={technicalStackNo}
+            image={image}
+          />
+        ))}
+      </div>
     </div>
   );
 };

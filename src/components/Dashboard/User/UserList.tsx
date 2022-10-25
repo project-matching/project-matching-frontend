@@ -1,16 +1,11 @@
 import SearchInfiniteScrollLayout from '@/components/Layouts/SearchInfiniteScrollLayout';
-import styled from '@emotion/styled';
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useAppSelector } from 'src/redux/hooks';
 import { getUserList } from 'src/redux/reducers/users';
 import { UserService } from 'src/services/UserService';
+import { SubTitle } from '../DashboardCommon';
 import UserCard from './UserCard';
-
-const Title = styled.div`
-  font-weight: bold;
-  margin-bottom: 10px;
-`;
 
 const UserList = () => {
   const dispatch = useDispatch();
@@ -26,9 +21,7 @@ const UserList = () => {
   );
 
   useEffect(() => {
-    (async () => {
-      dispatch(getUserList({}));
-    })();
+    dispatch(getUserList({}));
   }, []);
 
   useEffect(() => {
@@ -46,7 +39,7 @@ const UserList = () => {
           filter={userSearchKeyword!?.userFilter}
           title="유저"
         >
-          <Title>유저 리스트</Title>
+          <SubTitle>유저 리스트</SubTitle>
           {!!data?.content.length &&
             data.content.map(({ userNo, ...userInfo }) => (
               <UserCard key={userNo} userInfo={{ ...userInfo, userNo }} />

@@ -1,25 +1,24 @@
-import PositionItem from '@/components/Dashboard/Position/PositionItem';
-import styled from '@emotion/styled';
-import { useAppSelector } from 'src/redux/hooks';
+import { PositionType } from 'src/services/PositionService';
+import { SubTitle } from '../DashboardCommon';
+import PositionItem from './PositionItem';
 
-const Title = styled.div`
-  font-weight: bold;
-  margin-bottom: 10px;
-`;
+interface Props {
+  positions: PositionType[];
+}
 
-const PositionList = () => {
-  const positions = useAppSelector((state) => state.position.positions);
-
+const PositionList = ({ positions }: Props) => {
   return (
     <div>
-      <Title>포지션 리스트</Title>
-      {positions?.map(({ positionName, positionNo }) => (
-        <PositionItem
-          key={positionNo}
-          positionName={positionName}
-          positionNo={positionNo}
-        />
-      ))}
+      <SubTitle>포지션</SubTitle>
+      <div>
+        {positions?.map(({ positionName, positionNo }) => (
+          <PositionItem
+            key={positionNo}
+            positionName={positionName}
+            positionNo={positionNo}
+          />
+        ))}
+      </div>
     </div>
   );
 };
