@@ -134,6 +134,7 @@ const ProjectDetail = ({ project, comment }: Props) => {
   const [comments, setComments] = useState<comment[]>(comment);
   const [commentPageNo, setCommentPageNo] = useState<number>(0);
   const [isLast, setIsLast] = useState<boolean>(false);
+  const [isFirst, setIsFirst] = useState<boolean>(commentPageNo === 0);
   const router = useRouter();
 
   const commentPageController = (e: React.BaseSyntheticEvent) => {
@@ -157,6 +158,7 @@ const ProjectDetail = ({ project, comment }: Props) => {
       );
       setComments(commentData.data.content);
       setIsLast(commentData.data.last);
+      setIsFirst(commentPageNo === 0);
     })();
   }, [commentPageNo, router.query.id]);
 
@@ -235,7 +237,7 @@ const ProjectDetail = ({ project, comment }: Props) => {
               );
             })}
             <CommentPageBtn onClick={commentPageController}>
-              <SecondaryButton id="prev">이전</SecondaryButton>
+              <SecondaryButton id="prev" disabled={isFirst}>이전</SecondaryButton>
               <SecondaryButton id="next" disabled={isLast}>
                 다음
               </SecondaryButton>
