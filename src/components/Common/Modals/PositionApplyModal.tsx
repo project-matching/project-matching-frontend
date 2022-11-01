@@ -1,13 +1,13 @@
+import PrimaryButton from '@/components/Common/Buttons/PrimaryButton';
+import SecondaryButton from '@/components/Common/Buttons/SecondaryButton';
+import SmallButton from '@/components/Common/Buttons/SmallButton';
 import styled from '@emotion/styled';
 import { ChangeEvent, FC, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { closeModal } from 'src/redux/reducers/components/modals';
 import { ProjectService } from 'src/services/ProjectService';
 import { UserService } from 'src/services/UserService';
-import { TechStackService } from '../../services/TechStackService';
-import PrimaryButton from '../Buttons/PrimaryButton';
-import SecondaryButton from '../Buttons/SecondaryButton';
-import SmallButton from '../Buttons/SmallButton';
+import { TechStackService } from '../../../services/TechStackService';
 import MultiSelectDropdown from '../Dropdowns/MultiSelectDropdown';
 
 const Container = styled.div`

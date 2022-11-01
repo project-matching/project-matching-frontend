@@ -1,8 +1,8 @@
+import PrimaryButton from '@/components/Common/Buttons/PrimaryButton';
 import styled from '@emotion/styled';
 import { HTMLInputTypeAttribute, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { deleteUser } from 'src/redux/reducers/users';
-import PrimaryButton from '../Buttons/PrimaryButton';
 
 const Wrapper = styled.div`
   display: flex;
@@ -74,7 +74,7 @@ const initialValues: FormValueType = {
   confirmDelete: '',
 };
 
-const DeleteAccount = () => {
+const MyAccountDelete = () => {
   const dispatch = useDispatch();
   const [inputValues, setInputValues] = useState<FormValueType>(initialValues);
 
@@ -161,4 +161,4 @@ const DeleteAccount = () => {
   );
 };
 
-export default DeleteAccount;
+export default MyAccountDelete;

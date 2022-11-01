@@ -1,10 +1,10 @@
+import PrimaryButton from '@/components/Common/Buttons/PrimaryButton';
+import SecondaryButton from '@/components/Common/Buttons/SecondaryButton';
 import styled from '@emotion/styled';
 import Image from 'next/image';
 import defaultProfileImage from 'public/default_profile.png';
 import { Dispatch, SetStateAction, useState } from 'react';
 import { UserService } from 'src/services/UserService';
-import PrimaryButton from '../Buttons/PrimaryButton';
-import SecondaryButton from '../Buttons/SecondaryButton';
 import LocalModalLayout from './LocalModalLayout';
 
 const Title = styled.div`

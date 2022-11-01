@@ -1,8 +1,8 @@
+import ProjectStateButton from '@/components/Common/Buttons/Search/ProjectStateButton';
+import SearchButton from '@/components/Common/Buttons/Search/SearchButton';
 import styled from '@emotion/styled';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
-import ProjectStateButton from '../Buttons/Search/ProjectStateButton';
-import SearchButton from '../Buttons/Search/SearchButton';
 
 const MainSearchBar = () => {
   const Container = styled.div`

@@ -1,3 +1,5 @@
+import OAuthButton from '@/components/Common/Buttons/OAuthButton';
+import PrimaryButton from '@/components/Common/Buttons/PrimaryButton';
 import styled from '@emotion/styled';
 import React, { HTMLInputTypeAttribute } from 'react';
 import { useDispatch } from 'react-redux';
@@ -5,8 +7,6 @@ import { useAppSelector } from 'src/redux/hooks';
 import { signin, signinOAuth, TokenType } from 'src/redux/reducers/auth';
 import { setSigninErrorMsg } from 'src/redux/reducers/components/validation';
 import { Divider, Flex } from 'src/styles/global';
-import OAuthButton from '../Buttons/OAuthButton';
-import PrimaryButton from '../Buttons/PrimaryButton';
 import { AuthFormTypes } from '../Modals/AuthModal';
 
 const Content = styled.div`

@@ -55,8 +55,5 @@ const Container = styled.aside`
     &:last-child {
       margin-bottom: 0;
     }
-
-    &:visited {
-    }
   }
 `;

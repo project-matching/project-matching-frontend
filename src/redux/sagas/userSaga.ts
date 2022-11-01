@@ -1,4 +1,4 @@
-import { fetchedData } from '@/components/Layouts/InfiniteScrollLayout';
+import { fetchedData } from '@/components/Common/Layouts/InfiniteScrollLayout';
 import { PayloadAction } from '@reduxjs/toolkit';
 import { call, put, takeLatest } from 'redux-saga/effects';
 import { authSuccess, signOut } from 'src/redux/reducers/auth';

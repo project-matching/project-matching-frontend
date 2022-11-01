@@ -4,8 +4,8 @@ import notificationImage from 'public/notification.png';
 import { useEffect, useRef, useState } from 'react';
 import { useAppSelector } from 'src/redux/hooks';
 import { NotificationService } from 'src/services/NotificationService';
+import ImageToggle from '../Common/ToggleDropdown/ImageToggle';
 import NotificationContainer from './NotificationContainer';
-import ImageToggle from './ToggleDropdown/ImageToggle';
 
 const Dropdown = styled.div`
   position: absolute;

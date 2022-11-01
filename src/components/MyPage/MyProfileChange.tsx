@@ -1,3 +1,4 @@
+import PrimaryButton from '@/components/Common/Buttons/PrimaryButton';
 import styled from '@emotion/styled';
 import { solid } from '@fortawesome/fontawesome-svg-core/import.macro';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -8,9 +9,8 @@ import { useDispatch } from 'react-redux';
 import { patchUserProfile, UserProfileType } from 'src/redux/reducers/users';
 import { PositionService } from 'src/services/PositionService';
 import { TechStackService } from 'src/services/TechStackService';
-import PrimaryButton from '../Buttons/PrimaryButton';
-import MultiSelectDropdown from '../Dropdowns/MultiSelectDropdown';
-import UniSelectDropdown from '../Dropdowns/UniSelectDropdown';
+import MultiSelectDropdown from '../Common/Dropdowns/MultiSelectDropdown';
+import UniSelectDropdown from '../Common/Dropdowns/UniSelectDropdown';
 
 const ImageContainer = styled.div`
   margin-bottom: 50px;

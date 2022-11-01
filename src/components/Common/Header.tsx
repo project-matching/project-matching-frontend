@@ -5,13 +5,13 @@ import { useDispatch } from 'react-redux';
 import { useAppSelector } from 'src/redux/hooks';
 import { openModal } from 'src/redux/reducers/components/modals';
 import { Wrapper } from 'src/styles/global';
-import PrimaryButton from '../Buttons/PrimaryButton';
 import Notification from '../Headers/Notification';
 import Profile from '../Headers/Profile';
-import AuthModal from '../Modals/AuthModal';
-import SignupEmailSentModal from '../Modals/SignupEmailSentModal';
-import HeaderSearchBar from '../SearchBar/HeaderSearchBar';
+import PrimaryButton from './Buttons/PrimaryButton';
 import LogoLink from './LogoLink';
+import AuthModal from './Modals/AuthModal';
+import SignupEmailSentModal from './Modals/SignupEmailSentModal';
+import HeaderSearchBar from './SearchBar/HeaderSearchBar';
 
 export const Flex = styled.div`
   display: flex;

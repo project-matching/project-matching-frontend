@@ -1,4 +1,4 @@
-import PrimaryButton from '@/components/Buttons/PrimaryButton';
+import PrimaryButton from '@/components/Common/Buttons//PrimaryButton';
 import styled from '@emotion/styled';
 import { useRouter } from 'next/router';
 import { HTMLInputTypeAttribute, useState } from 'react';

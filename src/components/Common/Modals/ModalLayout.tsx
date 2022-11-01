@@ -5,7 +5,7 @@ import {
   ModalActionProps,
 } from 'src/redux/reducers/components/modals';
 import { removeSigninErrorMsg } from 'src/redux/reducers/components/validation';
-import Logo from '../Common/Logo';
+import Logo from '../Logo';
 import { Backdrop } from './Backdrop';
 
 const Container = styled.div`

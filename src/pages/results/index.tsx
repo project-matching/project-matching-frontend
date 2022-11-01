@@ -1,9 +1,9 @@
-import { fetchedData } from '@/components/Layouts/InfiniteScrollLayout';
-import SearchInfiniteScrollLayout from '@/components/Layouts/SearchInfiniteScrollLayout';
+import { fetchedData } from '@/components/Common/Layouts/InfiniteScrollLayout';
+import PrimaryLayout from '@/components/Common/Layouts/PrimaryLayout';
+import SearchInfiniteScrollLayout from '@/components/Common/Layouts/SearchInfiniteScrollLayout';
 import SecondaryProjectLayout from '@/components/Projects/SecondaryProjectLayout';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
-import PrimaryLayout from 'src/components/Layouts/PrimaryLayout';
 import { ProjectService, ProjectType } from 'src/services/ProjectService';
 
 const SearchResult = () => {

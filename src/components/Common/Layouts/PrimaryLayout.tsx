@@ -1,7 +1,7 @@
 import Head from 'next/head';
 import React from 'react';
 import { Divider, Wrapper } from 'src/styles/global';
-import Header from '../Common/Header';
+import Header from '../Header';
 
 export interface LayoutProps {
   children: React.ReactNode;

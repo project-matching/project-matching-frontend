@@ -1,4 +1,4 @@
-import SearchInfiniteScrollLayout from '@/components/Layouts/SearchInfiniteScrollLayout';
+import SearchInfiniteScrollLayout from '@/components/Common/Layouts/SearchInfiniteScrollLayout';
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useAppSelector } from 'src/redux/hooks';

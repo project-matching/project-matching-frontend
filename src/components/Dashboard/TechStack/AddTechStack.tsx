@@ -1,4 +1,4 @@
-import BorderlessButton from '@/components/Buttons/BorderlessButton';
+import BorderlessButton from '@/components/Common/Buttons//BorderlessButton';
 import styled from '@emotion/styled';
 import { solid } from '@fortawesome/fontawesome-svg-core/import.macro';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';

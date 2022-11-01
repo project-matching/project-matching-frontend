@@ -1,4 +1,4 @@
-import PrimaryLayout from '@/components/Layouts/PrimaryLayout';
+import PrimaryLayout from '@/components/Common/Layouts/PrimaryLayout';
 import PrimaryProjectLayout from '@/components/Projects/PrimaryProjectLayout';
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';

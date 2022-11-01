@@ -1,4 +1,4 @@
-import BorderlessButton from '@/components/Buttons/BorderlessButton';
+import BorderlessButton from '@/components/Common/Buttons//BorderlessButton';
 import { useRef } from 'react';
 import { useDispatch } from 'react-redux';
 import { postPosition } from 'src/redux/reducers/positions';

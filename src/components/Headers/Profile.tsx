@@ -1,11 +1,11 @@
+import SmallButton from '@/components/Common/Buttons/SmallButton';
 import styled from '@emotion/styled';
 import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useAppSelector } from 'src/redux/hooks';
 import { signOut } from 'src/redux/reducers/auth';
-import SmallButton from '../Buttons/SmallButton';
-import ImageToggle from './ToggleDropdown/ImageToggle';
+import ImageToggle from '../Common/ToggleDropdown/ImageToggle';
 
 const Dropdown = styled.div`
   position: absolute;

@@ -1,11 +1,11 @@
+import SmallButton from '@/components/Common/Buttons/SmallButton';
 import styled from '@emotion/styled';
 import { FC, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useAppSelector } from 'src/redux/hooks';
 import { openModal } from 'src/redux/reducers/components/modals';
-import SmallButton from '../Buttons/SmallButton';
-import { Backdrop } from '../Modals/Backdrop';
-import PositionApplyModal from '../Modals/PositionApplyModal';
+import { Backdrop } from '../Common/Modals/Backdrop';
+import PositionApplyModal from '../Common/Modals/PositionApplyModal';
 
 const PositionContainer = styled.div`
   display: flex;

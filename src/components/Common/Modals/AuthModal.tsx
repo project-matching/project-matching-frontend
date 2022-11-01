@@ -1,14 +1,13 @@
 import { useState } from 'react';
-import ForgotPasswordForm from '../Forms/ForgotPasswordForm';
+import ForgotPasswordForm from '../AuthForm/ForgotPasswordForm';
 
-import SigninForm from '../Forms/SigninForm';
-import SignupForm from '../Forms/SignupForm';
+import SigninForm from '../AuthForm/SigninForm';
+import SignupForm from '../AuthForm/SignupForm';
 import ModalLayout from './ModalLayout';
 
 export type AuthFormTypes = 'signin' | 'signup' | 'changePassword';
 
 const AuthModal = () => {
-  // TODO: find password
   const [AuthForm, setAuthForm] = useState<AuthFormTypes>('signin');
 
   const checkAuthForm = () => {

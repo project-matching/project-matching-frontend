@@ -1,7 +1,7 @@
+import PrimaryButton from '@/components/Common/Buttons/PrimaryButton';
 import styled from '@emotion/styled';
 import { Dispatch, SetStateAction, useRef } from 'react';
 import { CommentService } from 'src/services/CommentService';
-import PrimaryButton from '../Buttons/PrimaryButton';
 
 const InputContainer = styled.form`
   margin: 0 20px;

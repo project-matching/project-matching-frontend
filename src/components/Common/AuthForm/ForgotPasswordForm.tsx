@@ -1,10 +1,10 @@
+import PrimaryButton from '@/components/Common/Buttons/PrimaryButton';
 import { Flex } from '@/styles/global';
 import styled from '@emotion/styled';
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import { closeModal, openModal } from 'src/redux/reducers/components/modals';
 import { UserService } from 'src/services/UserService';
-import PrimaryButton from '../Buttons/PrimaryButton';
 import { AuthFormTypes } from '../Modals/AuthModal';
 
 const Content = styled.div`

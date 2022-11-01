@@ -1,3 +1,6 @@
+import PrimaryButton from '@/components/Common/Buttons/PrimaryButton';
+import SecondaryButton from '@/components/Common/Buttons/SecondaryButton';
+import SmallButton from '@/components/Common/Buttons/SmallButton';
 import styled from '@emotion/styled';
 import { useRouter } from 'next/router';
 import { FC, useState } from 'react';
@@ -8,11 +11,8 @@ import { openModal } from 'src/redux/reducers/components/modals';
 import { PositionService } from 'src/services/PositionService';
 import { ProjectService } from '../../services/ProjectService';
 import Title from '../auth/Title';
-import PrimaryButton from '../Buttons/PrimaryButton';
-import SecondaryButton from '../Buttons/SecondaryButton';
-import SmallButton from '../Buttons/SmallButton';
-import { Backdrop } from '../Modals/Backdrop';
-import RejectModal from '../Modals/RejectModal';
+import { Backdrop } from '../Common/Modals/Backdrop';
+import RejectModal from '../Common/Modals/RejectModal';
 
 const Wrapper = styled.div`
   width: 250px;

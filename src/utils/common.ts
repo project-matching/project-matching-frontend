@@ -4,7 +4,7 @@
  * 2. JSDoc으로 함수의 용도와 활용법을 적어주세요.
  */
 
-import { LinksProps } from '@/components/Layouts/RoutingSidebar';
+import { LinksProps } from '@/components/Common/Layouts/RoutingSidebar';
 
 /**
  * 이미지 파일 input 요소의 id를 생성한다. (이미지 수정용 파일 input)

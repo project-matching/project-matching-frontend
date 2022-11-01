@@ -1,6 +1,6 @@
-import PrimaryButton from '@/components/Buttons/PrimaryButton';
+import PrimaryButton from '@/components/Common/Buttons//PrimaryButton';
+import AlertModal from '@/components/Common/Modals/AlertModal';
 import DashboardLayout from '@/components/Dashboard/DashboardLayout';
-import AlertModal from '@/components/Modals/AlertModal';
 import styled from '@emotion/styled';
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';

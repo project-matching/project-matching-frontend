@@ -1,4 +1,4 @@
-import PrimaryLayout from '@/components/Layouts/PrimaryLayout';
+import PrimaryLayout from '@/components/Common/Layouts/PrimaryLayout';
 import MyPageLayout from '@/components/MyPage/MyPageLayout';
 import MyProfile from '@/components/MyPage/MyProfile';
 import { useEffect } from 'react';

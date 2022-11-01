@@ -1,7 +1,7 @@
+import PrimaryLayout from '@/components/Common/Layouts/PrimaryLayout';
+import MainSearchBar from '@/components/Common/SearchBar/MainSearchBar';
 import PrimaryProjectLayout from '@/components/Projects/PrimaryProjectLayout';
-import MainSearchBar from '@/components/SearchBar/MainSearchBar';
 import { useEffect, useRef, useState } from 'react';
-import PrimaryLayout from 'src/components/Layouts/PrimaryLayout';
 import { useAppSelector } from 'src/redux/hooks';
 import { ProjectService, ProjectType } from 'src/services/ProjectService';
 

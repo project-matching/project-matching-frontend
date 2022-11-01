@@ -1,5 +1,5 @@
 import Title from '@/components/auth/Title';
-import PrimaryLayout from '@/components/Layouts/PrimaryLayout';
+import PrimaryLayout from '@/components/Common/Layouts/PrimaryLayout';
 import styled from '@emotion/styled';
 import moment from 'moment';
 import { GetServerSideProps } from 'next';

@@ -1,4 +1,4 @@
-import { fetchedData } from '@/components/Layouts/InfiniteScrollLayout';
+import { fetchedData } from '@/components/Common/Layouts/InfiniteScrollLayout';
 import { createAction, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import {
   getUserListType,

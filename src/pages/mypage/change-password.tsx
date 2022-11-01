@@ -1,7 +1,7 @@
-import ChangePasswordForm from '@/components/Forms/ChangePasswordForm';
-import PrimaryLayout from '@/components/Layouts/PrimaryLayout';
-import AlertModal from '@/components/Modals/AlertModal';
+import PrimaryLayout from '@/components/Common/Layouts/PrimaryLayout';
+import AlertModal from '@/components/Common/Modals/AlertModal';
 import MyPageLayout from '@/components/MyPage/MyPageLayout';
+import MyPasswordChange from '@/components/MyPage/MyPasswordChange';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useAppSelector } from 'src/redux/hooks';
@@ -21,7 +21,7 @@ const MyPageChangePassword = () => {
       {userInfo.no && (
         <MyPageLayout>
           {alertModal && <AlertModal content="비밀번호가 변경되었습니다." />}
-          <ChangePasswordForm />
+          <MyPasswordChange />
         </MyPageLayout>
       )}
     </PrimaryLayout>

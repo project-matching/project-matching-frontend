@@ -1,9 +1,9 @@
+import SearchButton from '@/components/Common/Buttons/Search/SearchButton';
+import SmallButton from '@/components/Common/Buttons/SmallButton';
 import styled from '@emotion/styled';
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { getUserList } from 'src/redux/reducers/users';
-import SearchButton from '../Buttons/Search/SearchButton';
-import SmallButton from '../Buttons/SmallButton';
 
 const UserSearchBar = () => {
   const dispatch = useDispatch();

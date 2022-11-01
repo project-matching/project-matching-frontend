@@ -1,11 +1,11 @@
+import PrimaryButton from '@/components/Common/Buttons/PrimaryButton';
+import SecondaryButton from '@/components/Common/Buttons/SecondaryButton';
 import styled from '@emotion/styled';
 import { ChangeEvent, FC, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { closeModal } from 'src/redux/reducers/components/modals';
 import { PositionService } from 'src/services/PositionService';
 import { ProjectService } from 'src/services/ProjectService';
-import PrimaryButton from '../Buttons/PrimaryButton';
-import SecondaryButton from '../Buttons/SecondaryButton';
 import ModalLayout from './ModalLayout';
 
 const Header = styled.header`
