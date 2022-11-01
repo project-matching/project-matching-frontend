@@ -245,6 +245,11 @@ const Side: FC<Props> = ({ data, isRegister, isParticipant }) => {
 
     if (id === 'allow') {
       await ProjectService.allowProjectApplicant(participantNo);
+      
+      const response = await ProjectService.getProjectApplicants(
+        router.query.id as string
+      );
+      setApplicants(response.content);
     }
 
     if (id === 'reject') {

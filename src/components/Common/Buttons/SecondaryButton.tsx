@@ -16,8 +16,8 @@ const SecondaryButton = styled.button<ButtonProps>`
   background-color: white;
   cursor: pointer;
   &:hover {
-    background-color: ${(props) => props.theme.colors.gray};
-    color: white;
+    background-color: ${(props) => !props.disabled && props.theme.colors.gray};
+    color: ${(props) => !props.disabled && 'white'};
     border: ${(props) => `1px solid ${props.theme.colors.gray}`};
   }
 `;

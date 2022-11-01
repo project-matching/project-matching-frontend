@@ -1,6 +1,6 @@
 import DashboardLayout from '@/components/Common/Layouts/DashboardLayout';
 import AddTechStack from '@/components/Dashboard/TechStack/AddTechStack';
-import TechstackList from '@/components/Dashboard/TechStack/TechStackList';
+import TechstackList from '@/components/Dashboard/TechStack/TechstackList';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useAppSelector } from 'src/redux/hooks';
