@@ -1,4 +1,4 @@
-import DashboardLayout from '@/components/Dashboard/DashboardLayout';
+import DashboardLayout from '@/components/Common/Layouts/DashboardLayout';
 import AddPosition from '@/components/Dashboard/Position/AddPosition';
 import PositionList from '@/components/Dashboard/Position/PositionList';
 import { useEffect } from 'react';

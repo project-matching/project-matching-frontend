@@ -1,7 +1,7 @@
 import { fetchedData } from '@/components/Common/Layouts/InfiniteScrollLayout';
 import PrimaryLayout from '@/components/Common/Layouts/PrimaryLayout';
 import SearchInfiniteScrollLayout from '@/components/Common/Layouts/SearchInfiniteScrollLayout';
-import SecondaryProjectLayout from '@/components/Projects/SecondaryProjectLayout';
+import SecondaryProjectLayout from '@/components/Common/Layouts/SecondaryProjectLayout';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { ProjectService, ProjectType } from 'src/services/ProjectService';

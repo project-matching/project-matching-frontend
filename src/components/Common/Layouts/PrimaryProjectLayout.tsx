@@ -3,7 +3,7 @@ import Link from 'next/link';
 import React from 'react';
 import { ProjectType } from 'src/services/ProjectService';
 import { Divider } from 'src/styles/global';
-import ProjectCard from './ProjectCard';
+import ProjectCard from '../Cards/ProjectCard';
 
 const Section = styled.section`
   margin-top: 20px;

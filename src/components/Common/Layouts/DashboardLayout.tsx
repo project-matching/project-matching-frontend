@@ -3,9 +3,9 @@ import React from 'react';
 import { useAppSelector } from 'src/redux/hooks';
 import { dashboardPath } from 'src/utils/path';
 import { ROLE_ADMIN } from 'src/utils/userRole';
-import MainSection from '../Common/Layouts/MainSection';
-import PrimaryLayout from '../Common/Layouts/PrimaryLayout';
-import RoutingSidebar, { LinksProps } from '../Common/Layouts/RoutingSidebar';
+import MainSection from './MainSection';
+import PrimaryLayout from './PrimaryLayout';
+import RoutingSidebar, { LinksProps } from './RoutingSidebar';
 
 export const links: LinksProps[] = [
   {

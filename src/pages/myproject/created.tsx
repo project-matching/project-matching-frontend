@@ -2,7 +2,7 @@ import InfiniteScrollLayout, {
   fetchedData,
 } from '@/components/Common/Layouts/InfiniteScrollLayout';
 import PrimaryLayout from '@/components/Common/Layouts/PrimaryLayout';
-import SecondaryProjectLayout from '@/components/Projects/SecondaryProjectLayout';
+import SecondaryProjectLayout from '@/components/Common/Layouts/SecondaryProjectLayout';
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useAppSelector } from 'src/redux/hooks';

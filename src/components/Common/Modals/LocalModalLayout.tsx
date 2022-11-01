@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import React, { Dispatch, SetStateAction } from 'react';
-import Logo from '../Logo';
+import Logo from '../Logos/Logo';
 import { Backdrop } from './Backdrop';
 
 const Container = styled.div`

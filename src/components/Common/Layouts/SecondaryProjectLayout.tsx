@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import { ProjectType } from 'src/services/ProjectService';
-import ProjectCard from './ProjectCard';
+import ProjectCard from '../Cards/ProjectCard';
 
 const Title = styled.h2`
   margin: 30px 0;

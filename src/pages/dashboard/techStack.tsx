@@ -1,4 +1,4 @@
-import DashboardLayout from '@/components/Dashboard/DashboardLayout';
+import DashboardLayout from '@/components/Common/Layouts/DashboardLayout';
 import AddTechStack from '@/components/Dashboard/TechStack/AddTechStack';
 import TechstackList from '@/components/Dashboard/TechStack/TechStackList';
 import { useEffect } from 'react';
