@@ -1,4 +1,4 @@
-import DashboardLayout from '@/components/Dashboard/DashboardLayout';
+import DashboardLayout from '@/components/Common/Layouts/DashboardLayout';
 import SearchUser from '@/components/Dashboard/User/SearchUser';
 import UserList from '@/components/Dashboard/User/UserList';
 

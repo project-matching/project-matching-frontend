@@ -1,6 +1,6 @@
-import PrimaryLayout from '@/components/Layouts/PrimaryLayout';
-import SuccessDeleteUserModal from '@/components/Modals/SuccessDeleteUserModal';
-import DeleteAccount from '@/components/MyPage/DeleteAccount';
+import PrimaryLayout from '@/components/Common/Layouts/PrimaryLayout';
+import SuccessDeleteUserModal from '@/components/Common/Modals/SuccessDeleteUserModal';
+import MyAccountDelete from '@/components/MyPage/MyAccountDelete';
 import MyPageLayout from '@/components/MyPage/MyPageLayout';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
@@ -23,7 +23,7 @@ const MyPageDeleteAccount = () => {
       {userInfo.no && (
         <MyPageLayout>
           {successDeleteUserModal && <SuccessDeleteUserModal />}
-          <DeleteAccount />
+          <MyAccountDelete />
         </MyPageLayout>
       )}
     </PrimaryLayout>

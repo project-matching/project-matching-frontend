@@ -1,13 +1,13 @@
-import { NotificationType } from '@/components/Headers/Notification';
 import InfiniteScrollLayout, {
   fetchedData,
-} from '@/components/Layouts/InfiniteScrollLayout';
+} from '@/components/Common/Layouts/InfiniteScrollLayout';
+import { NotificationType } from '@/components/Headers/Notification';
 import NotificationArticle from '@/components/Notification/NotificationArticle';
 import styled from '@emotion/styled';
 import { useEffect, useState } from 'react';
 import { useAppSelector } from 'src/redux/hooks';
 import { NotificationService } from 'src/services/NotificationService';
-import PrimaryLayout from '../../components/Layouts/PrimaryLayout';
+import PrimaryLayout from '../../components/Common/Layouts/PrimaryLayout';
 
 const Container = styled.div`
   margin: 0 auto 100px;

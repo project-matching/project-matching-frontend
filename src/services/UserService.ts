@@ -1,4 +1,4 @@
-import { fetchedData } from '@/components/Layouts/InfiniteScrollLayout';
+import { fetchedData } from '@/components/Common/Layouts/InfiniteScrollLayout';
 import { TokenType } from 'src/redux/reducers/auth';
 import {
   UserInfoType,

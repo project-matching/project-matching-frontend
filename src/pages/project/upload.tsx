@@ -1,6 +1,6 @@
 import Title from '@/components/auth/Title';
-import PrimaryLayout from '@/components/Layouts/PrimaryLayout';
-import { Backdrop } from '@/components/Modals/Backdrop';
+import PrimaryLayout from '@/components/Common/Layouts/PrimaryLayout';
+import { Backdrop } from '@/components/Common/Modals/Backdrop';
 import ConfirmModal from '@/components/Post/ConfirmModal';
 import styled from '@emotion/styled';
 import moment from 'moment';
@@ -95,28 +95,28 @@ const PositionDetail = styled.div`
   span {
     margin: 0 5px;
   }
-`
+`;
 
 const SidePositionSection = styled.section`
   display: flex;
   justify-content: space-between;
   width: 50%;
-`
+`;
 
 interface positions {
-  [index: string]: number
+  [index: string]: number;
 }
 
 interface position {
-  positionNo: number,
-  positionName: string,
-  count: number,
+  positionNo: number;
+  positionName: string;
+  count: number;
 }
 
 interface techStack {
-  technicalStackNo: number,
-  technicalStackName: string,
-  image: null | string,
+  technicalStackNo: number;
+  technicalStackName: string;
+  image: null | string;
 }
 
 interface positionInfo {
@@ -127,40 +127,48 @@ interface positionInfo {
 }
 
 const ProjectUpload = () => {
-  const [projectTitle, setProjectTitle] = useState<string>("");
+  const [projectTitle, setProjectTitle] = useState<string>('');
   const [positions, setPositions] = useState<position[]>([]);
   const [teckStacks, setTechStacks] = useState<techStack[]>([]);
-  const [startDate, setStartDate] = useState(moment().format("YYYY-MM-DD"));
-  const [endDate, setEndDate] = useState(moment().format("YYYY-MM-DD"));
-  const [introduction, setIntroduction] = useState<string>("");
-  const [curSelectedTech, setCurSelectedTech] = useState<string>(teckStacks[0]?.technicalStackName);
+  const [startDate, setStartDate] = useState(moment().format('YYYY-MM-DD'));
+  const [endDate, setEndDate] = useState(moment().format('YYYY-MM-DD'));
+  const [introduction, setIntroduction] = useState<string>('');
+  const [curSelectedTech, setCurSelectedTech] = useState<string>(
+    teckStacks[0]?.technicalStackName
+  );
   const [selectedTechList, setSelectedTechList] = useState<techStack[]>([]);
   const [myPosition, setMyPosition] = useState(positions[0]?.positionName);
   const [onModal, setOnModal] = useState(false);
   const [isReady, setIsReady] = useState(false);
-  const user = useAppSelector(state => state.user);
+  const user = useAppSelector((state) => state.user);
   const router = useRouter();
-  
+
   const handleTitle = (e: ChangeEvent<HTMLInputElement>) => {
     setProjectTitle(e.target.value);
   };
 
-  const handlePositions = (e: React.BaseSyntheticEvent, selectedPosition: string) => {
+  const handlePositions = (
+    e: React.BaseSyntheticEvent,
+    selectedPosition: string
+  ) => {
     const target = e.target.id;
 
-    if (target === "minus"){
-      setPositions(prev => {
+    if (target === 'minus') {
+      setPositions((prev) => {
         return prev.map((position: position) => {
-          if (position.positionName === selectedPosition && position.count > 0) {
-            position.count--; 
+          if (
+            position.positionName === selectedPosition &&
+            position.count > 0
+          ) {
+            position.count--;
           }
           return position;
         });
       });
     }
 
-    if (target === "plus") {
-      setPositions(prev => {
+    if (target === 'plus') {
+      setPositions((prev) => {
         return prev.map((position: position) => {
           if (position.positionName === selectedPosition) {
             position.count++;
@@ -175,8 +183,8 @@ const ProjectUpload = () => {
     const prevPosition = myPosition;
     const curPosition = e.target.value;
 
-    setPositions(positions => {
-      return positions.map(position => {
+    setPositions((positions) => {
+      return positions.map((position) => {
         if (position.positionName === prevPosition) position.count--;
         if (position.positionName === curPosition) position.count++;
         return position;
@@ -187,7 +195,9 @@ const ProjectUpload = () => {
 
   const handleTech = (e: ChangeEvent<HTMLSelectElement>) => {
     const selectedTechStackName = e.target.value;
-    const selectedTechStack = teckStacks.find(techStack => techStack.technicalStackName === selectedTechStackName) as techStack;
+    const selectedTechStack = teckStacks.find(
+      (techStack) => techStack.technicalStackName === selectedTechStackName
+    ) as techStack;
 
     setCurSelectedTech(selectedTechStackName);
 
@@ -206,22 +216,22 @@ const ProjectUpload = () => {
     const date = e.target.value;
     const id = e.target.id;
 
-    if (id === "startDate") {
+    if (id === 'startDate') {
       setStartDate(date);
     }
-    
-    if (id === "endDate") {
+
+    if (id === 'endDate') {
       setEndDate(date);
     }
-  }
+  };
 
   const handleIntroduction = (e: ChangeEvent<HTMLTextAreaElement>) => {
     setIntroduction(e.target.value);
-  }
+  };
 
   const onCreate = useCallback(() => {
     setOnModal(!onModal);
-    document.body.style.overflow = "hidden";
+    document.body.style.overflow = 'hidden';
   }, []);
 
   const makePositionDtoList = (positions: position[]) => {
@@ -231,20 +241,20 @@ const ProjectUpload = () => {
       if (!position.count) return;
 
       const isMine = myPosition === position.positionName;
-      const information = isMine ? {userNo:  user.userInfo.no} : null;
+      const information = isMine ? { userNo: user.userInfo.no } : null;
 
       for (let i = 0; i < position.count; i++) {
         const positionInfo = {
           positionNo: position.positionNo,
-          projectRegisterUserDto: !i ? information : null
-        }
+          projectRegisterUserDto: !i ? information : null,
+        };
 
         result.push(positionInfo);
       }
     });
 
     return result;
-  }
+  };
 
   useEffect(() => {
     (async () => {
@@ -252,9 +262,9 @@ const ProjectUpload = () => {
       const techStack = await TechStackService.getTechStacks();
 
       const updatedPositions: position[] = positions.map((position: any) => {
-        position["count"] = 0;
+        position['count'] = 0;
         return position as position;
-      })
+      });
       setPositions(updatedPositions);
 
       setTechStacks(techStack);
@@ -263,8 +273,11 @@ const ProjectUpload = () => {
 
   useEffect(() => {
     if (!isReady) return;
-    const projectTechnicalStackList = selectedTechList.map(tech => tech.technicalStackNo);
-    const projectPositionRegisterDtoList: positionInfo[] = makePositionDtoList(positions);
+    const projectTechnicalStackList = selectedTechList.map(
+      (tech) => tech.technicalStackNo
+    );
+    const projectPositionRegisterDtoList: positionInfo[] =
+      makePositionDtoList(positions);
 
     (async () => {
       const result = {
@@ -279,9 +292,9 @@ const ProjectUpload = () => {
       try {
         const register = await ProjectService.registerProject(result);
 
-        register.status === 200 && router.push("/");
+        register.status === 200 && router.push('/');
       } catch (err) {
-        console.log(err)
+        console.log(err);
       }
     })();
   }, [isReady]);
@@ -290,14 +303,19 @@ const ProjectUpload = () => {
     <PrimaryLayout>
       <MainTitle>
         <label htmlFor="title">
-          <input type="text" value={projectTitle} onChange={handleTitle} placeholder="Project Title"/>
+          <input
+            type="text"
+            value={projectTitle}
+            onChange={handleTitle}
+            placeholder="Project Title"
+          />
         </label>
       </MainTitle>
       <Form>
         <Main>
           <Title title="내 포지션" sm />
           <select onChange={handleSelect} value={myPosition}>
-            <option value={"선택해 주세요"} key={"init"}>
+            <option value={'선택해 주세요'} key={'init'}>
               선택해주세요
             </option>
             {positions.map((position) => (
@@ -313,14 +331,18 @@ const ProjectUpload = () => {
               <>
                 <PositionDetail key={position.positionNo}>
                   <span>{position.positionName}</span>
-                  <div onClick={(e) => {handlePositions(e, position.positionName)}}>
+                  <div
+                    onClick={(e) => {
+                      handlePositions(e, position.positionName);
+                    }}
+                  >
                     <span id="minus">-</span>
                     <span>{position.count}</span>
                     <span id="plus">+</span>
                   </div>
                 </PositionDetail>
               </>
-            )
+            );
           })}
 
           <Title title="Period" sm />
@@ -330,7 +352,7 @@ const ProjectUpload = () => {
               type="date"
               value={startDate}
               onChange={handleDate}
-              min={moment().format("YYYY-MM-DD")}
+              min={moment().format('YYYY-MM-DD')}
               max={endDate}
             />
             <span> ~ </span>
@@ -345,11 +367,14 @@ const ProjectUpload = () => {
 
           <Title title="Tech Stacks" sm />
           <select onChange={handleTech} value={curSelectedTech}>
-            <option value={"선택해 주세요"} key={"init"}>
+            <option value={'선택해 주세요'} key={'init'}>
               선택해주세요
             </option>
             {teckStacks.map((techStack) => (
-              <option value={techStack.technicalStackName} key={techStack.technicalStackNo}>
+              <option
+                value={techStack.technicalStackName}
+                key={techStack.technicalStackNo}
+              >
                 {techStack.technicalStackName}
               </option>
             ))}
@@ -363,14 +388,14 @@ const ProjectUpload = () => {
           </div>
 
           <Title title="Introduction" sm />
-          <Introduction value={introduction} onChange={handleIntroduction}/>
+          <Introduction value={introduction} onChange={handleIntroduction} />
         </Main>
 
         <Side>
           <SideTop>
             <Stitle>Project Details</Stitle>
             <Mtitle>Available Positions</Mtitle>
-            {positions.map(position => {
+            {positions.map((position) => {
               if (!position.count) return;
 
               return (
@@ -380,7 +405,7 @@ const ProjectUpload = () => {
                     <span>{position.count}</span>
                   </SidePositionSection>
                 </>
-              )
+              );
             })}
           </SideTop>
           <BtnWrapper>
@@ -388,11 +413,15 @@ const ProjectUpload = () => {
             <input type="button" value="취소" />
           </BtnWrapper>
         </Side>
-        {onModal &&
+        {onModal && (
           <Backdrop>
-            <ConfirmModal title="정말 생성하시겠습니까?" setOnModal={setOnModal} setIsReady={setIsReady} />
+            <ConfirmModal
+              title="정말 생성하시겠습니까?"
+              setOnModal={setOnModal}
+              setIsReady={setIsReady}
+            />
           </Backdrop>
-        }
+        )}
       </Form>
     </PrimaryLayout>
   );

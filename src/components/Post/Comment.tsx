@@ -1,7 +1,7 @@
+import SecondaryButton from '@/components/Common/Buttons/SecondaryButton';
 import styled from '@emotion/styled';
 import { ChangeEvent, useState } from 'react';
 import { CommentService } from '../../services/CommentService';
-import SecondaryButton from '../Buttons/SecondaryButton';
 
 const CommentLayout = styled.div`
   font-size: ${(props) => props.theme.sizes.m};

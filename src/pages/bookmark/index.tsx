@@ -1,10 +1,10 @@
 import InfiniteScrollLayout, {
   fetchedData,
-} from '@/components/Layouts/InfiniteScrollLayout';
-import SecondaryProjectLayout from '@/components/Projects/SecondaryProjectLayout';
+} from '@/components/Common/Layouts/InfiniteScrollLayout';
+import PrimaryLayout from '@/components/Common/Layouts/PrimaryLayout';
+import SecondaryProjectLayout from '@/components/Common/Layouts/SecondaryProjectLayout';
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import PrimaryLayout from 'src/components/Layouts/PrimaryLayout';
 import { useAppSelector } from 'src/redux/hooks';
 import { openModal } from 'src/redux/reducers/components/modals';
 import { BookmarkService } from 'src/services/BookmarkService';

@@ -1,7 +1,7 @@
+import PrimaryButton from '@/components/Common/Buttons/PrimaryButton';
 import styled from '@emotion/styled';
 import { Dispatch, SetStateAction } from 'react';
-import PrimaryButton from '../Buttons/PrimaryButton';
-import LocalModalLayout from '../Modals/LocalModalLayout';
+import LocalModalLayout from '../Common/Modals/LocalModalLayout';
 import { NotificationDetail } from './NotificationArticle';
 
 const Content = styled.div`

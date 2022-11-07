@@ -1,4 +1,4 @@
-import UserSearchBar from '@/components/SearchBar/UserSearchBar';
+import UserSearchBar from '@/components/Common/SearchBar/UserSearchBar';
 import styled from '@emotion/styled';
 import { SubTitle } from '../DashboardCommon';
 

@@ -1,6 +1,6 @@
-import PrimaryButton from '@/components/Buttons/PrimaryButton';
-import SecondaryButton from '@/components/Buttons/SecondaryButton';
-import SignupEmailSentModal from '@/components/Modals/SignupEmailSentModal';
+import PrimaryButton from '@/components/Common/Buttons//PrimaryButton';
+import SecondaryButton from '@/components/Common/Buttons//SecondaryButton';
+import SignupEmailSentModal from '@/components/Common/Modals/SignupEmailSentModal';
 import styled from '@emotion/styled';
 import Link from 'next/link';
 import { useRouter } from 'next/router';

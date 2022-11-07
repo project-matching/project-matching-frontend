@@ -1,5 +1,5 @@
-import PrimaryButton from '@/components/Buttons/PrimaryButton';
-import UserBlockModal from '@/components/Modals/UserBlockModal';
+import PrimaryButton from '@/components/Common/Buttons//PrimaryButton';
+import UserBlockModal from '@/components/Common/Modals/UserBlockModal';
 import styled from '@emotion/styled';
 import Image from 'next/image';
 import defaultProfileImage from 'public/default_profile.png';

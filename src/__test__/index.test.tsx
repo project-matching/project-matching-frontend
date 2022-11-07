@@ -1,10 +1,10 @@
 // __tests__/index.test.jsx
 
+import Header from '@/components/Headers/Header';
 import '@testing-library/jest-dom';
 import { login } from 'mocks/handlers';
 import { server } from 'mocks/server';
 import { act } from 'react-dom/test-utils';
-import Header from 'src/components/Common/Header';
 import { fireEvent, render, screen } from './test-utils';
 
 describe('Header and navigations', () => {

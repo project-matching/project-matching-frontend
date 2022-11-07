@@ -1,5 +1,5 @@
-import { links } from '@/components/Dashboard/DashboardLayout';
-import PrimaryLayout from '@/components/Layouts/PrimaryLayout';
+import { links } from '@/components/Common/Layouts/DashboardLayout';
+import PrimaryLayout from '@/components/Common/Layouts/PrimaryLayout';
 import styled from '@emotion/styled';
 import { useRouter } from 'next/router';
 import { useAppSelector } from 'src/redux/hooks';

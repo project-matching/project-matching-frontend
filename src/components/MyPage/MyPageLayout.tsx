@@ -1,9 +1,8 @@
 import styled from '@emotion/styled';
 import React from 'react';
 import { useAppSelector } from 'src/redux/hooks';
-import { LinksProps } from '../Layouts/RoutingSidebar';
-import MyPageSection from './MyPageSection';
-import MyPageSidebar from './Sidebar';
+import MainSection from '../Common/Layouts/MainSection';
+import RoutingSidebar, { LinksProps } from '../Common/Layouts/RoutingSidebar';
 
 const Container = styled.div`
   margin: 0 auto 100px;
@@ -55,8 +54,8 @@ const MyPageLayout = ({ children }: React.PropsWithChildren) => {
         <Container>
           <Title>내 페이지</Title>
           <Section>
-            <MyPageSidebar links={links} />
-            <MyPageSection links={links}>{children}</MyPageSection>
+            <RoutingSidebar links={links} />
+            <MainSection links={links}>{children}</MainSection>
           </Section>
         </Container>
       )}

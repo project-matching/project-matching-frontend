@@ -1,5 +1,5 @@
-import PrimaryLayout from '@/components/Layouts/PrimaryLayout';
-import PrimaryProjectLayout from '@/components/Projects/PrimaryProjectLayout';
+import PrimaryLayout from '@/components/Common/Layouts/PrimaryLayout';
+import PrimaryProjectLayout from '@/components/Common/Layouts/PrimaryProjectLayout';
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useAppSelector } from 'src/redux/hooks';
