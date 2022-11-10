@@ -100,12 +100,8 @@ const MyProfile = ({ myProfile }: MyProfileProps) => {
     },
   ];
 
-  const submitProfile = (e: React.FormEvent) => {
-    e.preventDefault();
-  };
-
   return (
-    <form onSubmit={submitProfile}>
+    <div>
       <ImageContainer>
         <Image
           src={image || defaultProfileImage}
@@ -134,15 +130,13 @@ const MyProfile = ({ myProfile }: MyProfileProps) => {
             <InfoLi key={id} vertical={vertical}>
               <InfoTitle>{name}</InfoTitle>
               <span>
-                {name === '성별'
-                  ? decodeSex(content || '')
-                  : (content && content) || '없음'}
+                {name === '성별' ? decodeSex(content || '') : content || '없음'}
               </span>
             </InfoLi>
           );
         })}
       </InfoContainer>
-    </form>
+    </div>
   );
 };
 
