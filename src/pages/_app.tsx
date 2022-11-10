@@ -1,11 +1,10 @@
-import { Global, ThemeProvider } from '@emotion/react';
+import { Global } from '@emotion/react';
 import type { AppProps } from 'next/app';
 import { useEffect } from 'react';
 import { Provider, useDispatch } from 'react-redux';
 import { validateToken } from 'src/redux/reducers/auth';
 import { store, wrapper } from 'src/redux/store';
 import reset from '../styles/reset';
-import { theme } from '../styles/theme';
 
 function MyApp({ Component, pageProps }: AppProps) {
   const dispatch = useDispatch();
@@ -24,10 +23,8 @@ function MyApp({ Component, pageProps }: AppProps) {
   return (
     <>
       <Provider store={store}>
-        <ThemeProvider theme={theme}>
-          <Global styles={reset} />
-          <Component {...pageProps} />
-        </ThemeProvider>
+        <Global styles={reset} />
+        <Component {...pageProps} />
       </Provider>
     </>
   );
