@@ -4,6 +4,7 @@ import CommentInput from '@/components/Common/Inputs/CommentInput';
 import PrimaryLayout from '@/components/Common/Layouts/PrimaryLayout';
 import Position from '@/components/Post/Position';
 import Side from '@/components/Post/Side';
+import { colors } from '@/styles/theme';
 import styled from '@emotion/styled';
 import { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
@@ -32,7 +33,7 @@ const Left = styled.div`
 
 const Main = styled.div`
   width: 100%;
-  border: 1px solid #d4d4d4;
+  border: 1px solid ${colors.gray300};
   padding: 0 20px;
   padding-bottom: 20px;
 `;
@@ -43,7 +44,7 @@ const Introduction = styled.div`
 
 const CommentSection = styled.section`
   width: 100%;
-  border: 1px solid #d4d4d4;
+  border: 1px solid ${colors.gray300};
   margin-top: 30px;
 `;
 
@@ -52,7 +53,7 @@ const CommentBox = styled.article`
   flex-direction: column;
   margin: 5px;
   padding: 20px;
-  border: 1px solid #d4d4d4;
+  border: 1px solid ${colors.gray300};
 
   h3 {
     font-size: 20px;
@@ -237,7 +238,9 @@ const ProjectDetail = ({ project, comment }: Props) => {
               );
             })}
             <CommentPageBtn onClick={commentPageController}>
-              <SecondaryButton id="prev" disabled={isFirst}>이전</SecondaryButton>
+              <SecondaryButton id="prev" disabled={isFirst}>
+                이전
+              </SecondaryButton>
               <SecondaryButton id="next" disabled={isLast}>
                 다음
               </SecondaryButton>

@@ -1,10 +1,11 @@
+import { colors } from '@/styles/theme';
 import styled from '@emotion/styled';
 import { Dispatch, FC, SetStateAction } from 'react';
 
 const Box = styled.div`
   width: 300px;
   height: 200px;
-  background-color: gray;
+  background-color: ${colors.gray300};
   z-index: 999;
   position: fixed;
   left: 30%;
@@ -35,24 +36,28 @@ interface Props {
 const ConfirmModal: FC<Props> = ({ title, setOnModal, setIsReady }) => {
   const handleClick = (e: React.BaseSyntheticEvent) => {
     const target = e.target.id;
-    
-    if (target === "ok") {
+
+    if (target === 'ok') {
       setIsReady(true);
     }
-    
-    if (target === "no") {
+
+    if (target === 'no') {
       setIsReady(false);
       setOnModal(false);
-      document.body.style.overflow = "auto";
+      document.body.style.overflow = 'auto';
     }
-  }
+  };
 
   return (
     <Box>
       <h1>{title}</h1>
       <BtnWrapper onClick={handleClick}>
-        <Btn type="button" id="ok">예</Btn>
-        <Btn type="button" id="no">아니요</Btn>
+        <Btn type="button" id="ok">
+          예
+        </Btn>
+        <Btn type="button" id="no">
+          아니요
+        </Btn>
       </BtnWrapper>
     </Box>
   );

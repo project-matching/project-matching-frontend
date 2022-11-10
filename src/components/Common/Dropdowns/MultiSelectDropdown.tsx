@@ -1,3 +1,4 @@
+import { colors, fontSize } from '@/styles/theme';
 import styled from '@emotion/styled';
 import { solid } from '@fortawesome/fontawesome-svg-core/import.macro';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -8,6 +9,7 @@ import React, {
   useRef,
   useState,
 } from 'react';
+import { filterSelectedItems } from 'src/utils/common';
 import { v4 as uuidv4 } from 'uuid';
 
 const Container = styled.div`
@@ -16,7 +18,7 @@ const Container = styled.div`
 `;
 
 const DropdownInput = styled.div`
-  border: 1px solid #d4d4d4;
+  border: 1px solid ${colors.gray300};
   width: 100%;
   min-height: 35px;
   display: flex;
@@ -45,12 +47,12 @@ const SelectedItem = styled.div`
   justify-content: space-between;
   align-items: center;
   height: 30px;
-  background-color: ${(props) => props.theme.colors.primary};
-  color: white;
+  background-color: ${colors.primary};
+  color: ${colors.white};
 
   div {
     margin-right: 10px;
-    font-size: ${(props) => props.theme.sizes.m};
+    font-size: ${fontSize.m};
   }
 
   svg {
@@ -65,9 +67,9 @@ const SelectedItem = styled.div`
 const OptionContainer = styled.div`
   display: flex;
   flex-direction: column;
-  border: 1px solid #d4d4d4;
+  border: 1px solid ${colors.gray300};
   border-top: none;
-  background-color: white;
+  background-color: ${colors.white};
   width: 100%;
   max-height: 150px;
   overflow-y: scroll;
@@ -77,8 +79,8 @@ const OptionItem = styled.div`
   padding: 7px 10px;
 
   &:hover {
-    background-color: ${(props) => props.theme.colors.primary};
-    color: white;
+    background-color: ${colors.primary};
+    color: ${colors.white};
   }
 `;
 
@@ -186,6 +188,3 @@ const MultiSelectDropdown = ({
 };
 
 export default MultiSelectDropdown;
-
-const filterSelectedItems = (items: string[], selectedItems: string[]) =>
-  items.filter((item) => !selectedItems.includes(item));

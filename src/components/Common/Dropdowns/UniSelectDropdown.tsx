@@ -1,3 +1,4 @@
+import { colors } from '@/styles/theme';
 import styled from '@emotion/styled';
 import React from 'react';
 import { v4 as uuidv4 } from 'uuid';
@@ -9,13 +10,13 @@ const Container = styled.div`
 
 const Select = styled.select`
   outline: none;
-  border: 1px solid #d4d4d4;
+  border: 1px solid ${colors.gray300};
   height: 30px;
   padding: 5px;
 `;
 
 const Option = styled.option`
-  border: 1px solid #d4d4d4;
+  border: 1px solid ${colors.gray300};
 `;
 
 interface DropdownProps {

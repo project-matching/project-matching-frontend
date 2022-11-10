@@ -1,4 +1,5 @@
 import PrimaryButton from '@/components/Common/Buttons/PrimaryButton';
+import { fontSize, fontWeight } from '@/styles/theme';
 import styled from '@emotion/styled';
 import { Dispatch, SetStateAction } from 'react';
 import LocalModalLayout from '../Common/Modals/LocalModalLayout';
@@ -21,13 +22,13 @@ const Head = styled.div`
   margin-bottom: 15px;
 
   > h1 {
-    font-weight: bold;
+    font-weight: ${fontWeight.bold};
     margin-bottom: 10px;
   }
 
   > span {
-    font-size: ${(props) => props.theme.sizes.sm};
-    font-weight: normal;
+    font-size: ${fontSize.sm};
+    font-weight: ${fontWeight.normal};
   }
 `;
 

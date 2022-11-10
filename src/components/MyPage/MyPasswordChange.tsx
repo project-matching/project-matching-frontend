@@ -1,9 +1,11 @@
 import PrimaryButton from '@/components/Common/Buttons//PrimaryButton';
+import { colors, fontSize } from '@/styles/theme';
 import styled from '@emotion/styled';
 import { HTMLInputTypeAttribute, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useAppSelector } from 'src/redux/hooks';
 import { patchPassword } from 'src/redux/reducers/users';
+import { convertToRegEx } from 'src/utils/common';
 
 const Wrapper = styled.div`
   display: flex;
@@ -13,21 +15,21 @@ const Wrapper = styled.div`
 `;
 
 const ErrorMessage = styled.span`
-  color: ${(props) => props.theme.colors.error};
-  font-size: ${(props) => props.theme.sizes.sm};
+  color: ${colors.error};
+  font-size: ${fontSize.sm};
   display: none;
   line-height: 1.3;
 `;
 
 const Label = styled.label`
-  font-size: ${(props) => props.theme.sizes.m};
+  font-size: ${fontSize.m};
 `;
 
 const Input = styled.input`
   margin: 10px 0;
   padding: 5px 10px;
   width: 100%;
-  font-size: 16px;
+  font-size: ${fontSize.lg};
   &:invalid ~ span {
     display: block;
   }
@@ -45,8 +47,8 @@ const Form = styled.form`
 `;
 
 const SubmitErrorMessage = styled.span`
-  color: ${(props) => props.theme.colors.error};
-  font-size: ${(props) => props.theme.sizes.sm};
+  color: ${colors.error};
+  font-size: ${fontSize.sm};
   line-height: 1.3;
 `;
 
@@ -126,8 +128,6 @@ const MyPasswordChange = () => {
       [inputName]: target.value,
     });
   };
-
-  const convertToRegEx = (pattern: string): RegExp => RegExp(pattern);
 
   const submit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();

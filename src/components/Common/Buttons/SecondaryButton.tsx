@@ -1,3 +1,4 @@
+import { colors } from '@/styles/theme';
 import styled from '@emotion/styled';
 
 type ButtonProps = {
@@ -11,14 +12,14 @@ const SecondaryButton = styled.button<ButtonProps>`
     margin: 10px 0;`
       : 'margin: 10px;'}
   padding: 10px 18px;
-  border: ${(props) => `1px solid ${props.theme.colors.darkGray}`};
-  color: ${(props) => props.theme.colors.black};
-  background-color: white;
+  border: 1px solid ${colors.gray300};
+  color: ${colors.black};
+  background-color: ${colors.white};
   cursor: pointer;
   &:hover {
-    background-color: ${(props) => !props.disabled && props.theme.colors.gray};
-    color: ${(props) => !props.disabled && 'white'};
-    border: ${(props) => `1px solid ${props.theme.colors.gray}`};
+    background-color: ${(props) => !props.disabled && colors.gray200};
+    color: ${(props) => !props.disabled && colors.white};
+    border: 1px solid ${colors.gray200};
   }
 `;
 export default SecondaryButton;

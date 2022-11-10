@@ -1,5 +1,6 @@
 import ProjectStateButton from '@/components/Common/Buttons/Search/ProjectStateButton';
 import SearchButton from '@/components/Common/Buttons/Search/SearchButton';
+import { colors } from '@/styles/theme';
 import styled from '@emotion/styled';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
@@ -13,8 +14,8 @@ const MainSearchBar = () => {
     display: flex;
     flex-direction: row;
     align-items: center;
-    border: 1px solid #d4d4d4;
-    background-color: white;
+    border: 1px solid ${colors.gray300};
+    background-color: ${colors.white};
 
     > form {
       display: flex;

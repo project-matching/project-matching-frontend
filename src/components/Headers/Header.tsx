@@ -1,3 +1,4 @@
+import { colors, fontSize, fontWeight } from '@/styles/theme';
 import styled from '@emotion/styled';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -5,6 +6,8 @@ import { useDispatch } from 'react-redux';
 import { useAppSelector } from 'src/redux/hooks';
 import { openModal } from 'src/redux/reducers/components/modals';
 import { Wrapper } from 'src/styles/global';
+import { dashboardPath, headerPath } from 'src/utils/path';
+import { ROLE_ADMIN } from 'src/utils/userRole';
 import PrimaryButton from '../Common/Buttons/PrimaryButton';
 import LogoLink from '../Common/Logos/LogoLink';
 import AuthModal from '../Common/Modals/AuthModal';
@@ -37,12 +40,10 @@ const Header: React.FC = () => {
 
   const A = styled.a`
     margin: 10px;
-    font-size: 18px;
+    font-size: ${fontSize.ml};
     color: ${(props) =>
-      props.href === router.asPath
-        ? props.theme.colors.black
-        : props.theme.colors.gray};
-    font-weight: bold;
+      props.href === router.asPath ? colors.black : colors.gray200};
+    font-weight: ${fontWeight.bold};
   `;
 
   const userInfo = useAppSelector((state) => state.user.userInfo);
@@ -72,25 +73,25 @@ const Header: React.FC = () => {
           <Flex>
             <LogoLink />
             <Nav>
-              <Link href="/" passHref>
+              <Link href={headerPath.home} passHref>
                 <A>Home</A>
               </Link>
-              <Link href="/recruiting" passHref>
+              <Link href={headerPath.recruiting} passHref>
                 <A>Recruiting</A>
               </Link>
-              <Link href="/recruited" passHref>
+              <Link href={headerPath.recruited} passHref>
                 <A>Recruited</A>
               </Link>
-              {userInfo.role === 'ROLE_ADMIN' && (
-                <Link href="/dashboard" passHref>
+              {userInfo.role === ROLE_ADMIN && (
+                <Link href={dashboardPath.dashboard} passHref>
                   <A>Dashboard</A>
                 </Link>
               )}
             </Nav>
           </Flex>
           <Flex>
-            {router.asPath !== '/' && <HeaderSearchBar />}
-            {userInfo.role !== 'ROLE_ADMIN' && (
+            {router.asPath !== headerPath.home && <HeaderSearchBar />}
+            {userInfo.role !== ROLE_ADMIN && (
               <PrimaryButton onClick={openRecruitModal}>
                 새 프로젝트
               </PrimaryButton>

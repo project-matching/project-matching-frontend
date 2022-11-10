@@ -1,3 +1,4 @@
+import { fontSize, fontWeight } from '@/styles/theme';
 import styled from '@emotion/styled';
 import React from 'react';
 import { useAppSelector } from 'src/redux/hooks';
@@ -59,8 +60,8 @@ const Container = styled.div`
 
 const Title = styled.h1`
   margin: 40px 0;
-  font-weight: bold;
-  font-size: ${(props) => props.theme.sizes.xl};
+  font-weight: ${fontWeight.bold};
+  font-size: ${fontSize.xl};
 `;
 
 const Section = styled.section`

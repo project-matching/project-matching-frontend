@@ -1,9 +1,10 @@
+import { colors } from '@/styles/theme';
 import styled from '@emotion/styled';
 import { FC } from 'react';
 
 export const SSelect = styled.select<{ hasError?: boolean }>`
   width: 20%;
-  color: #000;
+  color: ${colors.black};
   padding: 7px 0;
   background-color: #fafafa;
   box-sizing: border-box;

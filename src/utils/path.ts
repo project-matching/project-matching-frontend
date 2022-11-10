@@ -7,3 +7,9 @@ export const dashboardPath = {
   techStack: '/dashboard/techStack',
   user: '/dashboard/user',
 };
+
+export const headerPath = {
+  home: '/',
+  recruiting: '/recruiting',
+  recruited: '/recruited',
+};

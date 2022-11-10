@@ -1,3 +1,4 @@
+import { colors, fontSize } from '@/styles/theme';
 import styled from '@emotion/styled';
 import { useState } from 'react';
 import { NotificationService } from 'src/services/NotificationService';
@@ -11,12 +12,11 @@ const Article = styled.a<{ read: boolean }>`
   gap: 20px;
   padding: 10px;
   margin-bottom: 30px;
-  color: ${(props) =>
-    props.read ? props.theme.colors.darkGray : props.theme.colors.black};
+  color: ${(props) => (props.read ? colors.gray300 : colors.black)};
 
   &:hover {
-    background-color: ${(props) => props.theme.colors.primary};
-    color: white;
+    background-color: ${colors.primary};
+    color: ${colors.white};
   }
 
   &:last-child {
@@ -25,12 +25,12 @@ const Article = styled.a<{ read: boolean }>`
 `;
 
 const CreatedDate = styled.h3`
-  font-size: ${(props) => props.theme.sizes.sm};
+  font-size: ${fontSize.sm};
   vertical-align: center;
 `;
 
 const Read = styled.h3`
-  font-size: ${(props) => props.theme.sizes.sm};
+  font-size: ${fontSize.sm};
   vertical-align: center;
 `;
 

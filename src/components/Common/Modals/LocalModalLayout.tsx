@@ -1,3 +1,4 @@
+import { fontWeight } from '@/styles/theme';
 import styled from '@emotion/styled';
 import React, { Dispatch, SetStateAction } from 'react';
 import Logo from '../Logos/Logo';
@@ -14,8 +15,8 @@ const Head = styled.div`
   justify-content: space-between;
   align-items: center;
 `;
-const A = styled.a`
-  font-weight: bold;
+const CloseButton = styled.a`
+  font-weight: ${fontWeight.bold};
   cursor: pointer;
 `;
 
@@ -40,7 +41,7 @@ const LocalModalLayout = ({ onClose, children }: LocalModalLayoutProps) => {
           <div>
             <Logo />
           </div>
-          <A onClick={closeLocalModalLayout}>X</A>
+          <CloseButton onClick={closeLocalModalLayout}>X</CloseButton>
         </Head>
         <Body>{children}</Body>
       </Container>

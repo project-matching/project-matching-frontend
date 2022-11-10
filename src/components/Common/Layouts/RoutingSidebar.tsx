@@ -1,3 +1,4 @@
+import { colors, fontSize, fontWeight } from '@/styles/theme';
 import styled from '@emotion/styled';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -15,12 +16,11 @@ interface RoutingSidebarProps {
 const RoutingSidebar = ({ links }: RoutingSidebarProps) => {
   const router = useRouter();
 
-  const A = styled.a`
+  const SideLink = styled.a`
     color: ${(props) =>
-      props.href === router.asPath
-        ? props.theme.colors.black
-        : props.theme.colors.gray};
-    font-weight: ${(props) => (props.href === router.asPath ? 'bold' : null)};
+      props.href === router.asPath ? colors.black : colors.gray200};
+    font-weight: ${(props) =>
+      props.href === router.asPath ? fontWeight.bold : null};
 
     &:hover {
       text-decoration: underline;
@@ -28,29 +28,29 @@ const RoutingSidebar = ({ links }: RoutingSidebarProps) => {
   `;
 
   return (
-    <Container>
+    <RoutingContainer>
       {links.map(({ id, href, title }) => (
         <Link key={id} href={href} passHref>
-          <A>{title}</A>
+          <SideLink>{title}</SideLink>
         </Link>
       ))}
-    </Container>
+    </RoutingContainer>
   );
 };
 
 export default RoutingSidebar;
 
-const Container = styled.aside`
+const RoutingContainer = styled.aside`
   padding: 20px;
   width: 200px;
   display: flex;
   flex-direction: column;
   height: fit-content;
-  border: 1px solid #d4d4d4;
+  border: 1px solid ${colors.gray300};
 
   a {
     margin-bottom: 10px;
-    font-size: ${(props) => props.theme.sizes.m};
+    font-size: ${fontSize.m};
 
     &:last-child {
       margin-bottom: 0;

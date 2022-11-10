@@ -1,4 +1,5 @@
 import PrimaryButton from '@/components/Common/Buttons/PrimaryButton';
+import { colors, fontSize, fontWeight } from '@/styles/theme';
 import styled from '@emotion/styled';
 import { HTMLInputTypeAttribute, useState } from 'react';
 import { useDispatch } from 'react-redux';
@@ -16,19 +17,19 @@ const Title = styled.h3`
 `;
 
 const Desc = styled.p`
-  font-size: ${(props) => props.theme.sizes.m};
+  font-size: ${fontSize.m};
   margin-bottom: 20px;
   line-height: 1.5;
 
   b {
-    color: ${(props) => props.theme.colors.error};
-    font-weight: bold;
+    color: ${colors.error};
+    font-weight: ${fontWeight.bold};
   }
 `;
 
 const ErrorMessage = styled.span`
-  color: ${(props) => props.theme.colors.error};
-  font-size: ${(props) => props.theme.sizes.sm};
+  color: ${colors.error};
+  font-size: ${fontSize.sm};
   display: none;
   line-height: 1.3;
 `;
@@ -37,7 +38,7 @@ const Input = styled.input`
   margin: 10px 0;
   padding: 5px 10px;
   width: 100%;
-  font-size: 16px;
+  font-size: ${fontSize.lg};
   &:invalid ~ span {
     display: block;
   }

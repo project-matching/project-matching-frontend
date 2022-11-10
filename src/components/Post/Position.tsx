@@ -1,4 +1,5 @@
 import SmallButton from '@/components/Common/Buttons/SmallButton';
+import { fontSize } from '@/styles/theme';
 import styled from '@emotion/styled';
 import { FC, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
@@ -21,7 +22,7 @@ const PositionItem = styled.div`
 
   button {
     margin: 0;
-    font-size: ${(props) => props.theme.sizes.sm};
+    font-size: ${fontSize.sm};
   }
 `;
 

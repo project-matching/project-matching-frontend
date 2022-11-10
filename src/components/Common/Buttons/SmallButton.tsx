@@ -1,3 +1,4 @@
+import { colors } from '@/styles/theme';
 import styled from '@emotion/styled';
 
 type ButtonProps = {
@@ -6,20 +7,13 @@ type ButtonProps = {
 };
 
 const SmallButton = styled.button<ButtonProps>`
-  ${(props) =>
-    props.wFull
-      ? `
-      width: 100%; 
-      margin: 5px 0;
-    `
-      : `
-      margin: 5px 0;
-    `}
+  width: ${(props) => (props.wFull ? `100%` : null)};
+  margin: 5px 0;
   padding: 5px 10px;
   border: none;
-  color: white;
+  color: ${colors.white};
   background-color: ${(props) =>
-    props.gray ? props.theme.colors.gray : props.theme.colors.primary};
+    props.gray ? colors.gray200 : colors.primary};
   cursor: pointer;
 `;
 export default SmallButton;

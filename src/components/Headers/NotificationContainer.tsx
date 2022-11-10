@@ -1,3 +1,4 @@
+import { colors, fontSize } from '@/styles/theme';
 import styled from '@emotion/styled';
 import { useState } from 'react';
 import { NotificationService } from 'src/services/NotificationService';
@@ -10,12 +11,9 @@ interface NotificationStyleType {
 }
 
 const Container = styled.a<NotificationStyleType>`
-  ${(props) =>
-    `color: ${
-      props.read ? props.theme.colors.gray : props.theme.colors.black
-    };`}
+  color: ${(props) => (props.read ? colors.gray200 : colors.black)};
   width: inherit;
-  font-size: ${(props) => props.theme.sizes.sm};
+  font-size: ${fontSize.sm};
   overflow: hidden;
   margin-bottom: 10px;
   white-space: nowrap;
@@ -23,7 +21,7 @@ const Container = styled.a<NotificationStyleType>`
   line-height: 1.2;
 
   &:visited {
-    ${(props) => `color: ${props.theme.colors.gray};`}
+    color: ${colors.gray200};
   }
 `;
 

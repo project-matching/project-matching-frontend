@@ -1,3 +1,4 @@
+import { fontWeight } from '@/styles/theme';
 import styled from '@emotion/styled';
 import { useDispatch } from 'react-redux';
 import {
@@ -19,8 +20,8 @@ const Head = styled.div`
   justify-content: space-between;
   align-items: center;
 `;
-const A = styled.a`
-  font-weight: bold;
+const CloseButton = styled.a`
+  font-weight: ${fontWeight.bold};
   cursor: pointer;
 `;
 
@@ -48,7 +49,7 @@ const ModalLayout = ({ modalContent, children }: ModalLayoutProps) => {
           <div>
             <Logo />
           </div>
-          <A onClick={closeModalLayout}>X</A>
+          <CloseButton onClick={closeModalLayout}>X</CloseButton>
         </Head>
         <Body>{children}</Body>
       </Container>

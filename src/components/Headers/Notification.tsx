@@ -1,3 +1,4 @@
+import { colors, fontSize } from '@/styles/theme';
 import styled from '@emotion/styled';
 import Link from 'next/link';
 import notificationImage from 'public/notification.png';
@@ -12,11 +13,11 @@ const Dropdown = styled.div`
   top: 35px;
   right: 10px;
   width: 200px;
-  background-color: white;
-  border: 1px solid #d4d4d4;
+  background-color: ${colors.white};
+  border: 1px solid ${colors.gray300};
   padding: 10px 10px 5px;
   z-index: 2;
-  font-size: ${(props) => props.theme.sizes.m};
+  font-size: ${fontSize.m};
 `;
 
 const LinkContainer = styled.div`
@@ -25,7 +26,7 @@ const LinkContainer = styled.div`
   justify-content: center;
 
   > a:last-child {
-    font-size: ${(props) => props.theme.sizes.sm};
+    font-size: ${fontSize.sm};
     margin: 5px 0;
     text-align: center;
   }

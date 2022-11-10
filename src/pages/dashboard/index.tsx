@@ -1,5 +1,6 @@
 import { links } from '@/components/Common/Layouts/DashboardLayout';
 import PrimaryLayout from '@/components/Common/Layouts/PrimaryLayout';
+import { colors, fontSize, fontWeight } from '@/styles/theme';
 import styled from '@emotion/styled';
 import { useRouter } from 'next/router';
 import { useAppSelector } from 'src/redux/hooks';
@@ -41,8 +42,8 @@ const CardContainer = styled.div`
 
 const Title = styled.h1`
   margin: 40px 0;
-  font-weight: bold;
-  font-size: ${(props) => props.theme.sizes.xl};
+  font-weight: ${fontWeight.bold};
+  font-size: ${fontSize.xl};
 `;
 
 const Card = styled.div`
@@ -50,12 +51,12 @@ const Card = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  border: 1px solid #d4d4d4;
+  border: 1px solid ${colors.gray300};
   cursor: pointer;
   transition: 0.2s ease-in;
 
   &:hover {
-    background-color: ${(props) => props.theme.colors.primary};
-    color: white;
+    background-color: ${colors.primary};
+    color: ${colors.white};
   }
 `;

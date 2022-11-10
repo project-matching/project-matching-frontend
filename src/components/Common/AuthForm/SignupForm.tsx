@@ -1,30 +1,31 @@
 import PrimaryButton from '@/components/Common/Buttons/PrimaryButton';
+import { colors, fontSize, fontWeight } from '@/styles/theme';
 import styled from '@emotion/styled';
 import React, { HTMLInputTypeAttribute, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { signup } from 'src/redux/reducers/auth';
-import { Flex } from 'src/styles/global';
+import { convertToRegEx } from 'src/utils/common';
 import { AuthFormTypes } from '../Modals/AuthModal';
 
 const Content = styled.div`
   padding: 0 0 20px;
   text-align: center;
-  font-size: ${(props) => props.theme.sizes.sm};
+  font-size: ${fontSize.sm};
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
 `;
 
-const H1 = styled.h1`
-  font-size: ${(props) => props.theme.sizes.lg};
-  font-weight: bold;
+const Title = styled.h1`
+  font-size: ${fontSize.lg};
+  font-weight: ${fontWeight.bold};
   padding-bottom: 10px;
 `;
 
 const ErrorMessage = styled.span`
-  color: ${(props) => props.theme.colors.error};
-  font-size: ${(props) => props.theme.sizes.sm};
+  color: ${colors.error};
+  font-size: ${fontSize.sm};
   display: none;
   line-height: 1.3;
 `;
@@ -33,7 +34,7 @@ const Input = styled.input`
   margin: 5px 0;
   padding: 5px 10px;
   width: 100%;
-  font-size: 16px;
+  font-size: ${fontSize.lg};
   &:invalid ~ span {
     display: block;
   }
@@ -54,14 +55,22 @@ const Form = styled.form`
   }
 `;
 
-const A = styled.a`
-  font-weight: bold;
+const Link = styled.a`
+  font-weight: ${fontWeight.bold};
   cursor: pointer;
+`;
+
+const ModalFoot = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 `;
 
 const StatusContainer = styled.div`
   margin: 20px 0 10px 0;
-  font-size: ${(props) => props.theme.sizes.sm};
+  font-size: ${fontSize.sm};
 `;
 
 interface SigninFormProps {
@@ -159,8 +168,6 @@ const SignupForm = ({ setAuthForm }: SigninFormProps) => {
     });
   };
 
-  const convertToRegEx = (pattern: string): RegExp => RegExp(pattern);
-
   const submitSignup = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const target = e.target as typeof e.target & {
@@ -182,12 +189,10 @@ const SignupForm = ({ setAuthForm }: SigninFormProps) => {
     );
   };
 
-  console.log(inputValues);
-
   return (
-    <>
+    <div>
       <Content>
-        <H1>회원가입</H1>
+        <Title>회원가입</Title>
       </Content>
       <Form onSubmit={submitSignup}>
         {inputs.map(
@@ -224,12 +229,13 @@ const SignupForm = ({ setAuthForm }: SigninFormProps) => {
           회원가입
         </PrimaryButton>
       </Form>
-      <Flex justifyCenter itemsCenter>
+      <ModalFoot>
         <StatusContainer>
-          계정이 있나요? <A onClick={() => setAuthForm('signin')}>로그인</A>
+          계정이 있나요?{' '}
+          <Link onClick={() => setAuthForm('signin')}>로그인</Link>
         </StatusContainer>
-      </Flex>
-    </>
+      </ModalFoot>
+    </div>
   );
 };
 

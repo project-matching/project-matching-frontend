@@ -1,4 +1,5 @@
 import SmallButton from '@/components/Common/Buttons/SmallButton';
+import { colors, fontSize, fontWeight } from '@/styles/theme';
 import styled from '@emotion/styled';
 import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
@@ -12,17 +13,17 @@ const Dropdown = styled.div`
   top: 45px;
   right: 10px;
   width: 150px;
-  background-color: white;
-  border: 1px solid #d4d4d4;
+  background-color: ${colors.white};
+  border: 1px solid ${colors.gray300};
   padding: 10px 10px 5px;
   z-index: 2;
-  font-size: ${(props) => props.theme.sizes.m};
+  font-size: ${fontSize.m};
 `;
 
 const UserInfo = styled.div`
   display: flex;
   flex-direction: column;
-  border: 1px solid #d4d4d4;
+  border: 1px solid ${colors.gray300};
   padding: 10px 5px;
   margin-bottom: 10px;
   span {
@@ -35,11 +36,11 @@ const UserInfo = styled.div`
 
 const Title = styled.h3`
   margin-bottom: 10px;
-  font-weight: bold;
+  font-weight: ${fontWeight.bold};
 `;
 
 const Span = styled.span`
-  font-size: ${(props) => props.theme.sizes.sm};
+  font-size: ${fontSize.sm};
 `;
 
 const LinkContainer = styled.div`

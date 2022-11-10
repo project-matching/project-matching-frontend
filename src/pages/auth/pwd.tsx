@@ -1,4 +1,5 @@
 import PrimaryButton from '@/components/Common/Buttons//PrimaryButton';
+import { colors, fontSize, fontWeight } from '@/styles/theme';
 import styled from '@emotion/styled';
 import { useRouter } from 'next/router';
 import { HTMLInputTypeAttribute, useState } from 'react';
@@ -14,8 +15,8 @@ const Wrapper = styled.div`
 `;
 
 const Heading = styled.h1`
-  font-size: ${(props) => props.theme.sizes.xl};
-  font-weight: bold;
+  font-size: ${fontSize.xl};
+  font-weight: ${fontWeight.bold};
 `;
 
 const Desc = styled.p`
@@ -23,8 +24,8 @@ const Desc = styled.p`
 `;
 
 const ErrorMessage = styled.span`
-  color: ${(props) => props.theme.colors.error};
-  font-size: ${(props) => props.theme.sizes.sm};
+  color: ${colors.error};
+  font-size: ${fontSize.sm};
   display: none;
   line-height: 1.3;
 `;

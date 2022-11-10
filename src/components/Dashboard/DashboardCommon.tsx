@@ -1,3 +1,4 @@
+import { colors, fontSize, fontWeight } from '@/styles/theme';
 import styled from '@emotion/styled';
 
 export const AddContainer = styled.div`
@@ -5,21 +6,21 @@ export const AddContainer = styled.div`
 `;
 
 export const SubTitle = styled.h3`
-  font-weight: bold;
+  font-weight: ${fontWeight.bold};
   margin-bottom: 10px;
 `;
 
 export const Warning = styled.div`
   margin: 20px 0 30px;
-  font-size: ${(props) => props.theme.sizes.sm};
-  color: ${(props) => props.theme.colors.error};
+  font-size: ${fontSize.sm};
+  color: ${colors.error};
 `;
 
 export const Input = styled.input`
   width: 300px;
   padding: 5px 10px;
-  font-size: 16px;
-  border: 1px solid ${(props) => props.theme.colors.darkGray};
+  font-size: ${fontSize.lg};
+  border: 1px solid ${colors.gray300};
 `;
 
 export const InputContainer = styled.div`
@@ -28,5 +29,5 @@ export const InputContainer = styled.div`
   width: 100%;
   align-items: center;
   justify-content: space-between;
-  font-size: ${(props) => props.theme.sizes.m};
+  font-size: ${fontSize.m};
 `;

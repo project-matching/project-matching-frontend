@@ -1,3 +1,4 @@
+import { colors, fontSize, fontWeight } from '@/styles/theme';
 import styled from '@emotion/styled';
 import Image from 'next/image';
 import githubLogo from 'public/github_logo.png';
@@ -8,23 +9,21 @@ const Container = styled.div`
   display: flex;
   align-items: center;
   padding: 8px;
-  border: 1px solid #d4d4d4;
+  border: 1px solid ${colors.gray300};
   border-radius: 3px;
-  box-shadow: 0px 2px 2px #d4d4d47f;
+  box-shadow: 0px 2px 2px ${colors.gray300};
   cursor: pointer;
   margin-top: 10px;
 
   &:active {
-    background-color: #d4d4d4;
+    background-color: ${colors.gray300};
   }
 `;
 
-const Text = styled.div`
-  font-size: ${(props) => props.theme.sizes.m};
-  color: #888;
-  font-weight: bold;
-  font-family: Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue',
-    sans-serif;
+const Text = styled.span`
+  font-size: ${fontSize.m};
+  color: ${colors.gray800};
+  font-weight: ${fontWeight.bold};
   margin-left: 24px;
 `;
 

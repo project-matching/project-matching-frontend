@@ -1,40 +1,41 @@
 import OAuthButton from '@/components/Common/Buttons/OAuthButton';
 import PrimaryButton from '@/components/Common/Buttons/PrimaryButton';
+import { colors, fontSize, fontWeight } from '@/styles/theme';
 import styled from '@emotion/styled';
 import React, { HTMLInputTypeAttribute } from 'react';
 import { useDispatch } from 'react-redux';
 import { useAppSelector } from 'src/redux/hooks';
 import { signin, signinOAuth, TokenType } from 'src/redux/reducers/auth';
 import { setSigninErrorMsg } from 'src/redux/reducers/components/validation';
-import { Divider, Flex } from 'src/styles/global';
+import { Divider } from 'src/styles/global';
 import { AuthFormTypes } from '../Modals/AuthModal';
 
 const Content = styled.div`
   padding: 0 0 20px;
   text-align: center;
-  font-size: ${(props) => props.theme.sizes.sm};
+  font-size: ${fontSize.sm};
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
 `;
 
-const H1 = styled.h1`
-  font-size: ${(props) => props.theme.sizes.lg};
-  font-weight: bold;
+const Title = styled.h1`
+  font-size: ${fontSize.lg};
+  font-weight: ${fontWeight.bold};
   padding-bottom: 10px;
 `;
 
 const ErrorMessage = styled.span`
-  color: ${(props) => props.theme.colors.error};
-  font-size: ${(props) => props.theme.sizes.sm};
+  color: ${colors.error};
+  font-size: ${fontSize.sm};
 `;
 
 const Input = styled.input`
   margin: 5px 0;
   padding: 5px 10px;
   width: 100%;
-  font-size: 16px;
+  font-size: ${fontSize.lg};
 `;
 
 const Form = styled.form`
@@ -43,8 +44,8 @@ const Form = styled.form`
   }
 `;
 
-const A = styled.a`
-  font-weight: bold;
+const Link = styled.a`
+  font-weight: ${fontWeight.bold};
   cursor: pointer;
 `;
 
@@ -57,27 +58,23 @@ const Grid = styled.div`
 `;
 
 const Span = styled.div`
-  font-size: ${(props) => props.theme.sizes.sm};
+  font-size: ${fontSize.sm};
 `;
 
 const StatusContainer = styled.div`
-  font-size: ${(props) => props.theme.sizes.sm};
+  font-size: ${fontSize.sm};
   margin-bottom: 10px;
   text-align: center;
 `;
 
 const ModalFoot = styled.div`
   margin: 20px 0 10px 0;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 `;
-
-interface SigninFormProps {
-  setAuthForm: (_: AuthFormTypes) => void;
-}
-
-interface FormValueType {
-  email: string;
-  password: string;
-}
 
 interface InputType {
   id: number;
@@ -106,6 +103,28 @@ const inputs: InputType[] = [
     autoFocus: false,
   },
 ];
+
+const authProviders = [
+  {
+    id: 0,
+    serviceProvider: 'google',
+    content: 'Google 계정으로 로그인',
+  },
+  {
+    id: 1,
+    serviceProvider: 'github',
+    content: 'Github 계정으로 로그인',
+  },
+];
+
+interface SigninFormProps {
+  setAuthForm: (_: AuthFormTypes) => void;
+}
+
+interface FormValueType {
+  email: string;
+  password: string;
+}
 
 const SigninForm = ({ setAuthForm }: SigninFormProps) => {
   const { signinErrorMsg } = useAppSelector((state) => state.validation);
@@ -136,19 +155,6 @@ const SigninForm = ({ setAuthForm }: SigninFormProps) => {
     }
   };
 
-  const authProviders = [
-    {
-      id: 0,
-      serviceProvider: 'google',
-      content: 'Google 계정으로 로그인',
-    },
-    {
-      id: 1,
-      serviceProvider: 'github',
-      content: 'Github 계정으로 로그인',
-    },
-  ];
-
   const connectOAuth = (serviceProvider: string) => () => {
     const width = 500;
     const height = 500;
@@ -169,9 +175,9 @@ const SigninForm = ({ setAuthForm }: SigninFormProps) => {
   };
 
   return (
-    <>
+    <div>
       <Content>
-        <H1>로그인</H1>
+        <Title>로그인</Title>
       </Content>
       <Form onSubmit={submitSignin}>
         {inputs.map(({ id, ...props }) => (
@@ -197,18 +203,19 @@ const SigninForm = ({ setAuthForm }: SigninFormProps) => {
         />
       ))}
 
-      <Flex justifyCenter itemsCenter>
-        <ModalFoot>
-          <StatusContainer>
-            계정이 없나요? <A onClick={() => setAuthForm('signup')}>회원가입</A>
-          </StatusContainer>
-          <StatusContainer>
-            비밀번호를 잊으셨나요?{' '}
-            <A onClick={() => setAuthForm('changePassword')}>비밀번호 찾기</A>
-          </StatusContainer>
-        </ModalFoot>
-      </Flex>
-    </>
+      <ModalFoot>
+        <StatusContainer>
+          계정이 없나요?{' '}
+          <Link onClick={() => setAuthForm('signup')}>회원가입</Link>
+        </StatusContainer>
+        <StatusContainer>
+          비밀번호를 잊으셨나요?{' '}
+          <Link onClick={() => setAuthForm('changePassword')}>
+            비밀번호 찾기
+          </Link>
+        </StatusContainer>
+      </ModalFoot>
+    </div>
   );
 };
 
