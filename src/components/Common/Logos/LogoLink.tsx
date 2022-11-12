@@ -1,9 +1,10 @@
+import { fontSize, fontWeight } from '@/styles/theme';
 import styled from '@emotion/styled';
 import Link from 'next/link';
 
 const A = styled.div`
-  font-size: 24px;
-  font-weight: bold;
+  font-size: ${fontSize.xl};
+  font-weight: ${fontWeight.bold};
   padding-bottom: 5px;
   cursor: pointer;
 `;

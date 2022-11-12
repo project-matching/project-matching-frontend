@@ -1,5 +1,6 @@
 import PrimaryButton from '@/components/Common/Buttons/PrimaryButton';
 import SecondaryButton from '@/components/Common/Buttons/SecondaryButton';
+import { colors, fontSize, fontWeight } from '@/styles/theme';
 import styled from '@emotion/styled';
 import Image from 'next/image';
 import defaultProfileImage from 'public/default_profile.png';
@@ -8,7 +9,7 @@ import { UserService } from 'src/services/UserService';
 import LocalModalLayout from './LocalModalLayout';
 
 const Title = styled.div`
-  font-weight: bold;
+  font-weight: ${fontWeight.bold};
   margin-bottom: 20px;
 `;
 
@@ -31,12 +32,12 @@ const BlockReason = styled.textarea`
   padding: 5px 10px;
   width: 100%;
   height: 200px;
-  border: 1px solid #d4d4d4;
+  border: 1px solid ${colors.gray300};
 `;
 
 const ErrorMsg = styled.span`
-  color: ${(props) => props.theme.colors.error};
-  font-size: ${(props) => props.theme.sizes.sm};
+  color: ${colors.error};
+  font-size: ${fontSize.sm};
 `;
 
 interface UserBlockModalProps {

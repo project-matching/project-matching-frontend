@@ -1,7 +1,7 @@
 import BorderlessButton from '@/components/Common/Buttons//BorderlessButton';
+import ImageAddButton from '@/components/Common/Buttons/ImageAddButton';
+import { colors, fontSize } from '@/styles/theme';
 import styled from '@emotion/styled';
-import { solid } from '@fortawesome/fontawesome-svg-core/import.macro';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Image from 'next/image';
 import defaultProfileImage from 'public/default_profile.png';
 import { useRef, useState } from 'react';
@@ -42,9 +42,9 @@ const TechStackItem = ({
       padding: 2px 4px;
       top: 25px;
       left: 25px;
-      background-color: ${(props) => props.theme.colors.darkGray};
+      background-color: ${colors.gray300};
       border-radius: 50%;
-      color: white;
+      color: ${colors.white};
       cursor: pointer;
 
       svg {
@@ -92,7 +92,7 @@ const TechStackItem = ({
               }}
             />
             <label htmlFor={setIdName(techStackName)}>
-              <FontAwesomeIcon icon={solid('plus')} />
+              <ImageAddButton />
             </label>
             <input
               ref={ImageInputEl}
@@ -142,7 +142,7 @@ export default TechStackItem;
 const Item = styled.li`
   margin: 20px 0;
   list-style: none;
-  font-size: ${(props) => props.theme.sizes.m};
+  font-size: ${fontSize.m};
   display: flex;
   flex-direction: row;
   justify-content: space-between;

@@ -1,6 +1,7 @@
 import PrimaryButton from '@/components/Common/Buttons/PrimaryButton';
 import SecondaryButton from '@/components/Common/Buttons/SecondaryButton';
 import SmallButton from '@/components/Common/Buttons/SmallButton';
+import { colors, fontSize, fontWeight } from '@/styles/theme';
 import styled from '@emotion/styled';
 import { useRouter } from 'next/router';
 import { FC, useState } from 'react';
@@ -21,7 +22,7 @@ const Wrapper = styled.div`
   flex-direction: column;
   justify-content: space-evenly;
   padding: 20px;
-  border: 1px solid #d4d4d4;
+  border: 1px solid ${colors.gray300};
 
   h1 {
     font-size: 20px;
@@ -55,11 +56,11 @@ const MemberDetail = styled.div`
 
   .leader {
     width: 50%;
-    color: #ff0000;
+    color: ${colors.error};
   }
 
   span {
-    font-size: ${(props) => props.theme.sizes.m};
+    font-size: ${fontSize.m};
   }
 
   > button {
@@ -92,7 +93,7 @@ const ManagingPage = styled.main`
   align-items: center;
   width: 70%;
   height: 90%;
-  background-color: white;
+  background-color: ${colors.white};
   overflow: auto;
 
   header {
@@ -100,7 +101,7 @@ const ManagingPage = styled.main`
     justify-content: flex-end;
     width: 100%;
     padding: 5px 10px;
-    font-weight: bold;
+    font-weight: ${fontWeight.bold};
     cursor: pointer;
   }
 `;
@@ -108,7 +109,7 @@ const ManagingPage = styled.main`
 const ApplicantBox = styled.article`
   width: 90%;
   height: 30%;
-  background-color: #4242;
+  background-color: ${colors.gray800};
   margin: 2% 0;
   padding: 2%;
 `;
@@ -129,14 +130,14 @@ const ApplicantInfoItem = styled.div`
   margin-bottom: 10%;
 
   .title {
-    font-weight: 900;
+    font-weight: ${fontWeight.bold};
     margin-right: 5%;
   }
 `;
 
 const ApplicantMotive = styled.div`
   span {
-    font-weight: 900;
+    font-weight: ${fontWeight.bold};
   }
 `;
 
@@ -151,7 +152,7 @@ const ApplicantButtonRow = styled.div`
     padding: 5px;
     cursor: pointer;
     &:hover {
-      background-color: gray;
+      background-color: ${colors.gray300};
     }
   }
 `;
@@ -245,7 +246,7 @@ const Side: FC<Props> = ({ data, isRegister, isParticipant }) => {
 
     if (id === 'allow') {
       await ProjectService.allowProjectApplicant(participantNo);
-      
+
       const response = await ProjectService.getProjectApplicants(
         router.query.id as string
       );

@@ -1,19 +1,20 @@
+import { fontSize, fontWeight, screen } from '@/styles/theme';
 import styled from '@emotion/styled';
 import { ProjectType } from 'src/services/ProjectService';
 import ProjectCard from '../Cards/ProjectCard';
 
 const Title = styled.h2`
   margin: 30px 0;
-  font-size: ${(props) => props.theme.sizes.xl};
-  font-weight: bold;
+  font-size: ${fontSize.xl};
+  font-weight: ${fontWeight.bold};
 `;
 const Grid = styled.div`
   display: grid;
-  @media ${(props) => props.theme.mq.desktopL} {
+  @media ${screen.large} {
     grid-template-columns: 1fr 1fr 1fr;
   }
 
-  @media ${(props) => props.theme.mq.tablet} {
+  @media ${screen.medium} {
     grid-template-columns: 1fr;
   }
 

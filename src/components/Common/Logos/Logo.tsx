@@ -1,8 +1,9 @@
+import { fontSize, fontWeight } from '@/styles/theme';
 import styled from '@emotion/styled';
 
 const Div = styled.div`
-  font-size: 24px;
-  font-weight: bold;
+  font-size: ${fontSize.xl};
+  font-weight: ${fontWeight.bold};
   padding-bottom: 5px;
 `;
 

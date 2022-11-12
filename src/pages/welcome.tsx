@@ -1,4 +1,5 @@
 import PrimaryButton from '@/components/Common/Buttons//PrimaryButton';
+import { fontSize, fontWeight } from '@/styles/theme';
 import styled from '@emotion/styled';
 import Link from 'next/link';
 import { useEffect } from 'react';
@@ -15,8 +16,8 @@ const Wrapper = styled.div`
 `;
 
 const Heading = styled.h1`
-  font-size: ${(props) => props.theme.sizes.xl};
-  font-weight: bold;
+  font-size: ${fontSize.xl};
+  font-weight: ${fontWeight.bold};
 `;
 
 const Desc = styled.p`

@@ -9,18 +9,16 @@ const IconButton = styled.button`
   height: 15px;
   padding: 0;
   margin: 0;
-  cursor: pointer;
-
   display: flex;
   justify-content: center;
+  align-items: center;
+  cursor: pointer;
 `;
 
 const SearchButton = () => {
   return (
     <IconButton type="submit">
-      <i>
-        <FontAwesomeIcon icon={solid('magnifying-glass')} />
-      </i>
+      <FontAwesomeIcon icon={solid('magnifying-glass')} />
     </IconButton>
   );
 };

@@ -1,3 +1,4 @@
+import { colors, fontWeight } from '@/styles/theme';
 import styled from '@emotion/styled';
 import { useRouter } from 'next/router';
 import { getPathTitle } from 'src/utils/common';
@@ -13,7 +14,7 @@ const MainSection = ({ children, links }: MainSectionProps) => {
   return (
     <Article>
       <ArticleTitle>{getPathTitle(router.pathname, links)}</ArticleTitle>
-      <ArticleContnet>{children}</ArticleContnet>
+      <div>{children}</div>
     </Article>
   );
 };
@@ -25,12 +26,10 @@ const Article = styled.article`
   width: 700px;
   display: flex;
   flex-direction: column;
-  border: 1px solid #d4d4d4;
+  border: 1px solid ${colors.gray300};
 `;
 
 const ArticleTitle = styled.h2`
-  font-weight: bold;
+  font-weight: ${fontWeight.bold};
   margin-bottom: 50px;
 `;
-
-const ArticleContnet = styled.div``;

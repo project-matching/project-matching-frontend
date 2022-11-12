@@ -148,6 +148,9 @@ const reset = css`
     height: 15px;
   }
 
+  font-family: Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue',
+    sans-serif;
+
   h1 {
     font-size: 24px;
   }

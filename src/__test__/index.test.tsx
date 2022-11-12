@@ -99,15 +99,6 @@ describe('Login modal', () => {
     expect(screen.getByText('비밀번호를 잊으셨나요?')).toBeInTheDocument();
   });
 
-  it('close sign in modal when close button is clicked', () => {
-    act(() => {
-      fireEvent.click(screen.getByText('X'));
-    });
-
-    expect(screen.queryByPlaceholderText('Email')).not.toBeInTheDocument();
-    expect(screen.queryByPlaceholderText('Password')).not.toBeInTheDocument();
-  });
-
   // Validation
   it('check validation of signin input values', async () => {
     // const emailInput = screen.getByPlaceholderText('Email');

@@ -1,6 +1,7 @@
 import PrimaryButton from '@/components/Common/Buttons/PrimaryButton';
 import SecondaryButton from '@/components/Common/Buttons/SecondaryButton';
 import SmallButton from '@/components/Common/Buttons/SmallButton';
+import { colors } from '@/styles/theme';
 import styled from '@emotion/styled';
 import { ChangeEvent, FC, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
@@ -17,7 +18,7 @@ const Container = styled.div`
   width: 60%;
   height: 80%;
   padding: 2%;
-  background-color: white;
+  background-color: ${colors.white};
   z-index: 1000;
 `;
 
@@ -41,7 +42,7 @@ const TechBox = styled.div`
   justify-content: center;
 
   input {
-    border: 1px solid #d4d4d4;
+    border: 1px solid ${colors.gray300};
     padding: 0px 10px;
     width: 100%;
     min-height: 35px;
@@ -60,7 +61,7 @@ const MotiveBox = styled.div`
   flex-direction: column;
   textarea {
     height: 200%;
-    border: 1px solid #d4d4d4;
+    border: 1px solid ${colors.gray300};
     padding: 10px;
     width: 100%;
     min-height: 35px;

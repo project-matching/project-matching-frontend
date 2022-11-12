@@ -1,5 +1,6 @@
 import SearchButton from '@/components/Common/Buttons/Search/SearchButton';
 import SmallButton from '@/components/Common/Buttons/SmallButton';
+import { colors } from '@/styles/theme';
 import styled from '@emotion/styled';
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
@@ -52,8 +53,8 @@ const Container = styled.div`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  border: 1px solid ${(props) => props.theme.colors.darkGray};
-  background-color: white;
+  border: 1px solid ${colors.gray300};
+  background-color: ${colors.white};
 
   > form {
     display: flex;

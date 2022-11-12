@@ -1,3 +1,4 @@
+import { fontSize } from '@/styles/theme';
 import styled from '@emotion/styled';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
@@ -52,7 +53,7 @@ export default PositionItem;
 const Item = styled.li`
   margin: 20px 0;
   list-style: none;
-  font-size: ${(props) => props.theme.sizes.m};
+  font-size: ${fontSize.m};
   display: flex;
   flex-direction: row;
   justify-content: space-between;

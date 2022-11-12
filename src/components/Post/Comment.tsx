@@ -1,10 +1,11 @@
 import SecondaryButton from '@/components/Common/Buttons/SecondaryButton';
+import { fontSize } from '@/styles/theme';
 import styled from '@emotion/styled';
 import { ChangeEvent, useState } from 'react';
 import { CommentService } from '../../services/CommentService';
 
 const CommentLayout = styled.div`
-  font-size: ${(props) => props.theme.sizes.m};
+  font-size: ${fontSize.m};
   button {
     padding: 5px;
     margin: 0 3px;

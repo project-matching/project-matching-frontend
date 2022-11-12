@@ -1,5 +1,6 @@
+import { colors, fontSize, fontWeight } from '@/styles/theme';
 import styled from '@emotion/styled';
-import { regular, solid } from '@fortawesome/fontawesome-svg-core/import.macro';
+import { solid } from '@fortawesome/fontawesome-svg-core/import.macro';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
@@ -8,7 +9,10 @@ import { RefObject, useRef } from 'react';
 import useBookmark from 'src/hooks/useBookmark';
 import { useAppSelector } from 'src/redux/hooks';
 import { ProjectType } from 'src/services/ProjectService';
+import { removeDulplicatePosition } from 'src/utils/common';
+import { ROLE_ADMIN } from 'src/utils/userRole';
 import { v4 as uuidv4 } from 'uuid';
+import BookmarkButton from '../Buttons/BookmarkButton';
 
 interface Props {
   projectDto: ProjectType;
@@ -32,7 +36,7 @@ const ProjectCard = ({ projectDto, bookmarkOnly = false, size }: Props) => {
   const { bookmark, toggleBookmark } = useBookmark({
     initBookmark,
   });
-  const bookmarkRef = useRef<HTMLElement>(null);
+  const bookmarkRef = useRef<HTMLButtonElement>(null);
   const router = useRouter();
 
   const handleCardClick = (e: React.MouseEvent) => {
@@ -80,30 +84,119 @@ const ProjectCard = ({ projectDto, bookmarkOnly = false, size }: Props) => {
 
 export default ProjectCard;
 
-/**
- * 중복되는 포지션 이름 제거
- * @param duplicateList
- * @returns
- */
-const removeDulplicatePosition = (
-  duplicateList: ProjectType['projectSimplePositionDtoList']
-) => {
-  if (!duplicateList.length) return [];
-
-  const unique: { [id: number]: string } = {};
-
-  duplicateList.forEach(
-    ({ positionNo, positionName }) =>
-      (unique[positionNo] = unique[positionNo] || positionName)
-  );
-
-  return Object.keys(unique).map((key) => ({
-    positionNo: +key,
-    positionName: unique[+key],
-  }));
-};
-
 // View
+const Head = styled.div`
+  margin-bottom: 20px;
+`;
+const Top = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+
+  > div {
+    min-width: 16px;
+  }
+`;
+
+const Author = styled.span`
+  inline-size: 100px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.2;
+  font-size: ${fontSize.sm};
+`;
+
+const H3 = styled.div`
+  font-size: ${fontSize.lg};
+  font-weight: ${fontWeight.bold};
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  line-height: 1.2;
+  height: 60px;
+`;
+const IconWrapper = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+
+  > div {
+    margin-right: 10px;
+
+    &:last-child {
+      margin-right: 0;
+    }
+  }
+`;
+
+const HoverBox = styled.div`
+  visibility: hidden;
+  position: absolute;
+  top: 20px;
+  right: -5px;
+  width: 100px;
+  display: flex;
+  flex-direction: column;
+  padding: 5px 10px;
+  border: 1px solid ${colors.gray300};
+  z-index: 3;
+
+  span {
+    line-height: 1.5;
+  }
+`;
+
+const ReqTitle = styled.div`
+  color: ${colors.primary};
+  font-weight: ${fontWeight.bold};
+  line-height: 1.5;
+`;
+
+const Req = styled.div`
+  position: relative;
+  margin-bottom: 20px;
+  font-size: ${fontSize.sm};
+
+  span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-right: 5px;
+    font-size: ${fontSize.sm};
+  }
+
+  &:hover {
+    > ${HoverBox} {
+      visibility: visible;
+      background-color: ${colors.white};
+    }
+  }
+`;
+
+const View = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+  font-size: ${fontSize.sm};
+
+  > div {
+    width: 15px;
+    height: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 5px;
+  }
+
+  > span {
+    line-height: 15px;
+  }
+`;
+
 type CardSizeType = 'large' | 'medium' | 'small';
 
 interface CardInfoType {
@@ -130,7 +223,7 @@ interface ViewProps {
   cardSize: CardSizeType;
   toggleBookmark: (_projectNo: number) => Promise<void>;
   handleCardClick: (_e: React.MouseEvent) => void;
-  bookmarkRef: RefObject<HTMLElement>;
+  bookmarkRef: RefObject<HTMLButtonElement>;
   cardInfo: CardInfoType;
 }
 
@@ -154,7 +247,7 @@ const ProjectCardView = ({
         `
         : null}
 
-    border: 1px solid #d4d4d4;
+    border: 1px solid ${colors.gray300};
     border-radius: 3px;
     padding: 20px;
     cursor: pointer;
@@ -179,17 +272,12 @@ const ProjectCardView = ({
         <Top>
           <Author>{register}</Author>
           <div>
-            {role !== 'ROLE_ADMIN' && (
-              <i
+            {role !== ROLE_ADMIN && (
+              <BookmarkButton
                 ref={bookmarkRef}
                 onClick={async () => await toggleBookmark(projectNo)}
-              >
-                {bookmark ? (
-                  <FontAwesomeIcon icon={solid('bookmark')} />
-                ) : (
-                  <FontAwesomeIcon icon={regular('bookmark')} />
-                )}
-              </i>
+                isBookmarked={bookmark}
+              />
             )}
           </div>
         </Top>
@@ -228,117 +316,11 @@ const ProjectCardView = ({
         <span>프로젝트 인원: {currentPeople + '/' + maxPeople}</span>
       </Req>
       <View>
-        <i>
+        <div>
           <FontAwesomeIcon icon={solid('eye')} />
-        </i>
+        </div>
         <span>{viewCount}</span>
       </View>
     </CardContainer>
   );
 };
-
-const Head = styled.div`
-  margin-bottom: 20px;
-`;
-const Top = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 10px;
-
-  > div {
-    min-width: 16px;
-  }
-`;
-
-const Author = styled.span`
-  inline-size: 100px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  line-height: 1.2;
-  font-size: ${(props) => props.theme.sizes.sm};
-`;
-
-const H3 = styled.div`
-  font-size: ${(props) => props.theme.sizes.lg};
-  font-weight: bold;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-  line-height: 1.2;
-  height: 60px;
-`;
-const IconWrapper = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  flex-direction: row;
-
-  > div {
-    margin-right: 10px;
-
-    &:last-child {
-      margin-right: 0;
-    }
-  }
-`;
-
-const HoverBox = styled.div`
-  visibility: hidden;
-  position: absolute;
-  top: 20px;
-  right: -5px;
-  width: 100px;
-  display: flex;
-  flex-direction: column;
-  padding: 5px 10px;
-  border: 1px solid ${(props) => props.theme.colors.darkGray};
-  z-index: 3;
-
-  span {
-    line-height: 1.5;
-  }
-`;
-
-const ReqTitle = styled.div`
-  color: ${(props) => props.theme.colors.primary};
-  font-weight: bold;
-  line-height: 1.5;
-`;
-
-const Req = styled.div`
-  position: relative;
-  margin-bottom: 20px;
-  font-size: ${(props) => props.theme.sizes.sm};
-
-  span {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    margin-right: 5px;
-    font-size: ${(props) => props.theme.sizes.sm};
-  }
-
-  &:hover {
-    > ${HoverBox} {
-      visibility: visible;
-      background-color: white;
-    }
-  }
-`;
-
-const View = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-end;
-
-  > i {
-    margin-right: 5px;
-  }
-
-  > span,
-  > i {
-    font-size: ${(props) => props.theme.sizes.sm};
-  }
-`;

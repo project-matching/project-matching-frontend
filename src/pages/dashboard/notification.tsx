@@ -1,6 +1,7 @@
 import PrimaryButton from '@/components/Common/Buttons//PrimaryButton';
 import DashboardLayout from '@/components/Common/Layouts/DashboardLayout';
 import AlertModal from '@/components/Common/Modals/AlertModal';
+import { colors } from '@/styles/theme';
 import styled from '@emotion/styled';
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
@@ -86,7 +87,7 @@ const Form = styled.form`
     padding: 5px 10px;
     width: 100%;
     font-size: 16px;
-    border: 1px solid #d4d4d4;
+    border: 1px solid ${colors.gray300};
   }
 
   textarea {
@@ -94,6 +95,6 @@ const Form = styled.form`
     padding: 5px 10px;
     width: 100%;
     height: 200px;
-    border: 1px solid #d4d4d4;
+    border: 1px solid ${colors.gray300};
   }
 `;

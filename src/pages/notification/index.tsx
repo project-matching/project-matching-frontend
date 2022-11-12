@@ -3,6 +3,7 @@ import InfiniteScrollLayout, {
 } from '@/components/Common/Layouts/InfiniteScrollLayout';
 import { NotificationType } from '@/components/Headers/Notification';
 import NotificationArticle from '@/components/Notification/NotificationArticle';
+import { colors, fontWeight } from '@/styles/theme';
 import styled from '@emotion/styled';
 import { useEffect, useState } from 'react';
 import { useAppSelector } from 'src/redux/hooks';
@@ -18,7 +19,7 @@ const Container = styled.div`
 
 const Title = styled.h2`
   margin: 40px 0;
-  font-weight: bold;
+  font-weight: ${fontWeight.bold};
 `;
 
 const Section = styled.section`
@@ -26,44 +27,7 @@ const Section = styled.section`
   width: 700px;
   display: flex;
   flex-direction: column;
-  border: 1px solid #d4d4d4;
-`;
-
-const Article = styled.a<{ read: boolean }>`
-  display: grid;
-  align-items: center;
-  grid-template-columns: 1.5fr 7fr 1fr;
-  gap: 20px;
-  padding: 10px;
-  margin-bottom: 30px;
-  color: ${(props) =>
-    props.read ? props.theme.colors.darkGray : props.theme.colors.black};
-
-  &:hover {
-    background-color: ${(props) => props.theme.colors.primary};
-    color: white;
-  }
-
-  &:last-child {
-    margin-bottom: 0px;
-  }
-`;
-
-const CreatedDate = styled.h3`
-  font-size: ${(props) => props.theme.sizes.sm};
-  vertical-align: center;
-`;
-
-const Read = styled.h3`
-  font-size: ${(props) => props.theme.sizes.sm};
-  vertical-align: center;
-`;
-
-const ArticleContnet = styled.div`
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  line-height: 1.5;
+  border: 1px solid ${colors.gray300};
 `;
 
 const Notification = () => {

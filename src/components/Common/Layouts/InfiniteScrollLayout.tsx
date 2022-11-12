@@ -1,3 +1,4 @@
+import { fontSize } from '@/styles/theme';
 import styled from '@emotion/styled';
 import React, {
   Dispatch,
@@ -22,7 +23,7 @@ const Message = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  font-size: ${(props) => props.theme.sizes.sm};
+  font-size: ${fontSize.sm};
 `;
 
 export interface fetchedData<T> {

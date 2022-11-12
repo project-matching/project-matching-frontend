@@ -1,3 +1,4 @@
+import { colors, fontSize, screen } from '@/styles/theme';
 import styled from '@emotion/styled';
 import Link from 'next/link';
 import React from 'react';
@@ -8,33 +9,33 @@ import ProjectCard from '../Cards/ProjectCard';
 const Section = styled.section`
   margin-top: 20px;
 `;
-const Flex = styled.div`
+const TitleContainer = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
 `;
 
-const Grid = styled.div`
+const ProjectCardContainer = styled.div`
   display: grid;
-  @media ${(props) => props.theme.mq.desktopL} {
+  @media ${screen.large} {
     grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
   }
 
-  @media ${(props) => props.theme.mq.tablet} {
+  @media ${screen.medium} {
     grid-template-columns: 1fr 1fr 1fr;
   }
 
   gap: 20px;
 `;
 
-const H1 = styled.h1`
-  font-size: 24px;
+const Title = styled.h1`
+  font-size: ${fontSize.xl};
   padding: 10px 0;
 `;
-const Span = styled.span`
-  font-size: 16px;
-  color: #777;
+const MoreLink = styled.span`
+  font-size: ${fontSize.lg};
+  color: ${colors.gray800};
 `;
 
 interface PropsPrimaryProjectLayout {
@@ -50,14 +51,14 @@ const PrimaryProjectLayout: React.FC<PropsPrimaryProjectLayout> = ({
 }) => {
   return (
     <Section>
-      <Flex>
-        <H1>{title}</H1>
-        <Span>
+      <TitleContainer>
+        <Title>{title}</Title>
+        <MoreLink>
           <Link href={href}>&gt; more</Link>
-        </Span>
-      </Flex>
+        </MoreLink>
+      </TitleContainer>
       <Divider />
-      <Grid>
+      <ProjectCardContainer>
         {projectDtoList?.map(({ projectNo, ...projectDto }) => (
           <ProjectCard
             key={projectNo}
@@ -65,7 +66,7 @@ const PrimaryProjectLayout: React.FC<PropsPrimaryProjectLayout> = ({
             size="medium"
           />
         ))}
-      </Grid>
+      </ProjectCardContainer>
     </Section>
   );
 };

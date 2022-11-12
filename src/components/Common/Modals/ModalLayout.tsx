@@ -5,6 +5,7 @@ import {
   ModalActionProps,
 } from 'src/redux/reducers/components/modals';
 import { removeSigninErrorMsg } from 'src/redux/reducers/components/validation';
+import CloseButton from '../Buttons/CloseButton';
 import Logo from '../Logos/Logo';
 import { Backdrop } from './Backdrop';
 
@@ -18,10 +19,6 @@ const Head = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-`;
-const A = styled.a`
-  font-weight: bold;
-  cursor: pointer;
 `;
 
 const Body = styled.div`
@@ -48,7 +45,7 @@ const ModalLayout = ({ modalContent, children }: ModalLayoutProps) => {
           <div>
             <Logo />
           </div>
-          <A onClick={closeModalLayout}>X</A>
+          <CloseButton onClick={closeModalLayout} />
         </Head>
         <Body>{children}</Body>
       </Container>

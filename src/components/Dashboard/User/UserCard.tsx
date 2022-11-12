@@ -1,5 +1,6 @@
 import PrimaryButton from '@/components/Common/Buttons//PrimaryButton';
 import UserBlockModal from '@/components/Common/Modals/UserBlockModal';
+import { colors, fontSize, fontWeight } from '@/styles/theme';
 import styled from '@emotion/styled';
 import Image from 'next/image';
 import defaultProfileImage from 'public/default_profile.png';
@@ -83,8 +84,8 @@ const Card = styled.div`
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  font-size: ${(props) => props.theme.sizes.lg};
-  border: 1px solid ${(props) => props.theme.colors.darkGray};
+  font-size: ${fontSize.lg};
+  border: 1px solid ${colors.gray300};
 `;
 
 const UserContainer = styled.div`
@@ -114,7 +115,7 @@ const UserInfo = styled.div`
       line-height: 1.5;
 
       &:first-of-type {
-        font-weight: bold;
+        font-weight: ${fontWeight.bold};
         width: 70px;
       }
     }

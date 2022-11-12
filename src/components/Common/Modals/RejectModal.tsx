@@ -1,5 +1,6 @@
 import PrimaryButton from '@/components/Common/Buttons/PrimaryButton';
 import SecondaryButton from '@/components/Common/Buttons/SecondaryButton';
+import { colors, fontSize, fontWeight } from '@/styles/theme';
 import styled from '@emotion/styled';
 import { ChangeEvent, FC, useState } from 'react';
 import { useDispatch } from 'react-redux';
@@ -9,7 +10,7 @@ import { ProjectService } from 'src/services/ProjectService';
 import ModalLayout from './ModalLayout';
 
 const Header = styled.header`
-  font-weight: 900;
+  font-weight: ${fontWeight.bold};
   margin-bottom: 5%;
 `;
 
@@ -23,7 +24,7 @@ const Main = styled.main`
   width: 100%;
 
   > label {
-    font-size: ${(props) => props.theme.sizes.m};
+    font-size: ${fontSize.m};
     margin-bottom: 10px;
   }
 
@@ -35,7 +36,7 @@ const Main = styled.main`
 const ReasonTextArea = styled.textarea`
   width: 100%;
   min-height: 35px;
-  border: 1px solid #d4d4d4;
+  border: 1px solid ${colors.gray300};
   padding: 10px;
 `;
 

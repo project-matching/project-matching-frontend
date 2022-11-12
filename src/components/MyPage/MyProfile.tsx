@@ -1,23 +1,24 @@
+import { fontWeight } from '@/styles/theme';
 import styled from '@emotion/styled';
 import Image from 'next/image';
 import defaultProfileImage from 'public/default_profile.png';
 import { UserProfileType } from 'src/redux/reducers/users';
+import { decodeSex } from 'src/utils/common';
 import { v4 as uuidv4 } from 'uuid';
-import { decodeSex } from './MyProfileChange';
 
 const ImageContainer = styled.div`
   margin-bottom: 50px;
 `;
 
 const InfoTitle = styled.span`
-  font-weight: bold;
+  font-weight: ${fontWeight.bold};
 `;
 
 const InfoLi = styled.li<{ vertical: boolean }>`
   display: flex;
   flex-direction: ${(props) => (props.vertical ? 'column' : 'row')};
   margin-bottom: 10px;
-  ${(props) => (props.vertical ? `margin-top: 10px;` : ``)}
+  margin-top: ${(props) => (props.vertical ? `10px` : null)};
   &:last-child {
     margin-bottom: 0;
   }
@@ -100,12 +101,8 @@ const MyProfile = ({ myProfile }: MyProfileProps) => {
     },
   ];
 
-  const submitProfile = (e: React.FormEvent) => {
-    e.preventDefault();
-  };
-
   return (
-    <form onSubmit={submitProfile}>
+    <div>
       <ImageContainer>
         <Image
           src={image || defaultProfileImage}
@@ -134,15 +131,13 @@ const MyProfile = ({ myProfile }: MyProfileProps) => {
             <InfoLi key={id} vertical={vertical}>
               <InfoTitle>{name}</InfoTitle>
               <span>
-                {name === '성별'
-                  ? decodeSex(content || '')
-                  : (content && content) || '없음'}
+                {name === '성별' ? decodeSex(content || '') : content || '없음'}
               </span>
             </InfoLi>
           );
         })}
       </InfoContainer>
-    </form>
+    </div>
   );
 };
 

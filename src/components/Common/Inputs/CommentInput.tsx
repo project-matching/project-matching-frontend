@@ -1,4 +1,5 @@
 import PrimaryButton from '@/components/Common/Buttons/PrimaryButton';
+import { fontSize } from '@/styles/theme';
 import styled from '@emotion/styled';
 import { Dispatch, SetStateAction, useRef } from 'react';
 import { CommentService } from 'src/services/CommentService';
@@ -14,7 +15,7 @@ const InputContainer = styled.form`
 const Input = styled.input`
   width: 100%;
   padding: 8px 10px;
-  font-size: 16px;
+  font-size: ${fontSize.lg};
 `;
 
 interface PropType {

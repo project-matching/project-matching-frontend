@@ -1,14 +1,18 @@
 import PrimaryButton from '@/components/Common/Buttons/PrimaryButton';
+import { colors, fontWeight } from '@/styles/theme';
 import styled from '@emotion/styled';
-import { solid } from '@fortawesome/fontawesome-svg-core/import.macro';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Image from 'next/image';
 import defaultProfileImage from 'public/default_profile.png';
 import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { patchUserProfile, UserProfileType } from 'src/redux/reducers/users';
-import { PositionService } from 'src/services/PositionService';
-import { TechStackService } from 'src/services/TechStackService';
+import {
+  decodeSex,
+  encodeSex,
+  getDefaultPositionOptions,
+  getDefaultTechStackOptions,
+} from 'src/utils/common';
+import ImageAddButton from '../Common/Buttons/ImageAddButton';
 import MultiSelectDropdown from '../Common/Dropdowns/MultiSelectDropdown';
 import UniSelectDropdown from '../Common/Dropdowns/UniSelectDropdown';
 
@@ -25,9 +29,9 @@ const ImageContainer = styled.div`
     padding: 2px 4px;
     top: 35px;
     left: 35px;
-    background-color: ${(props) => props.theme.colors.darkGray};
+    background-color: ${colors.gray300};
     border-radius: 50%;
-    color: white;
+    color: ${colors.white};
     cursor: pointer;
 
     svg {
@@ -37,7 +41,7 @@ const ImageContainer = styled.div`
 `;
 
 const InfoTitle = styled.label`
-  font-weight: bold;
+  font-weight: ${fontWeight.bold};
   width: 80px;
 `;
 
@@ -76,7 +80,7 @@ const InfoLi = styled.li<{ vertical?: boolean }>`
 
   > textarea {
     outline: none;
-    border: 1px solid #d4d4d4;
+    border: 1px solid ${colors.gray300};
     height: 130px;
     padding: 10px;
   }
@@ -84,7 +88,7 @@ const InfoLi = styled.li<{ vertical?: boolean }>`
   > input {
     padding: 5px;
     line-height: 1.7;
-    border: 1px solid #d4d4d4;
+    border: 1px solid ${colors.gray300};
     outline: none;
     height: 30px;
     width: 300px;
@@ -102,44 +106,6 @@ const ButtonWrapper = styled.div`
 `;
 
 const defaultSex = ['없음', '남', '여'];
-
-export const decodeSex = (initSex: string) => {
-  return initSex === 'M' ? '남' : initSex === 'W' ? '여' : '없음';
-};
-
-const encodeSex = (sex: string) => {
-  return sex && sex === '남' ? 'M' : sex === '여' ? 'W' : 'N';
-};
-
-const getPositionNameOnly = (positions: PositionDtoType[]) =>
-  positions.map(({ positionName }) => positionName);
-
-const getTeckStackNameOnly = (techStacks: TechnicalStackDtoType[]) =>
-  techStacks.map(({ technicalStackName }) => technicalStackName);
-
-const getDefaultPositionOptions = async () => {
-  const fetchedDefaultPositions: PositionDtoType[] =
-    await PositionService.getPositions();
-  const defaultPositionList = getPositionNameOnly(fetchedDefaultPositions);
-  return ['없음', ...defaultPositionList];
-};
-
-const getDefaultTechStackOptions = async () => {
-  const fetchedDefaultTechStacks: TechnicalStackDtoType[] =
-    await TechStackService.getTechStacks();
-  return getTeckStackNameOnly(fetchedDefaultTechStacks);
-};
-
-interface PositionDtoType {
-  positionName: string;
-  positionNo: number;
-}
-
-interface TechnicalStackDtoType {
-  technicalStackName: string;
-  technicalStackNo: number;
-  image: string;
-}
 
 interface MyProfileProps {
   myProfile: UserProfileType;
@@ -264,7 +230,7 @@ const MyProfileChange = ({ myProfile }: MyProfileProps) => {
           }}
         />
         <label htmlFor="profile-image">
-          <FontAwesomeIcon icon={solid('plus')} />
+          <ImageAddButton />
         </label>
         <input
           ref={ImageInputEl}

@@ -1,6 +1,5 @@
+import { colors, fontSize } from '@/styles/theme';
 import styled from '@emotion/styled';
-import { solid } from '@fortawesome/fontawesome-svg-core/import.macro';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, {
   Dispatch,
   SetStateAction,
@@ -8,7 +7,10 @@ import React, {
   useRef,
   useState,
 } from 'react';
+import { filterSelectedItems } from 'src/utils/common';
 import { v4 as uuidv4 } from 'uuid';
+import CloseButton from '../Buttons/CloseButton';
+import DropdownButton from '../Buttons/DropdownButton';
 
 const Container = styled.div`
   display: flex;
@@ -16,7 +18,7 @@ const Container = styled.div`
 `;
 
 const DropdownInput = styled.div`
-  border: 1px solid #d4d4d4;
+  border: 1px solid ${colors.gray300};
   width: 100%;
   min-height: 35px;
   display: flex;
@@ -24,7 +26,7 @@ const DropdownInput = styled.div`
   justify-content: space-between;
   align-items: center;
 
-  i {
+  > button {
     margin: 0 10px;
   }
 `;
@@ -45,29 +47,21 @@ const SelectedItem = styled.div`
   justify-content: space-between;
   align-items: center;
   height: 30px;
-  background-color: ${(props) => props.theme.colors.primary};
-  color: white;
+  background-color: ${colors.primary};
+  color: ${colors.white};
 
   div {
     margin-right: 10px;
-    font-size: ${(props) => props.theme.sizes.m};
-  }
-
-  svg {
-    height: 15px;
-
-    * {
-      pointer-events: none;
-    }
+    font-size: ${fontSize.m};
   }
 `;
 
 const OptionContainer = styled.div`
   display: flex;
   flex-direction: column;
-  border: 1px solid #d4d4d4;
+  border: 1px solid ${colors.gray300};
   border-top: none;
-  background-color: white;
+  background-color: ${colors.white};
   width: 100%;
   max-height: 150px;
   overflow-y: scroll;
@@ -77,8 +71,8 @@ const OptionItem = styled.div`
   padding: 7px 10px;
 
   &:hover {
-    background-color: ${(props) => props.theme.colors.primary};
-    color: white;
+    background-color: ${colors.primary};
+    color: ${colors.white};
   }
 `;
 
@@ -104,7 +98,7 @@ const MultiSelectDropdown = ({
   );
   const [open, setOpen] = useState(false);
 
-  const chevronEl = useRef<HTMLElement>(null);
+  const chevronEl = useRef<HTMLButtonElement>(null);
   const containerEl = useRef<HTMLDivElement>(null);
 
   const removeItem = (e: React.MouseEvent) => {
@@ -158,17 +152,11 @@ const MultiSelectDropdown = ({
               {selectedItems.map((selectedItem) => (
                 <SelectedItem key={uuidv4()}>
                   <div>{selectedItem}</div>
-                  <FontAwesomeIcon icon={solid('xmark')} onClick={removeItem} />
+                  <CloseButton onClick={removeItem} color="white" />
                 </SelectedItem>
               ))}
             </SelectedItemContainer>
-            <i ref={chevronEl}>
-              {open ? (
-                <FontAwesomeIcon icon={solid('chevron-up')} />
-              ) : (
-                <FontAwesomeIcon icon={solid('chevron-down')} />
-              )}
-            </i>
+            <DropdownButton open={open} ref={chevronEl} />
           </DropdownInput>
           {open && items.length !== selectedItems.length ? (
             <OptionContainer>
@@ -186,6 +174,3 @@ const MultiSelectDropdown = ({
 };
 
 export default MultiSelectDropdown;
-
-const filterSelectedItems = (items: string[], selectedItems: string[]) =>
-  items.filter((item) => !selectedItems.includes(item));
