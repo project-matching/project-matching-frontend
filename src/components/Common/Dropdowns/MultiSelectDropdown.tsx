@@ -1,7 +1,5 @@
 import { colors, fontSize } from '@/styles/theme';
 import styled from '@emotion/styled';
-import { solid } from '@fortawesome/fontawesome-svg-core/import.macro';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, {
   Dispatch,
   SetStateAction,
@@ -11,6 +9,8 @@ import React, {
 } from 'react';
 import { filterSelectedItems } from 'src/utils/common';
 import { v4 as uuidv4 } from 'uuid';
+import CloseButton from '../Buttons/CloseButton';
+import DropdownButton from '../Buttons/DropdownButton';
 
 const Container = styled.div`
   display: flex;
@@ -26,7 +26,7 @@ const DropdownInput = styled.div`
   justify-content: space-between;
   align-items: center;
 
-  i {
+  > button {
     margin: 0 10px;
   }
 `;
@@ -53,14 +53,6 @@ const SelectedItem = styled.div`
   div {
     margin-right: 10px;
     font-size: ${fontSize.m};
-  }
-
-  svg {
-    height: 15px;
-
-    * {
-      pointer-events: none;
-    }
   }
 `;
 
@@ -106,7 +98,7 @@ const MultiSelectDropdown = ({
   );
   const [open, setOpen] = useState(false);
 
-  const chevronEl = useRef<HTMLElement>(null);
+  const chevronEl = useRef<HTMLButtonElement>(null);
   const containerEl = useRef<HTMLDivElement>(null);
 
   const removeItem = (e: React.MouseEvent) => {
@@ -160,17 +152,11 @@ const MultiSelectDropdown = ({
               {selectedItems.map((selectedItem) => (
                 <SelectedItem key={uuidv4()}>
                   <div>{selectedItem}</div>
-                  <FontAwesomeIcon icon={solid('xmark')} onClick={removeItem} />
+                  <CloseButton onClick={removeItem} color="white" />
                 </SelectedItem>
               ))}
             </SelectedItemContainer>
-            <i ref={chevronEl}>
-              {open ? (
-                <FontAwesomeIcon icon={solid('chevron-up')} />
-              ) : (
-                <FontAwesomeIcon icon={solid('chevron-down')} />
-              )}
-            </i>
+            <DropdownButton open={open} ref={chevronEl} />
           </DropdownInput>
           {open && items.length !== selectedItems.length ? (
             <OptionContainer>

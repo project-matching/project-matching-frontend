@@ -1,8 +1,6 @@
 import PrimaryButton from '@/components/Common/Buttons/PrimaryButton';
 import { colors, fontWeight } from '@/styles/theme';
 import styled from '@emotion/styled';
-import { solid } from '@fortawesome/fontawesome-svg-core/import.macro';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Image from 'next/image';
 import defaultProfileImage from 'public/default_profile.png';
 import React, { useEffect, useRef, useState } from 'react';
@@ -14,6 +12,7 @@ import {
   getDefaultPositionOptions,
   getDefaultTechStackOptions,
 } from 'src/utils/common';
+import ImageAddButton from '../Common/Buttons/ImageAddButton';
 import MultiSelectDropdown from '../Common/Dropdowns/MultiSelectDropdown';
 import UniSelectDropdown from '../Common/Dropdowns/UniSelectDropdown';
 
@@ -231,7 +230,7 @@ const MyProfileChange = ({ myProfile }: MyProfileProps) => {
           }}
         />
         <label htmlFor="profile-image">
-          <FontAwesomeIcon icon={solid('plus')} />
+          <ImageAddButton />
         </label>
         <input
           ref={ImageInputEl}

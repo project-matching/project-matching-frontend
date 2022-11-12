@@ -1,8 +1,7 @@
 import BorderlessButton from '@/components/Common/Buttons//BorderlessButton';
+import ImageAddButton from '@/components/Common/Buttons/ImageAddButton';
 import { colors } from '@/styles/theme';
 import styled from '@emotion/styled';
-import { solid } from '@fortawesome/fontawesome-svg-core/import.macro';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Image from 'next/image';
 import defaultProfileImage from 'public/default_profile.png';
 import React, { useRef, useState } from 'react';
@@ -69,7 +68,7 @@ const AddTechStack = () => {
             }}
           />
           <label htmlFor="tech-upload-image">
-            <FontAwesomeIcon icon={solid('plus')} />
+            <ImageAddButton />
           </label>
           <input
             ref={ImageInputEl}

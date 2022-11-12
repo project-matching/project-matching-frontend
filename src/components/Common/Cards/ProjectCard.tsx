@@ -1,6 +1,6 @@
 import { colors, fontSize, fontWeight } from '@/styles/theme';
 import styled from '@emotion/styled';
-import { regular, solid } from '@fortawesome/fontawesome-svg-core/import.macro';
+import { solid } from '@fortawesome/fontawesome-svg-core/import.macro';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
@@ -12,6 +12,7 @@ import { ProjectType } from 'src/services/ProjectService';
 import { removeDulplicatePosition } from 'src/utils/common';
 import { ROLE_ADMIN } from 'src/utils/userRole';
 import { v4 as uuidv4 } from 'uuid';
+import BookmarkButton from '../Buttons/BookmarkButton';
 
 interface Props {
   projectDto: ProjectType;
@@ -35,7 +36,7 @@ const ProjectCard = ({ projectDto, bookmarkOnly = false, size }: Props) => {
   const { bookmark, toggleBookmark } = useBookmark({
     initBookmark,
   });
-  const bookmarkRef = useRef<HTMLElement>(null);
+  const bookmarkRef = useRef<HTMLButtonElement>(null);
   const router = useRouter();
 
   const handleCardClick = (e: React.MouseEvent) => {
@@ -179,14 +180,20 @@ const View = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: flex-end;
+  align-items: center;
+  font-size: ${fontSize.sm};
 
-  > i {
+  > div {
+    width: 15px;
+    height: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     margin-right: 5px;
   }
 
-  > span,
-  > i {
-    font-size: ${fontSize.sm};
+  > span {
+    line-height: 15px;
   }
 `;
 
@@ -216,7 +223,7 @@ interface ViewProps {
   cardSize: CardSizeType;
   toggleBookmark: (_projectNo: number) => Promise<void>;
   handleCardClick: (_e: React.MouseEvent) => void;
-  bookmarkRef: RefObject<HTMLElement>;
+  bookmarkRef: RefObject<HTMLButtonElement>;
   cardInfo: CardInfoType;
 }
 
@@ -266,16 +273,11 @@ const ProjectCardView = ({
           <Author>{register}</Author>
           <div>
             {role !== ROLE_ADMIN && (
-              <i
+              <BookmarkButton
                 ref={bookmarkRef}
                 onClick={async () => await toggleBookmark(projectNo)}
-              >
-                {bookmark ? (
-                  <FontAwesomeIcon icon={solid('bookmark')} />
-                ) : (
-                  <FontAwesomeIcon icon={regular('bookmark')} />
-                )}
-              </i>
+                isBookmarked={bookmark}
+              />
             )}
           </div>
         </Top>
@@ -314,9 +316,9 @@ const ProjectCardView = ({
         <span>프로젝트 인원: {currentPeople + '/' + maxPeople}</span>
       </Req>
       <View>
-        <i>
+        <div>
           <FontAwesomeIcon icon={solid('eye')} />
-        </i>
+        </div>
         <span>{viewCount}</span>
       </View>
     </CardContainer>

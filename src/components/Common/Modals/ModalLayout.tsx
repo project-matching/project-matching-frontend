@@ -1,4 +1,3 @@
-import { fontWeight } from '@/styles/theme';
 import styled from '@emotion/styled';
 import { useDispatch } from 'react-redux';
 import {
@@ -6,6 +5,7 @@ import {
   ModalActionProps,
 } from 'src/redux/reducers/components/modals';
 import { removeSigninErrorMsg } from 'src/redux/reducers/components/validation';
+import CloseButton from '../Buttons/CloseButton';
 import Logo from '../Logos/Logo';
 import { Backdrop } from './Backdrop';
 
@@ -20,10 +20,10 @@ const Head = styled.div`
   justify-content: space-between;
   align-items: center;
 `;
-const CloseButton = styled.a`
-  font-weight: ${fontWeight.bold};
-  cursor: pointer;
-`;
+// const CloseButton = styled.a`
+//   font-weight: ${fontWeight.bold};
+//   cursor: pointer;
+// `;
 
 const Body = styled.div`
   margin: 20px 45px;
@@ -49,7 +49,7 @@ const ModalLayout = ({ modalContent, children }: ModalLayoutProps) => {
           <div>
             <Logo />
           </div>
-          <CloseButton onClick={closeModalLayout}>X</CloseButton>
+          <CloseButton onClick={closeModalLayout} />
         </Head>
         <Body>{children}</Body>
       </Container>
