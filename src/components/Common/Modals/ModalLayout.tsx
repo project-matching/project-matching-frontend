@@ -20,10 +20,6 @@ const Head = styled.div`
   justify-content: space-between;
   align-items: center;
 `;
-// const CloseButton = styled.a`
-//   font-weight: ${fontWeight.bold};
-//   cursor: pointer;
-// `;
 
 const Body = styled.div`
   margin: 20px 45px;
